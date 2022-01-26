@@ -23,10 +23,7 @@ import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.DriveStraightNavBoard;
-import frc.robot.commands.DriveStraightPID;
-import frc.robot.commands.SetShooterSpeedCommand;
-import frc.robot.commands.TrajectoryDriveCommand;
-import frc.robot.subsystems.Drivetrain;
+
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hanger;
@@ -34,7 +31,6 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.NavigationBoard;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -52,7 +48,6 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Dashboard238 dashboard238;
   public static Shooter shooter;
-  public static Turret turret;
   public static Feeder feeder;
   public static Hanger hanger;
   public static Intake intake;
@@ -80,7 +75,6 @@ public class Robot extends TimedRobot {
     feeder = new Feeder();
     //hanger = new Hanger();
     intake = new Intake();
-    turret = new Turret();
     led = new LED(2, 150);
 
     //SmartDashboard.putData(TrajectoryDrive.getExampleCommand());
@@ -301,7 +295,6 @@ public class Robot extends TimedRobot {
     vision.postValues();
 
     shooter.runShooterDiagnostics();
-    turret.runTurretDiagnostics();
     //feeder.runFeederDiagnostics();
     //intake.runIntakeDiagnostics();
     //navigationBoard.runNavBoardDiagnostics();

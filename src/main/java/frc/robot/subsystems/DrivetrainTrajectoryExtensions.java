@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -15,7 +15,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
@@ -41,8 +40,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   //private final WPI_VictorSPX rightDriveFollower1 = new WPI_VictorSPX(DEVICE_ID_RIGHT_SLAVE);
   //private final WPI_VictorSPX rightDriveFollower2 = new WPI_VictorSPX(DEVICE_ID_RIGHT_SLAVE_TWO);
 
-  private final DifferentialDrive differentialDrive = new DifferentialDrive(
-      new MotorControllerGroup(leftMasterDrive), new MotorControllerGroup(rightMasterDrive));
+  private final DifferentialDrive differentialDrive = new DifferentialDrive(leftControllerDrive, rightControllerDrive);
 
   private final NavigationBoard gyro = Robot.navigationBoard;
   private final DifferentialDriveOdometry differentialDriveOdometry;
@@ -169,7 +167,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    * @return left encoder position
    */
   public double getLeftEncoderPosition() {
-    return leftMasterDrive.getSelectedSensorPosition(0);
+    return leftControllerDrive.getSelectedSensorPosition(0);
   }
 
   /**
@@ -178,12 +176,12 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    * @return right encoder position
    */
   public double getRightEncoderPosition() {
-    return rightMasterDrive.getSelectedSensorPosition(0);
+    return rightControllerDrive.getSelectedSensorPosition(0);
   }
 
   public void zeroDriveTrainEncoders() {
-    leftMasterDrive.setSelectedSensorPosition(0);
-    rightMasterDrive.setSelectedSensorPosition(0);
+    leftControllerDrive.setSelectedSensorPosition(0);
+    rightControllerDrive.setSelectedSensorPosition(0);
   }
 
   public Pose2d getCurrentPose() {
@@ -215,8 +213,8 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftMasterDrive.setVoltage(leftVolts);
-    rightMasterDrive.setVoltage(rightVolts);
+    leftControllerDrive.setVoltage(leftVolts);
+    rightControllerDrive.setVoltage(rightVolts);
   }
 
   /**
@@ -226,8 +224,8 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
-        stepsPerDecisecToMetersPerSec(leftMasterDrive.getSelectedSensorVelocity()),
-        stepsPerDecisecToMetersPerSec(rightMasterDrive.getSelectedSensorVelocity()));
+        stepsPerDecisecToMetersPerSec(leftControllerDrive.getSelectedSensorVelocity()),
+        stepsPerDecisecToMetersPerSec(rightControllerDrive.getSelectedSensorVelocity()));
   }
 
   public Command createCommandForTrajectory(Trajectory trajectory) {

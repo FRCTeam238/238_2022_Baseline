@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
 
 public class ShooterCommand extends CommandGroup {
   /**
@@ -19,14 +18,13 @@ public class ShooterCommand extends CommandGroup {
    */
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
-  Turret theTurret = Robot.turret;
+
 
   public ShooterCommand() {
     requires(theFeeder);
-    requires(theTurret);
     requires(theShooter);
 
-    addParallel(new TurnTurretByVision());
+    
     addParallel(new PrepareToShoot());
 
     addSequential(new IsAlignedCommand());

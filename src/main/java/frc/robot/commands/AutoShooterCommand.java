@@ -14,7 +14,7 @@ import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
+
 
 @AutonomousModeAnnotation(parameterNames = { "NumberOfBalls", "TimeToRun"})
 public class AutoShooterCommand extends CommandGroup implements IAutonomousCommand {
@@ -23,7 +23,6 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
    */
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
-  Turret theTurret = Robot.turret;
   boolean isAuto = false;
   double ballsToShoot = 0;
   double startTime = 0;
@@ -33,10 +32,8 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
 
   public AutoShooterCommand() {
     requires(theFeeder);
-    requires(theTurret);
     requires(theShooter);
 
-    addParallel(new TurnTurretByVision());
     addParallel(prepareToShootCommand);
 
     addSequential(new IsAlignedCommand());

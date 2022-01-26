@@ -27,7 +27,7 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Intake extends Subsystem {
-    private final VictorSPX intakeMasterDrive = RobotMap.IntakeDevices.IntakeVictor;//IntakeDevices.INTAKE_MASTER_TALON;
+    private final VictorSPX intakeMasterDrive = RobotMap.IntakeDevices.intakeVictor;//IntakeDevices.INTAKE_MASTER_TALON;
     private final int forwarChannel = RobotMap.IntakeDevices.FORWARD_CHANNEL;
     private final int reverseChannel = RobotMap.IntakeDevices.REVERSE_CHANNEL;
     private DoubleSolenoid solenoid;

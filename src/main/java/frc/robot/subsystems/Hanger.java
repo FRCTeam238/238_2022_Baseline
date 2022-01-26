@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -27,11 +28,14 @@ public class Hanger extends Subsystem {
     double hangHeight = FieldConstants.hangHeight;
     double ticksPerInch;
     public Object resetEncoder;
-    private final DoubleSolenoid brakeSolenoid = RobotMap.ClimberDevices.brakeSolenoid;
-    private final DoubleSolenoid deploySolenoid = RobotMap.ClimberDevices.deploySolenoid;
-    private final TalonSRX climberTalon = RobotMap.ClimberDevices.climberTalon;
+    // private final DoubleSolenoid brakeSolenoid =
+    // RobotMap.ClimberDevices.brakeSolenoid;
+    // private final DoubleSolenoid deploySolenoid =
+    // RobotMap.ClimberDevices.deploySolenoid;
+    private final WPI_TalonFX climberTalon = RobotMap.HangerDevices.hangerTalon;
     final private double yMinimum = 0.5;
-    //brakeDelayed is the time of delay we want between stopping the motor and braking. if zero, we assume we can brake immediately after starting motor.
+    // brakeDelayed is the time of delay we want between stopping the motor and
+    // braking. if zero, we assume we can brake immediately after starting motor.
     private final double brakeDelayTime = 0;
     private double timeToEngageBrake = -1;
     public DoubleSolenoid.Value isDeployed = Value.kReverse;
@@ -46,24 +50,26 @@ public class Hanger extends Subsystem {
 
     }
 
-    private void initTalon(){
+    private void initTalon() {
         climberTalon.configFactoryDefault();
         climberTalon.setNeutralMode(NeutralMode.Brake);
     }
 
     public void deploy() {
 
-        deploySolenoid.set(DoubleSolenoid.Value.kForward);
+        // deploySolenoid.set(DoubleSolenoid.Value.kForward);
 
     }
 
     public DoubleSolenoid.Value getBrakeStatus() {
-        return brakeSolenoid.get();
+        // TODO: double check what we're gonna use
+        return DoubleSolenoid.Value.kOff;
 
     }
 
     public DoubleSolenoid.Value getDeployStatus() {
-        return deploySolenoid.get();
+        // TODO: double check what we're gonna use
+        return DoubleSolenoid.Value.kOff;
     }
 
     /*
@@ -76,12 +82,12 @@ public class Hanger extends Subsystem {
     public void brake() {
 
         climberTalon.set(ControlMode.PercentOutput, 0);
-        brakeSolenoid.set(Value.kForward);
+        // brakeSolenoid.set(Value.kForward);
     }
 
     public void unBrake() {
 
-        brakeSolenoid.set(Value.kReverse);
+        // brakeSolenoid.set(Value.kReverse);
     }
 
     // raising or lowering the climbing mechanism
@@ -105,7 +111,7 @@ public class Hanger extends Subsystem {
                     brake();
                 }
             } else {
-                timeToEngageBrake = System.currentTimeMillis() + (brakeDelayTime*1000);
+                timeToEngageBrake = System.currentTimeMillis() + (brakeDelayTime * 1000);
             }
 
         }

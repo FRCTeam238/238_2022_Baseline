@@ -13,7 +13,6 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
@@ -29,7 +28,7 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Feeder extends Subsystem {
-    public final VictorSPX feederMasterDrive = RobotMap.FeederDevices.feederVictor;// FeederDevices.feederTalon;
+    public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
     // TODO: change FEEDER_OUTPUT to reasonable value;

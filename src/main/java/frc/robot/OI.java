@@ -18,12 +18,9 @@ import frc.robot.commands.IntakeExtendRetractCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
-import frc.robot.commands.PrepareToShoot;
 import frc.robot.commands.SetShooterSpeedCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ToggleLimelightZoom;
-import frc.robot.commands.TurnTurretByVision;
-import frc.robot.commands.TurnTurretManually;
 import frc.robot.subsystems.Drivetrain;
 
 //TODO: do we need the vision???????????? 
@@ -81,13 +78,8 @@ public class OI {
     TriggerButton automatedShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
     automatedShoot.whileHeld(new ShooterCommand());
 
-    TriggerButton turnTurretByVision = new TriggerButton(operatorController, XboxController.Axis.kLeftTrigger.value);
-    turnTurretByVision.whileHeld(new TurnTurretByVision());
-
     JoystickButton toggleZoomButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
     toggleZoomButton.whenPressed(new ToggleLimelightZoom());
-
-    Robot.turret.setDefaultCommand(new TurnTurretManually(operatorController, XboxController.Axis.kLeftX.value));
 
     Robot.intake.setDefaultCommand(new IntakeInOutCommand(operatorController, XboxController.Axis.kRightY.value));
 

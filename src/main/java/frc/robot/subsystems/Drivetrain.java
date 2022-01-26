@@ -15,10 +15,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
@@ -47,11 +45,11 @@ public class Drivetrain extends Subsystem {
   private final double kA = 0.225;// 00.00434 * 0.15;
   private final double vSetpoint = 1.078;// 0.078
 
-  protected final static WPI_TalonSRX rightMasterDrive = RobotMap.DrivetrainControllers.RightMaster;
-  protected final static WPI_TalonSRX leftMasterDrive = RobotMap.DrivetrainControllers.LeftMaster;
+  protected final static WPI_TalonFX rightControllerDrive = RobotMap.DrivetrainControllers.RightDriveTrainController;
+  protected final static WPI_TalonFX leftControllerDrive = RobotMap.DrivetrainControllers.LeftDriveTrainController;
 
-  protected final WPI_VictorSPX leftDriveFollower1 = RobotMap.DrivetrainControllers.LeftFollower1;
-  protected final WPI_VictorSPX rightDriveFollower1 = RobotMap.DrivetrainControllers.RightFollower1;
+  protected final TalonFX leftDriveFollower1 = RobotMap.DrivetrainControllers.LeftDriveTrainFollower;
+  protected final TalonFX rightDriveFollower1 = RobotMap.DrivetrainControllers.RightDriveTrainFollower;
 
   
 
@@ -78,7 +76,7 @@ public class Drivetrain extends Subsystem {
     dashboard = Robot.dashboard238;
     entryLeft = Shuffleboard.getTab("DiagnosticTab").add("LeftPower", 0).getEntry();
     entryRight = Shuffleboard.getTab("DiagnosticTab").add("RightPower", 0).getEntry();
-    rightMasterDrive.setInverted(InvertType.None);
+    rightControllerDrive.setInverted(InvertType.None);
   }
 
   @Override
@@ -91,8 +89,8 @@ public class Drivetrain extends Subsystem {
   }
 
   public void drive(double left, double right) {
-    leftMasterDrive.set(ControlMode.PercentOutput, left);
-    rightMasterDrive.set(ControlMode.PercentOutput, right);
+    leftControllerDrive.set(ControlMode.PercentOutput, left);
+    rightControllerDrive.set(ControlMode.PercentOutput, right);
   }
 
   public void drive(double left, double right, double desiredAngle) {
@@ -117,12 +115,12 @@ public class Drivetrain extends Subsystem {
 
   /** Drive a number of inches using TalonSRX PID loops */
   public void driveWithTicks(double distance) {
-    initPID(rightMasterDrive);
-    initPID(leftMasterDrive);
+    initPID(rightControllerDrive);
+    initPID(leftControllerDrive);
     //resetEncoders() is done in initPID
     double ticks = calcTicks(distance);
-    setPosition(rightMasterDrive, ticks);
-    setPosition(leftMasterDrive, ticks);
+    setPosition(rightControllerDrive, ticks);
+    setPosition(leftControllerDrive, ticks);
   }
 
   // method to accelerate rather than set straigt power
@@ -144,8 +142,8 @@ public class Drivetrain extends Subsystem {
     rightWantedVoltage += kA * rightAccel;
     rightWantedVoltage += rightWantedVoltage > 0 ? vSetpoint : -vSetpoint;
 
-    leftMasterDrive.set(ControlMode.Velocity, (-leftSpeed) * TICKS_PER_INCH / 10.0);
-    rightMasterDrive.set(ControlMode.Velocity, (-rightSpeed) * TICKS_PER_INCH / 10.0);
+    leftControllerDrive.set(ControlMode.Velocity, (-leftSpeed) * TICKS_PER_INCH / 10.0);
+    rightControllerDrive.set(ControlMode.Velocity, (-rightSpeed) * TICKS_PER_INCH / 10.0);
     // Logger.Log("DriveTrain.driveSpeedAccel() LEFT Speed = " + -leftSpeed + "RIGHT
     // Speed = " + -rightSpeed);
     // Logger.Log("Drive Accel RIGHT Speed:" + -rightSpeed);
@@ -159,37 +157,37 @@ public class Drivetrain extends Subsystem {
   }
 
   public void stop() {
-    leftMasterDrive.set(ControlMode.PercentOutput, 0);
-    rightMasterDrive.set(ControlMode.PercentOutput, 0);
+    leftControllerDrive.set(ControlMode.PercentOutput, 0);
+    rightControllerDrive.set(ControlMode.PercentOutput, 0);
   }
 
   public void initTalons() {
 
     //TalonSRX_238 factory method returns preconfigured talks with defaults, no need to reset to defaults
 
-    leftDriveFollower1.follow(leftMasterDrive);
+    leftDriveFollower1.follow(leftControllerDrive);
   
-    rightDriveFollower1.follow(rightMasterDrive);
+    rightDriveFollower1.follow(rightControllerDrive);
   
-    leftMasterDrive.setNeutralMode(NeutralMode.Brake);
+    leftControllerDrive.setNeutralMode(NeutralMode.Brake);
     leftDriveFollower1.setNeutralMode(NeutralMode.Brake);
   
-    rightMasterDrive.setInverted(true);
+    rightControllerDrive.setInverted(true);
     rightDriveFollower1.setInverted(true);
   
-    rightMasterDrive.setNeutralMode(NeutralMode.Brake);
+    rightControllerDrive.setNeutralMode(NeutralMode.Brake);
     rightDriveFollower1.setNeutralMode(NeutralMode.Brake);
   
-    rightMasterDrive.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
-    leftMasterDrive.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
+    rightControllerDrive.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
+    leftControllerDrive.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
 
-    initPID(rightMasterDrive);
-    initPID(leftMasterDrive);
+    initPID(rightControllerDrive);
+    initPID(leftControllerDrive);
 
     Logger.Debug("initTalons Is Sucessful!");
   }
 
-  public void initPID(WPI_TalonSRX talon) {
+  public void initPID(TalonFX talon) {
 
    // TalonSRX_238.initPID(leftMasterDrive, kP, kI, kD, kF, kIzone, kTimeoutMs, kPIDLoopIdx, rampRate);
     //TalonSRX_238.initPID(rightMasterDrive, kP, kI, kD, kF, kIzone, kTimeoutMs, kPIDLoopIdx, rampRate);
@@ -226,12 +224,12 @@ public class Drivetrain extends Subsystem {
       resetEncoder(talon, kPIDLoopIdx, kTimeoutMs);
     }
 
-    public void resetEncoder(TalonSRX talon, int kPIDLoopIdx, int kTimeoutMs){
+    public void resetEncoder(TalonFX talon, int kPIDLoopIdx, int kTimeoutMs){
       talon.setSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
     }
     public void resetEncoders(){
-      resetEncoder(rightMasterDrive, kPIDLoopIdx, kTimeoutMs);
-      resetEncoder(leftMasterDrive, kPIDLoopIdx, kTimeoutMs);
+      resetEncoder(rightControllerDrive, kPIDLoopIdx, kTimeoutMs);
+      resetEncoder(leftControllerDrive, kPIDLoopIdx, kTimeoutMs);
       
     }
 
@@ -244,7 +242,7 @@ public class Drivetrain extends Subsystem {
   //}
 
   public double getLeftEncoderTicks() {
-    double leftTicks = getTicks(leftMasterDrive);
+    double leftTicks = getTicks(leftControllerDrive);
     Logger.Trace("LEFT TICKS: " + leftTicks);
     return leftTicks;
   }
@@ -258,7 +256,7 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getRightEncoderTicks() {
-    double rightTicks = getTicks(rightMasterDrive);
+    double rightTicks = getTicks(rightControllerDrive);
     Logger.Trace("RIGHT TICKS: " + rightTicks);
     return rightTicks;
   }
@@ -272,19 +270,19 @@ public class Drivetrain extends Subsystem {
   }
 
   public double getLeftPower(){
-    double power = leftMasterDrive.getMotorOutputPercent();
+    double power = leftControllerDrive.getMotorOutputPercent();
     return power;
   }
 
   public double getRightPower(){
-    double power = rightMasterDrive.getMotorOutputPercent();
+    double power = rightControllerDrive.getMotorOutputPercent();
     return power;
   }
 
   public boolean isAtPosition(double distance) {
     double desiredTicks = calcTicks(distance);
-    double rightPosition = getTicks(rightMasterDrive);
-    double leftPosition = getTicks(leftMasterDrive);
+    double rightPosition = getTicks(rightControllerDrive);
+    double leftPosition = getTicks(leftControllerDrive);
     double averagePosition = (rightPosition + leftPosition) / 2;
     Logger.Debug("Current position: " + averagePosition);
     Logger.Debug("Desired position: " + desiredTicks);
@@ -292,11 +290,11 @@ public class Drivetrain extends Subsystem {
     return isDone;
   }
 
-  private static double getTicks(TalonSRX talon){
+  private static double getTicks(TalonFX talon){
     return talon.getSelectedSensorPosition();
   }
 
-  private static void setPosition(TalonSRX talon, double ticks) {
+  private static void setPosition(TalonFX talon, double ticks) {
     talon.set(ControlMode.Position, ticks);
   }
 
@@ -311,12 +309,12 @@ public class Drivetrain extends Subsystem {
 
     SendableWrapper leftSpeedController = new SendableWrapper(builder -> {
       builder.setSmartDashboardType("Speed Controller");
-      builder.addDoubleProperty("Value", () -> leftMasterDrive.getMotorOutputPercent(), null);
+      builder.addDoubleProperty("Value", () -> leftControllerDrive.getMotorOutputPercent(), null);
     });
 
     SendableWrapper rightSpeedController = new SendableWrapper(builder -> {
       builder.setSmartDashboardType("Speed Controller");
-      builder.addDoubleProperty("Value", () -> rightMasterDrive.getMotorOutputPercent(), null);
+      builder.addDoubleProperty("Value", () -> rightControllerDrive.getMotorOutputPercent(), null);
     });
 
     SendableWrapper pidSendable = new SendableWrapper(builder -> {
@@ -324,7 +322,7 @@ public class Drivetrain extends Subsystem {
       builder.addDoubleProperty("p", () -> kP, (value)-> kP = value);
       builder.addDoubleProperty("i", () -> kI, (value)-> kI = value);
       builder.addDoubleProperty("d", () -> kD, (value)-> kD = value);
-      builder.addBooleanProperty("enabled", () -> rightMasterDrive.getControlMode() == ControlMode.Position, null);
+      builder.addBooleanProperty("enabled", () -> rightControllerDrive.getControlMode() == ControlMode.Position, null);
       builder.addDoubleProperty("setpoint", () -> 0.0 , null);
       builder.addDoubleProperty("f", () -> kD, (value)-> kD = value);
 

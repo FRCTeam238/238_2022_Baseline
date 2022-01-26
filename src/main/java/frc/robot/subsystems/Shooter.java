@@ -34,7 +34,7 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Shooter extends Subsystem {
-    private final CANSparkMax shooterMasterDrive = RobotMap.ShooterDevices.shooterMaster;
+    private final CANSparkMax shooterMasterDrive = RobotMap.ShooterDevices.shooterController;
     //private final CANSparkMax shooterMasterDrive = RobotMap.ShooterDevices.shooterMaster;
     private CANSparkMax shooterFollowerDrive = RobotMap.ShooterDevices.shooterFollower;
     //private final int followerID = 17;
@@ -235,27 +235,7 @@ public class Shooter extends Subsystem {
     private void populateSpeedMap(HashMap map){
         // Format: (distance, speed)
         // Distance is in inches, speed is in controller-side RPM
-        map.put(80, 5000);
-        map.put(96, 3600);
-        map.put(112, 3600);
-        map.put(128, 3620);
-        map.put(144, 3665);
-        map.put(160, 3750);
-        map.put(176, 3840);
-        map.put(192, 3950);
-        map.put(208, 4000);
-        map.put(224, 4075);
-        map.put(240, 4100);
-        map.put(256, 4150);
-        map.put(272, 4230);
-        map.put(288, 4300);
-        map.put(304, 4415);
-        map.put(320, 4575);
-        map.put(336, 4700);
-        map.put(352, 4900);
-        map.put(368, 5000);
-        map.put(384, 5100);
-        map.put(400, 5270);
+  
     }
 
     public int readSpeedMap(int distance){
