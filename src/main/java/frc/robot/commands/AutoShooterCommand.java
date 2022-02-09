@@ -12,7 +12,7 @@ import java.util.List;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.Shooter;
 
 
@@ -22,7 +22,7 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
    * Add your docs here.
    */
   Shooter theShooter = Robot.shooter;
-  Feeder theFeeder = Robot.feeder;
+  Transporter theFeeder = Robot.transporter;
   boolean isAuto = false;
   double ballsToShoot = 0;
   double startTime = 0;

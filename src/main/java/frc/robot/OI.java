@@ -21,7 +21,7 @@ import frc.robot.commands.ManualReverse;
 import frc.robot.commands.SetShooterSpeedCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ToggleLimelightZoom;
-import frc.robot.subsystems.Drivetrain;
+// import frc.robot.subsystems.Drivetrain;
 
 //TODO: do we need the vision???????????? 
 //import frc.robot.commands.VisionDrive;
@@ -36,7 +36,7 @@ public class OI {
   public Joystick leftStick = RobotMap.Joysticks.driverStickLeft;
   public Joystick rightStick = RobotMap.Joysticks.driverStickRight;
   public XboxController operatorController = RobotMap.Joysticks.operatorController;
-  public Drivetrain drivetrain;
+  // public Drivetrain drivetrain;
 
   public OI() {
 
@@ -83,7 +83,7 @@ public class OI {
 
     Robot.intake.setDefaultCommand(new IntakeInOutCommand(operatorController, XboxController.Axis.kRightY.value));
 
-    Robot.feeder.setDefaultCommand(new FeederCommand());
+    Robot.transporter.setDefaultCommand(new FeederCommand());
 
     // Robot.shooter.setDefaultCommand(new MotorCommand(operatorController, XboxController.Axis.kLeftY.value));
 

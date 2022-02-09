@@ -27,11 +27,11 @@ public final class RobotMap {
 
   /** Motor controllers for the drive train */
   public static class DrivetrainControllers {
-    public static final int DRIVE_TRAIN_RIGHT_CONTROLLER = 0;
-    public static final int DRIVE_TRAIN_RIGHT_FOLLOWER = 1;
+    public static final int DRIVE_TRAIN_RIGHT_CONTROLLER = 14;
+    public static final int DRIVE_TRAIN_RIGHT_FOLLOWER = 15;
 
-    public static final int DRIVE_TRAIN_LEFT_CONTROLLER = 15;
-    public static final int DRIVE_TRAIN_LEFT_FOLLOWER = 14;
+    public static final int DRIVE_TRAIN_LEFT_CONTROLLER = 0;
+    public static final int DRIVE_TRAIN_LEFT_FOLLOWER = 1;
 
     public static WPI_TalonFX LeftDriveTrainController = new WPI_TalonFX(DRIVE_TRAIN_LEFT_CONTROLLER);
     public static WPI_TalonFX LeftDriveTrainFollower = new WPI_TalonFX(DRIVE_TRAIN_LEFT_FOLLOWER);
@@ -64,43 +64,37 @@ public final class RobotMap {
   }
 
   public static class ShooterDevices {
-
-    public static int SHOOTER_CONTROLLER = 10;
-    public static int SHOOTER_FOLLOWER = 11;
+    public static int SHOOTER_CONTROLLER = 13;
+    public static int SHOOTER_FOLLOWER = 12;
     public static CANSparkMax shooterController = new CANSparkMax(SHOOTER_CONTROLLER, MotorType.kBrushless);
     public static CANSparkMax shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
 
   }
 
   public static class IntakeDevices {
+    public static int INTAKE_CONTROLLER_ID = 8;
+    public static VictorSPX intakeVictor = new VictorSPX(INTAKE_CONTROLLER_ID);
     // TODO: change to real number
     public static DoubleSolenoid intakeSolenoid;
-    public static int INTAKE_CONTROLLER_ID = 9;
-    public static VictorSPX intakeVictor = new VictorSPX(INTAKE_CONTROLLER_ID);
     public static int FORWARD_CHANNEL = 3;
     public static int REVERSE_CHANNEL = 4;
   }
+// MecanumDevices is a secondary set of wheels after the intake
+  public static class MecanumDevices {
+    public static int MECANUM_CONTROLLER_ID = 9;
+    public static VictorSPX mecanumVictor = new VictorSPX(MECANUM_CONTROLLER_ID);
+  }
 
   public static class TransportDevices {
-    // //TODO: change to real number
-    public static int TRANSPORT_CONTROLLER = 8;
-    public static VictorSPX transportVictor = new VictorSPX(TRANSPORT_CONTROLLER);
+    public static int TRANSPORT_CONTROLLER = 10;
+    public static CANSparkMax transportController = new CANSparkMax(TRANSPORT_CONTROLLER, MotorType.kBrushless);
+    // public static VictorSPX transportVictor = new VictorSPX(TRANSPORT_CONTROLLER);
   }
 
   public static class HangerDevices {
-    public static int HANGER_CONTROLLER = 12;
+    public static int HANGER_CONTROLLER = 2;
     public static WPI_TalonFX hangerTalon = new WPI_TalonFX(HANGER_CONTROLLER);
-    // TODO: recheck at week 4 for deletion??!?!?!?!?!
-    // public static int HANGER_DEPLOY_FORWARD = 5;
-    // public static int HANGER_DEPLOY_REVERSE = 2;
-    // public static int HANGER_BRAKE_FORWARD = 1;
-    // public static int HANGER_BRAKE_REVERSE = 7;
-    // public static DoubleSolenoid brakeSolenoid = new
-    // DoubleSolenoid(PneumaticsModuleType.CTREPCM, HANGER_BRAKE_FORWARD,
-    // HANGER_BRAKE_REVERSE);
-    // public static DoubleSolenoid deploySolenoid = new
-    // DoubleSolenoid(PneumaticsModuleType.CTREPCM, HANGER_DEPLOY_FORWARD,
-    // HANGER_DEPLOY_REVERSE);
+   
 
   }
 }

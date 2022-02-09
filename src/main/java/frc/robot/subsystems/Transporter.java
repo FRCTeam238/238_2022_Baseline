@@ -12,6 +12,7 @@ import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.util.sendable.Sendable;
@@ -27,13 +28,17 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Feeder extends Subsystem {
-    public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
+public class Transporter extends Subsystem {
+
+    //Victor doesnt exist, Spark is the new controller
+    // public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
+
+    public final CANSparkMax transportController = RobotMap.TransportDevices.transportController;
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
     // TODO: change FEEDER_OUTPUT to reasonable value;
-    private final double FEEDER_OUTPUT = 1;
-    private final double STOP_FEEDER_OUTPUT = 0;
+    private final double TRANSPORT_OUTPUT = 1;
+    private final double STOP_TRANSPORT_OUTPUT = 0;
     private int heldBallsNumber = 0;
 
     private double diagnosticStartTime = 0;
@@ -42,7 +47,7 @@ public class Feeder extends Subsystem {
 
     Dashboard238 dashboard;
 
-    public Feeder() {
+    public Transporter() {
         // initLiveWindow();
         SmartDashboard.putData(this);
         dashboard = Robot.dashboard238;
@@ -54,16 +59,16 @@ public class Feeder extends Subsystem {
     }
 
     public void start() {
-        feederMasterDrive.set(ControlMode.PercentOutput, FEEDER_OUTPUT);
+        //feederMasterDrive.set(ControlMode.PercentOutput, FEEDER_OUTPUT);
+        transportController.set(TRANSPORT_OUTPUT);
     }
 
     public double getPower(){
-        double power = feederMasterDrive.getMotorOutputPercent();
-        return power;
+        return transportController.get();
     }
 
     public void reverse() {
-        feederMasterDrive.set(ControlMode.PercentOutput, -1 * FEEDER_OUTPUT);
+        transportController.set(-1 * TRANSPORT_OUTPUT);
     }
 
     /*
@@ -77,7 +82,7 @@ public class Feeder extends Subsystem {
      */
 
     public void stop() {
-        feederMasterDrive.set(ControlMode.PercentOutput, STOP_FEEDER_OUTPUT);
+        transportController.set(STOP_TRANSPORT_OUTPUT);
     }
 
     public void countHeldBalls(){

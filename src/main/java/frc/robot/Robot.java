@@ -25,7 +25,7 @@ import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.DriveStraightNavBoard;
 
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Dashboard238 dashboard238;
   public static Shooter shooter;
-  public static Feeder feeder;
+  public static Transporter transporter;
   public static Hanger hanger;
   public static Intake intake;
   public static LED led;
@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
     shooter = new Shooter();
     dashboard238 = new Dashboard238();
-    feeder = new Feeder();
+    transporter = new Transporter();
     //hanger = new Hanger();
     intake = new Intake();
     led = new LED(2, 150);
@@ -182,7 +182,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
-    feeder.countHeldBalls();
+    transporter.countHeldBalls();
     SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
     SmartDashboard.putNumber("Turret X error", vision.getYaw());
 

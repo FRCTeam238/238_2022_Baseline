@@ -28,9 +28,11 @@ import frc.robot.RobotMap;
  */
 public class Intake extends Subsystem {
     private final VictorSPX intakeMasterDrive = RobotMap.IntakeDevices.intakeVictor;//IntakeDevices.INTAKE_MASTER_TALON;
-    private final int forwarChannel = RobotMap.IntakeDevices.FORWARD_CHANNEL;
+    private final int forwardChannel = RobotMap.IntakeDevices.FORWARD_CHANNEL;
     private final int reverseChannel = RobotMap.IntakeDevices.REVERSE_CHANNEL;
     private DoubleSolenoid solenoid;
+
+    private final VictorSPX mecanumMotor = RobotMap.MecanumDevices.mecanumVictor;
 
     private final double INTAKEPOWER = 0.5;
 
@@ -42,7 +44,7 @@ public class Intake extends Subsystem {
 
     public Intake() {
         initTalons();
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, forwarChannel, reverseChannel);
+        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, forwardChannel, reverseChannel);
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("IntakeVelocity", 0).getEntry();
         //solenoid = RobotMap.IntakeDevices.intakeSolenoid;
@@ -58,25 +60,28 @@ public class Intake extends Subsystem {
         intakeMasterDrive.setInverted(true);
     }
 
-    private void setPower(double speedValue){
+    private void setPower(double speedValue, double mecanumSpeedValue){
         intakeMasterDrive.set(ControlMode.PercentOutput, speedValue);
+        mecanumMotor.set(ControlMode.PercentOutput, mecanumSpeedValue);
     }
+
 
     private double getPower(){
         double power = intakeMasterDrive.getMotorOutputPercent();
         return power;
     }
 
-    public void in(double speed) {
-        setPower(speed);
+    public void in(double speed, double mecanumSpeed) {
+        setPower(speed, mecanumSpeed);
     }
 
-    public void out(double speed) {
-        setPower(speed);
+
+    public void out(double speed, double mecanumSpeed) {
+        setPower(-speed, -mecanumSpeed);
     }
 
     public void stop(){
-        setPower(0);
+        setPower(0, 0);
     }
 
     public void extendIntake() {
@@ -105,10 +110,10 @@ public class Intake extends Subsystem {
             retractIntake();
         }
         if((diagnosticStartTime + 1) <= Timer.getFPGATimestamp() && diagnosticStartTime != 0){
-            setPower(-0.5);
+            setPower(-0.5, -0.5); //<-recheck this
             extendIntake();
         } else if(diagnosticStartTime != 0){
-            setPower(0.5);
+            setPower(0.5, 0.5); //<-recheck this
             retractIntake();
         }
 

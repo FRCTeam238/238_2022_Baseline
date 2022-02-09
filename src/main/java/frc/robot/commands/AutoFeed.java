@@ -16,7 +16,7 @@ public class AutoFeed extends Command {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.delay = delayTime;
-    requires(Robot.feeder);
+    requires(Robot.transporter);
   }
 
   // Called just before this Command runs the first time
@@ -28,7 +28,7 @@ public class AutoFeed extends Command {
   @Override
   protected void execute() {
     if(this.timeSinceInitialized() >= delay){
-      Robot.feeder.start();
+      Robot.transporter.start();
     }
   }
 
@@ -41,13 +41,13 @@ public class AutoFeed extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.feeder.stop();
+    Robot.transporter.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.feeder.stop();
+    Robot.transporter.stop();
   }
 }

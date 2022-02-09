@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.core238.Logger;
 import frc.robot.Robot;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.LED;
 
 public class FeederCommand extends Command {
@@ -26,7 +26,7 @@ public class FeederCommand extends Command {
   boolean firstSensorBroken = true;
   
 
-  Feeder theFeeder = Robot.feeder;
+  Transporter theFeeder = Robot.transporter;
   LED led = Robot.led;
 
   public FeederCommand() {

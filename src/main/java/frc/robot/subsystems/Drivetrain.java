@@ -48,8 +48,8 @@ public class Drivetrain extends Subsystem {
   protected final static WPI_TalonFX rightControllerDrive = RobotMap.DrivetrainControllers.RightDriveTrainController;
   protected final static WPI_TalonFX leftControllerDrive = RobotMap.DrivetrainControllers.LeftDriveTrainController;
 
-  protected final TalonFX leftDriveFollower1 = RobotMap.DrivetrainControllers.LeftDriveTrainFollower;
-  protected final TalonFX rightDriveFollower1 = RobotMap.DrivetrainControllers.RightDriveTrainFollower;
+  protected final WPI_TalonFX leftDriveFollower1 = RobotMap.DrivetrainControllers.LeftDriveTrainFollower;
+  protected final WPI_TalonFX rightDriveFollower1 = RobotMap.DrivetrainControllers.RightDriveTrainFollower;
 
   
 

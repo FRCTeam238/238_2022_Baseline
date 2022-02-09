@@ -9,7 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterCommand extends CommandGroup {
@@ -17,7 +17,7 @@ public class ShooterCommand extends CommandGroup {
    * Add your docs here.
    */
   Shooter theShooter = Robot.shooter;
-  Feeder theFeeder = Robot.feeder;
+  Transporter theFeeder = Robot.transporter;
 
 
   public ShooterCommand() {

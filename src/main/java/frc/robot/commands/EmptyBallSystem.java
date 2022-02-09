@@ -12,12 +12,12 @@ import java.sql.Time;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Transporter;
 import frc.robot.commands.PrepareToShoot;
 
 public class EmptyBallSystem extends Command {
   Shooter theShooter = Robot.shooter;
-  Feeder theFeeder = Robot.feeder;
+  Transporter theFeeder = Robot.transporter;
   PrepareToShoot prepareToShoot = new PrepareToShoot();
 
   public EmptyBallSystem() {
