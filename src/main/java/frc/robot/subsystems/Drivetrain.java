@@ -76,7 +76,7 @@ public class Drivetrain extends Subsystem {
     dashboard = Robot.dashboard238;
     entryLeft = Shuffleboard.getTab("DiagnosticTab").add("LeftPower", 0).getEntry();
     entryRight = Shuffleboard.getTab("DiagnosticTab").add("RightPower", 0).getEntry();
-    rightControllerDrive.setInverted(InvertType.None);
+    // rightControllerDrive.setInverted(InvertType.None);
   }
 
   @Override

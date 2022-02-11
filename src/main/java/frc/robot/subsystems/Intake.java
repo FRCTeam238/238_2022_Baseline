@@ -28,9 +28,7 @@ import frc.robot.RobotMap;
  */
 public class Intake extends Subsystem {
     private final VictorSPX intakeMasterDrive = RobotMap.IntakeDevices.intakeVictor;//IntakeDevices.INTAKE_MASTER_TALON;
-    private final int forwardChannel = RobotMap.IntakeDevices.FORWARD_CHANNEL;
-    private final int reverseChannel = RobotMap.IntakeDevices.REVERSE_CHANNEL;
-    private DoubleSolenoid solenoid;
+    private DoubleSolenoid solenoid = RobotMap.IntakeDevices.intakeSolenoid;
 
     private final VictorSPX mecanumMotor = RobotMap.MecanumDevices.mecanumVictor;
 
@@ -44,7 +42,6 @@ public class Intake extends Subsystem {
 
     public Intake() {
         initTalons();
-        solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, forwardChannel, reverseChannel);
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("IntakeVelocity", 0).getEntry();
         //solenoid = RobotMap.IntakeDevices.intakeSolenoid;

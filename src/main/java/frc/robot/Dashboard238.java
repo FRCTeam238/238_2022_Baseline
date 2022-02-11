@@ -44,7 +44,7 @@ public class Dashboard238 {
         buildElement(diagnosticTab, "MinOutput", 0, 1, 1, 3, 1);
         buildElement(diagnosticTab, "MaxOutput", 0, 1, 1, 3, 2);
 
-        buildElement("IntakeDiagnostics", false, 1, 1, 4, 2);
+        // buildElement("IntakeDiagnostics", false, 1, 1, 4, 2);
         // put on tabs
         // create get and set method
 

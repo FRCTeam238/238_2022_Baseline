@@ -14,8 +14,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -42,9 +44,9 @@ public final class RobotMap {
 
   /** Driver joysticks and operator controllers */
   public static class Joysticks {
-    public static int leftStickPort = 3;
-    public static int rightStickPort = 2;
-    public static int controllerPort = 1;
+    public static int leftStickPort = 2;
+    public static int rightStickPort = 1;
+    public static int controllerPort = 0;
 
     public static Joystick driverStickLeft = new Joystick(leftStickPort);
     public static Joystick driverStickRight = new Joystick(rightStickPort);
@@ -75,9 +77,10 @@ public final class RobotMap {
     public static int INTAKE_CONTROLLER_ID = 8;
     public static VictorSPX intakeVictor = new VictorSPX(INTAKE_CONTROLLER_ID);
     // TODO: change to real number
-    public static DoubleSolenoid intakeSolenoid;
-    public static int FORWARD_CHANNEL = 3;
-    public static int REVERSE_CHANNEL = 4;
+    public static int FORWARD_CHANNEL = 1;
+    public static int REVERSE_CHANNEL = 6;
+    public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, FORWARD_CHANNEL, REVERSE_CHANNEL);
+
   }
 // MecanumDevices is a secondary set of wheels after the intake
   public static class MecanumDevices {

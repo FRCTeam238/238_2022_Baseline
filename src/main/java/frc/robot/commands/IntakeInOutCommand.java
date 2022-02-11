@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
@@ -29,8 +30,8 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private boolean isAuto = false;
 
     // Speed; used to control the intake as well as the mecanum motor values
-    private double intakeSpeed = 0;
-    private double mecanumSpeed = 0;
+    private double intakeSpeed = 0.5;
+    private double mecanumSpeed = 0.5;
     private final double autoSpeed = 0.5;
     private double defaultIntakeSpeed = 0;
     private double defaultMecanumSpeed = 0;
@@ -41,14 +42,17 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private NetworkTableEntry mecanumEntry;
     private NetworkTableEntry deadzoneEntry;
     private double deadzoneDefaultValue = 0;
-    private double deadzoneValue = 0;
+    private double deadzoneValue = 0.1;
     private boolean intakeDiagnostics;
 
     public IntakeInOutCommand(GenericHID controller, int axis) {
         requires(Robot.intake);
         this.controller = controller;
         this.axis = axis;
-        intakeDiagnostics = Shuffleboard.getTab("DiagnosticTab").add("IntakeDiagnostics", false).getEntry().getBoolean(false);
+        intakeDiagnostics = Shuffleboard.getTab("DiagnosticTab").add("IntakeDiagnostics", true).withPosition(8, 3).getEntry().getBoolean(false);
+        intakeEntry = Shuffleboard.getTab("DiagnosticTab").add("Intake Speed", defaultIntakeSpeed).withPosition(8, 4).getEntry();
+        mecanumEntry = Shuffleboard.getTab("DiagnosticTab").add("Mecanum Speed", defaultMecanumSpeed).withPosition(7, 4).getEntry();
+        deadzoneEntry = Shuffleboard.getTab("DiagnosticTab").add("Deadzone Value", deadzoneDefaultValue).withPosition(6, 4).getEntry();
     }
 
     public IntakeInOutCommand() {
@@ -61,9 +65,11 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
         }
         
         if (getIsAutonomousMode()) {
-            intakeSpeed = autoSpeed;
+            // intakeSpeed = autoSpeed;
+            Robot.intake.in(autoSpeed, mecanumSpeed);
         } else {
             double axisValue = controller.getRawAxis(axis);
+
 
             //0.2 is the deadzone in thy controller
             if (Math.abs(axisValue) <= deadzoneValue) {
@@ -116,16 +122,16 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     }
 
     private void runIntakeDiagnostics() {
-        dashboard238.buildElement("Intake Speed", defaultIntakeSpeed, 1, 1, 1, 1);
-        intakeEntry = Shuffleboard.getTab("DiagnosticTab").add("Intake Speed", defaultIntakeSpeed).getEntry();
+        // dashboard238.buildElement("Intake Speed", defaultIntakeSpeed, 1, 1, 1, 1);
+        
         intakeSpeed = intakeEntry.getDouble(defaultIntakeSpeed);
 
-        dashboard238.buildElement("Mecanum Speed", defaultMecanumSpeed, 1, 1, 2, 1);
-        mecanumEntry = Shuffleboard.getTab("DiagnosticTab").add("Mecanum Speed", defaultMecanumSpeed).getEntry();
+        // dashboard238.buildElement("Mecanum Speed", defaultMecanumSpeed, 1, 1, 2, 1);
+       
         mecanumSpeed = mecanumEntry.getDouble(defaultMecanumSpeed);
 
-        dashboard238.buildElement("Deadzone Value", deadzoneDefaultValue, 1, 1, 3, 1);
-        deadzoneEntry = Shuffleboard.getTab("DiagnosticTab").add("Deadzone Value", deadzoneDefaultValue).getEntry();
+        // dashboard238.buildElement("Deadzone Value", deadzoneDefaultValue, 1, 1, 3, 1);
+        
         deadzoneValue = deadzoneEntry.getDouble(deadzoneDefaultValue);
     }
 

@@ -69,8 +69,8 @@ public class Robot extends TimedRobot {
   public Robot() {
     navigationBoard = new NavigationBoard();
     drivetrain = new DrivetrainTrajectoryExtensions();
-    vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
-    shooter = new Shooter();
+    // vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
+    // shooter = new Shooter();
     dashboard238 = new Dashboard238();
     transporter = new Transporter();
     //hanger = new Hanger();
@@ -85,9 +85,9 @@ public class Robot extends TimedRobot {
     oi = new OI();
     //navigationBoard.init();
     dashboard238.init();
-    vision.initLimelight();
+    // vision.initLimelight();
     // panelManipulator.initSensor();
-    populateAutomodes();
+    // populateAutomodes();
     // List<String> params= new ArrayList<>();
     // params.add("Straight");
     // TrajectoryDriveCommand driveStraightTrajectory = new TrajectoryDriveCommand();
@@ -183,10 +183,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
     transporter.countHeldBalls();
-    SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
-    SmartDashboard.putNumber("Turret X error", vision.getYaw());
+    // SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
+    // SmartDashboard.putNumber("Turret X error", vision.getYaw());
 
-    shooter.increaseSpeed(SmartDashboard.getNumber("Shooter Speed Scalar", 1));
+    // shooter.increaseSpeed(SmartDashboard.getNumber("Shooter Speed Scalar", 1));
   }
 
   /**
@@ -272,7 +272,7 @@ public class Robot extends TimedRobot {
 
     String getDataFromDriverStation = DriverStation.getGameSpecificMessage();
     //SmartDashboard.putString("Assigned Color", getDataFromDriverStation);
-    vision.postValues();
+    // vision.postValues();
 
 
     
@@ -290,11 +290,11 @@ public class Robot extends TimedRobot {
     // vision.trackingMode();
     // vision.ledsOn();
     // navigationBoard.navxValues();
-    vision.ledsOn();
-    vision.trackingMode();
-    vision.postValues();
+    // vision.ledsOn();
+    // vision.trackingMode();
+    // vision.postValues();
 
-    shooter.runShooterDiagnostics();
+    // shooter.runShooterDiagnostics();
     //feeder.runFeederDiagnostics();
     //intake.runIntakeDiagnostics();
     //navigationBoard.runNavBoardDiagnostics();

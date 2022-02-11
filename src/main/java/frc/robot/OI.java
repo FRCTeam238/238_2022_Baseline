@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.wrappers.TriggerButton;
-import frc.robot.commands.FeederCommand;
+import frc.robot.commands.TransporterCommand;
 import frc.robot.commands.IntakeExtendRetractCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.ManualFeed;
@@ -61,29 +61,29 @@ public class OI {
     // JoystickButton rotatePanelNTimesBySensor = new JoystickButton(operatorController, XboxController.Button.kA.value);
     // rotatePanelNTimesBySensor.whenPressed(new RotatePanelNTimesBySensorCommand(FieldConstants.numberOfTimesToRotatePanelManipulator));
 
-    SmartDashboard.putData(new SetShooterSpeedCommand(4000));
+    // SmartDashboard.putData(new SetShooterSpeedCommand(4000));
     //spinUpShooterButton.whileHeld(new InstantCommand("startshooter", () -> Robot.shooter.setSpeed(4000)));
-    InstantCommand manualStop = new InstantCommand("StopShooter", Robot.shooter, () -> Robot.shooter.neutral());
-    SmartDashboard.putData(manualStop);
+    // InstantCommand manualStop = new InstantCommand("StopShooter", Robot.shooter, () -> Robot.shooter.neutral());
+    // SmartDashboard.putData(manualStop);
 
-    JoystickButton manualFeedButton = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
-    manualFeedButton.whileHeld(new ManualFeed());
+    // JoystickButton manualFeedButton = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    // manualFeedButton.whileHeld(new ManualFeed());
 
-    JoystickButton manualReverseFeeder = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
-    manualReverseFeeder.whileHeld(new ManualReverse());
+    // JoystickButton manualReverseFeeder = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
+    // manualReverseFeeder.whileHeld(new ManualReverse());
 
-    JoystickButton retractIntakeJoystick = new JoystickButton(operatorController, XboxController.Button.kRightStick.value);
+    JoystickButton retractIntakeJoystick = new JoystickButton(operatorController, XboxController.Button.kB.value);
     retractIntakeJoystick.whenPressed(new IntakeExtendRetractCommand());
 
-    TriggerButton automatedShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
-    automatedShoot.whileHeld(new ShooterCommand());
+    // TriggerButton automatedShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
+    // automatedShoot.whileHeld(new ShooterCommand());
 
-    JoystickButton toggleZoomButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    toggleZoomButton.whenPressed(new ToggleLimelightZoom());
+    // JoystickButton toggleZoomButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
+    // toggleZoomButton.whenPressed(new ToggleLimelightZoom());
 
     Robot.intake.setDefaultCommand(new IntakeInOutCommand(operatorController, XboxController.Axis.kRightY.value));
 
-    Robot.transporter.setDefaultCommand(new FeederCommand());
+    Robot.transporter.setDefaultCommand(new TransporterCommand());
 
     // Robot.shooter.setDefaultCommand(new MotorCommand(operatorController, XboxController.Axis.kLeftY.value));
 

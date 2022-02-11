@@ -90,7 +90,7 @@ public class Transporter extends Subsystem {
             heldBallsNumber++;
         }
         lastStateBroken = secondDetector.get();
-        SmartDashboard.putNumber("Held Balls", heldBallsNumber - Robot.shooter.ballsShot);
+        // SmartDashboard.putNumber("Held Balls", heldBallsNumber - Robot.shooter.ballsShot);
     }
     // public BooleanSupplier getSensor1Triggered (){
 

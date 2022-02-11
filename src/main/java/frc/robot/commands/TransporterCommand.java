@@ -18,7 +18,7 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Transporter;
 import frc.robot.subsystems.LED;
 
-public class FeederCommand extends Command {
+public class TransporterCommand extends Command {
 
   public int heldBallsNumber = 0;
   boolean lastStateBroken = true;
@@ -26,11 +26,11 @@ public class FeederCommand extends Command {
   boolean firstSensorBroken = true;
   
 
-  Transporter theFeeder = Robot.transporter;
+  Transporter theTransporter = Robot.transporter;
   LED led = Robot.led;
 
-  public FeederCommand() {
-    requires(theFeeder);
+  public TransporterCommand() {
+    requires(theTransporter);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -44,18 +44,18 @@ public class FeederCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {   
-    feederLogicLoop();    
+    transporterLogicLoop();    
   }
 
- public void feederLogicLoop(){
+ public void transporterLogicLoop(){
     int beginningNumber = 10;
     int endNumber = 80;
-    firstSensorBroken = theFeeder.firstDetector.get();
+    firstSensorBroken = theTransporter.firstDetector.get();
     
-    secondSensorBroken = theFeeder.secondDetector.get();
+    secondSensorBroken = theTransporter.secondDetector.get();
     
     if(firstSensorBroken == false){ // First sensor IS tripped
-      theFeeder.start();       
+      theTransporter.start();       
     }
     if(secondSensorBroken == true && lastStateBroken == false){ // Second sensor is NOT tripped, but just WAS
       heldBallsNumber++;      
@@ -63,7 +63,7 @@ public class FeederCommand extends Command {
       endNumber = beginningNumber + (14*heldBallsNumber);
       Color toSet = new Color(238, 238, 0);
       led.setColor(beginningNumber, endNumber, toSet);
-      theFeeder.stop();
+      theTransporter.stop();
     }
     //activate LEDs here
     
@@ -87,13 +87,13 @@ public class FeederCommand extends Command {
     heldBallsNumber = 0;
     //TODO change hard coded values
     led.setColor(1, 60, 0, 0, 0);
-    theFeeder.stop();
+    theTransporter.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    theFeeder.stop();
+    theTransporter.stop();
   }
 }
