@@ -10,14 +10,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.wrappers.TriggerButton;
-import frc.robot.commands.TransporterCommand;
+import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeExtendRetractCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
+import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.SetShooterSpeedCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ToggleLimelightZoom;
@@ -43,55 +45,77 @@ public class OI {
     // TODO: do we need the vision????????????
     // VisionDrive visionDrive = new VisionDrive();
     // DriveStraightPID driveTenFeetPID = new DriveStraightPID(-48);
-    // JoystickButton visionTrackButton = new JoystickButton(leftStick, RobotMap.Buttons.visionTrack); button:1
-    // JoystickButton driveTenFeetButton = new JoystickButton(leftStick, RobotMap.Buttons.driveTenFeet); button: 6
+    // JoystickButton visionTrackButton = new JoystickButton(leftStick,
+    // RobotMap.Buttons.visionTrack); button:1
+    // JoystickButton driveTenFeetButton = new JoystickButton(leftStick,
+    // RobotMap.Buttons.driveTenFeet); button: 6
     // driveTenFeetButton.whenPressed(driveTenFeetPID);
     // visionTrackButton.whileHeld(visionDrive);
 
-    // JoystickButton climbButton = new JoystickButton(operatorController, XboxController.Button.kY.value);
+    // JoystickButton climbButton = new JoystickButton(operatorController,
+    // XboxController.Button.kY.value);
     // climbButton.whenPressed(new HangCommand());
 
-    // JoystickButton deployPanelManipulatorButton = new JoystickButton(operatorController, XboxController.Button.kBack.value);
-    // deployPanelManipulatorButton.whenPressed(new DeployPanelManipulatorCommand());
+    // JoystickButton deployPanelManipulatorButton = new
+    // JoystickButton(operatorController, XboxController.Button.kBack.value);
+    // deployPanelManipulatorButton.whenPressed(new
+    // DeployPanelManipulatorCommand());
 
     // TODO: Make a proper button mapping
-    // JoystickButton spinToProperColor = new JoystickButton(operatorController, XboxController.Button.kStart.value);
+    // JoystickButton spinToProperColor = new JoystickButton(operatorController,
+    // XboxController.Button.kStart.value);
     // spinToProperColor.whenPressed(new RotateToColorCommand());
 
-    // JoystickButton rotatePanelNTimesBySensor = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    // rotatePanelNTimesBySensor.whenPressed(new RotatePanelNTimesBySensorCommand(FieldConstants.numberOfTimesToRotatePanelManipulator));
+    // JoystickButton rotatePanelNTimesBySensor = new
+    // JoystickButton(operatorController, XboxController.Button.kA.value);
+    // rotatePanelNTimesBySensor.whenPressed(new
+    // RotatePanelNTimesBySensorCommand(FieldConstants.numberOfTimesToRotatePanelManipulator));
 
     // SmartDashboard.putData(new SetShooterSpeedCommand(4000));
-    //spinUpShooterButton.whileHeld(new InstantCommand("startshooter", () -> Robot.shooter.setSpeed(4000)));
-    // InstantCommand manualStop = new InstantCommand("StopShooter", Robot.shooter, () -> Robot.shooter.neutral());
+    // spinUpShooterButton.whileHeld(new InstantCommand("startshooter", () ->
+    // Robot.shooter.setSpeed(4000)));
+    // InstantCommand manualStop = new InstantCommand("StopShooter", Robot.shooter,
+    // () -> Robot.shooter.neutral());
     // SmartDashboard.putData(manualStop);
 
-    // JoystickButton manualFeedButton = new JoystickButton(operatorController, XboxController.Button.kLeftBumper.value);
+    // JoystickButton manualFeedButton = new JoystickButton(operatorController,
+    // XboxController.Button.kLeftBumper.value);
     // manualFeedButton.whileHeld(new ManualFeed());
 
-    // JoystickButton manualReverseFeeder = new JoystickButton(operatorController, XboxController.Button.kRightBumper.value);
+    // JoystickButton manualReverseFeeder = new JoystickButton(operatorController,
+    // XboxController.Button.kRightBumper.value);
     // manualReverseFeeder.whileHeld(new ManualReverse());
 
-    JoystickButton retractIntakeJoystick = new JoystickButton(operatorController, XboxController.Button.kB.value);
-    retractIntakeJoystick.whenPressed(new IntakeExtendRetractCommand());
+    // JoystickButton retractIntakeJoystick = new
+    // JoystickButton(operatorController);
+    // retractIntakeJoystick.whenPressed(new IntakeExtendRetractCommand());
 
-    // TriggerButton automatedShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
+    // Uses right trigger and runs AUTOMATED shooting while held
+    // TriggerButton automatedShoot = new TriggerButton(operatorController,
+    // XboxController.Axis.kRightTrigger.value);
     // automatedShoot.whileHeld(new ShooterCommand());
 
-    // JoystickButton toggleZoomButton = new JoystickButton(operatorController, XboxController.Button.kA.value);
-    // toggleZoomButton.whenPressed(new ToggleLimelightZoom());
+    /*
+     * since POV button class doesn't exist; we are creating a new command which
+     * passes the
+     * controller and we check the values in that command for intake
+     */
+    Robot.intake.setDefaultCommand(new IntakeExtendRetractCommand(operatorController));
 
+    // MANUAL shooter, uses right trigger
+    TriggerButton manualShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
+    manualShoot.whileHeld(new ManualShooterCommand());
+
+    // uses Y-axis of the right stick to control intake and mecanum wheels
+    // (forwards/backward)
     Robot.intake.setDefaultCommand(new IntakeInOutCommand(operatorController, XboxController.Axis.kRightY.value));
 
-    Robot.transporter.setDefaultCommand(new TransporterCommand());
+    // There is no controller parameter since the feeder is automatic and will
+    // relate to shooter
+    Robot.feeder.setDefaultCommand(new FeederCommand());
 
-    // Robot.shooter.setDefaultCommand(new MotorCommand(operatorController, XboxController.Axis.kLeftY.value));
-
-    
-    
-
-    //Trigger feedMe = new Trigger( () -> Robot.feeder.getSensor1Triggered());
-    //feedMe.whenActive(new FeederCommand;
+    // Trigger feedMe = new Trigger( () -> Robot.feeder.getSensor1Triggered());
+    // feedMe.whenActive(new FeederCommand;
   }
 
   //// CREATING BUTTONS

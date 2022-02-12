@@ -28,12 +28,12 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Transporter extends Subsystem {
+public class Feeder extends Subsystem {
 
     //Victor doesnt exist, Spark is the new controller
     // public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
 
-    public final CANSparkMax transportController = RobotMap.TransportDevices.transportController;
+    public final CANSparkMax transportController = RobotMap.FeederDevices.feederController;
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
     // TODO: change FEEDER_OUTPUT to reasonable value;
@@ -47,7 +47,7 @@ public class Transporter extends Subsystem {
 
     Dashboard238 dashboard;
 
-    public Transporter() {
+    public Feeder() {
         // initLiveWindow();
         SmartDashboard.putData(this);
         dashboard = Robot.dashboard238;

@@ -25,7 +25,7 @@ import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.DriveStraightNavBoard;
 
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
-import frc.robot.subsystems.Transporter;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LED;
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Dashboard238 dashboard238;
   public static Shooter shooter;
-  public static Transporter transporter;
+  public static Feeder feeder;
   public static Hanger hanger;
   public static Intake intake;
   public static LED led;
@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     // vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
     // shooter = new Shooter();
     dashboard238 = new Dashboard238();
-    transporter = new Transporter();
+    feeder = new Feeder();
     //hanger = new Hanger();
     intake = new Intake();
     led = new LED(2, 150);
@@ -83,19 +83,23 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    //navigationBoard.init();
+    // navigationBoard.init();
     dashboard238.init();
-    // vision.initLimelight();
-    // panelManipulator.initSensor();
     // populateAutomodes();
+
+    //Coming Soon!
+    // vision.initLimelight();
+
+    //This is a backup for auto modes if the populate auto modes fails
     // List<String> params= new ArrayList<>();
     // params.add("Straight");
     // TrajectoryDriveCommand driveStraightTrajectory = new TrajectoryDriveCommand();
     // driveStraightTrajectory.setParameters(params);
     // SmartDashboard.putData("Drive Straight - trajectory", driveStraightTrajectory);
+
     // LiveWindow.disableAllTelemetry();
 
-    SmartDashboard.putNumber("Shooter Speed Scalar", 1);
+    // SmartDashboard.putNumber("Shooter Speed Scalar", 1);
   }
 
   private void populateAutomodes() {
@@ -182,7 +186,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
-    transporter.countHeldBalls();
+    feeder.countHeldBalls();
     // SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
     // SmartDashboard.putNumber("Turret X error", vision.getYaw());
 

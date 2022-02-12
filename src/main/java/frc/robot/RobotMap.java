@@ -88,9 +88,9 @@ public final class RobotMap {
     public static VictorSPX mecanumVictor = new VictorSPX(MECANUM_CONTROLLER_ID);
   }
 
-  public static class TransportDevices {
-    public static int TRANSPORT_CONTROLLER = 10;
-    public static CANSparkMax transportController = new CANSparkMax(TRANSPORT_CONTROLLER, MotorType.kBrushless);
+  public static class FeederDevices {
+    public static int FEEDER_CONTROLLER = 10;
+    public static CANSparkMax feederController = new CANSparkMax(FEEDER_CONTROLLER, MotorType.kBrushless);
     // public static VictorSPX transportVictor = new VictorSPX(TRANSPORT_CONTROLLER);
   }
 

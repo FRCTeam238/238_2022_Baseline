@@ -8,28 +8,46 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.subsystems.Shooter;
 
-public class AutoFeed extends Command {
-  private double delay;
-  public AutoFeed(double delayTime) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    this.delay = delayTime;
-    requires(Robot.feeder);
+public class ManualPrepareToShoot extends Command {
+
+  private Shooter theShooter = Robot.shooter;
+  private double firstIsAtSpeedTime = 0;
+  private double initialCounterDelay = 1.5;
+
+  // TODO: recheck default speed
+  private final double defaultSpeed = 4000;
+
+  public ManualPrepareToShoot() {
+    requires(theShooter);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(this.timeSinceInitialized() >= delay){
-      Robot.feeder.start();
+    double wantedSpeed = defaultSpeed;
+    theShooter.setSpeed(wantedSpeed);
+
+    if (theShooter.isAtSpeed() && firstIsAtSpeedTime == 0) {
+      firstIsAtSpeedTime = this.timeSinceInitialized();
     }
+
+    if ((firstIsAtSpeedTime + initialCounterDelay) <= this.timeSinceInitialized()) {
+      theShooter.beginCounting();
+    }
+
+    // TODO: do we need to count balls in the shooter?
+    theShooter.countBalls();
+    SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,13 +59,13 @@ public class AutoFeed extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.feeder.stop();
+    theShooter.neutral();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.feeder.stop();
+    end();
   }
 }

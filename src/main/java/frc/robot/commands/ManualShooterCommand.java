@@ -7,37 +7,31 @@
 
 package frc.robot.commands;
 
-import java.util.List;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-
-@AutonomousModeAnnotation(parameterNames = { "NumberOfBalls", "TimeToRun"})
-public class AutoShooterCommand extends CommandGroup implements IAutonomousCommand {
+public class ManualShooterCommand extends CommandGroup {
   /**
    * Add your docs here.
    */
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
-  boolean isAuto = false;
-  double ballsToShoot = 0;
-  double startTime = 0;
-  double timeToRun;
-  AutoFeed feedCommand = new AutoFeed(0.5);
-  PrepareToShoot prepareToShootCommand = new PrepareToShoot();
 
-  public AutoShooterCommand() {
+
+  public ManualShooterCommand() {
     requires(theFeeder);
     requires(theShooter);
 
-    addParallel(prepareToShootCommand);
+    
+    addParallel(new ManualPrepareToShoot());
 
-    addSequential(new IsAlignedCommand());
-    addSequential(feedCommand);
+    addSequential(new ReadyToShoot());
+    
+    //This stays the same since it is telling the feeder to run after the shooter
+    //is at speed
+    addSequential(new AutoFeed(1));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
@@ -55,40 +49,5 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
     // e.g. if Command1 requires chassis, and Command2 requires arm,
     // a CommandGroup containing them would require both the chassis and the
     // arm.
-  }
-
-  @Override
-  public boolean getIsAutonomousMode() {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  @Override
-  public void setIsAutonomousMode(boolean isAutonomousMode) {
-    this.isAuto = isAutonomousMode;
-
-  }
-
-  @Override
-  public void setParameters(List<String> parameters) {
-    this.ballsToShoot = Double.parseDouble(parameters.get(0));
-    this.timeToRun = Double.parseDouble(parameters.get(1));
-  }
-
-  @Override
-  public boolean isFinished(){
-    if(prepareToShootCommand.timeSinceInitialized() >= 1){
-      theShooter.beginCounting();
-    }
-    theShooter.countBalls();
-    double ballsShot = theShooter.ballsShot;
-    boolean isDone = false;
-    if(ballsShot >= ballsToShoot){
-      isDone = true;
-    }
-    if(this.timeSinceInitialized() >= timeToRun){
-      isDone = true;
-    }
-    return isDone;
   }
 }

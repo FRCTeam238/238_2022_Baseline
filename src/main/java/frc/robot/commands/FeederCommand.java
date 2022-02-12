@@ -15,10 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.core238.Logger;
 import frc.robot.Robot;
-import frc.robot.subsystems.Transporter;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.LED;
 
-public class TransporterCommand extends Command {
+public class FeederCommand extends Command {
 
   public int heldBallsNumber = 0;
   boolean lastStateBroken = true;
@@ -26,11 +26,11 @@ public class TransporterCommand extends Command {
   boolean firstSensorBroken = true;
   
 
-  Transporter theTransporter = Robot.transporter;
+  Feeder theFeeder = Robot.feeder;
   LED led = Robot.led;
 
-  public TransporterCommand() {
-    requires(theTransporter);
+  public FeederCommand() {
+    requires(theFeeder);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -44,18 +44,18 @@ public class TransporterCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {   
-    transporterLogicLoop();    
+    feederLogicLoop();    
   }
 
- public void transporterLogicLoop(){
+ public void feederLogicLoop(){
     int beginningNumber = 10;
     int endNumber = 80;
-    firstSensorBroken = theTransporter.firstDetector.get();
+    firstSensorBroken = theFeeder.firstDetector.get();
     
-    secondSensorBroken = theTransporter.secondDetector.get();
+    secondSensorBroken = theFeeder.secondDetector.get();
     
     if(firstSensorBroken == false){ // First sensor IS tripped
-      theTransporter.start();       
+      theFeeder.start();       
     }
     if(secondSensorBroken == true && lastStateBroken == false){ // Second sensor is NOT tripped, but just WAS
       heldBallsNumber++;      
@@ -63,7 +63,7 @@ public class TransporterCommand extends Command {
       endNumber = beginningNumber + (14*heldBallsNumber);
       Color toSet = new Color(238, 238, 0);
       led.setColor(beginningNumber, endNumber, toSet);
-      theTransporter.stop();
+      theFeeder.stop();
     }
     //activate LEDs here
     
@@ -87,13 +87,13 @@ public class TransporterCommand extends Command {
     heldBallsNumber = 0;
     //TODO change hard coded values
     led.setColor(1, 60, 0, 0, 0);
-    theTransporter.stop();
+    theFeeder.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    theTransporter.stop();
+    theFeeder.stop();
   }
 }
