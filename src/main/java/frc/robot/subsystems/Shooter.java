@@ -86,7 +86,6 @@ public class Shooter extends Subsystem {
     public Shooter() {
         initSparkMax();
         // initLiveWindow();
-        populateSpeedMap(distanceToShootMap);
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("Shooter At Speed", false).getEntry();
         
@@ -145,12 +144,11 @@ public class Shooter extends Subsystem {
         //eval against desiredSpeedPID
         // allow for range
         boolean inRange = false;
-        double tolerance = 200;
         double currentSpeed = getSpeed();
         double speedDifference = currentSpeed - desiredSpeedPID;
-        if(Math.abs(speedDifference) < tolerance){
+        if(Math.abs(speedDifference) < RobotMap.ShooterDevices.SHOOTER_SPEED_TOLERANCE){
             inRange = true;
-        }else{
+        }else{ 
             inRange = false;
         }
         return inRange;
@@ -232,73 +230,8 @@ public class Shooter extends Subsystem {
       addChild(name, (Sendable)wrapper); 
     }
 
-    private void populateSpeedMap(HashMap map){
-        // Format: (distance, speed)
-        // Distance is in inches, speed is in controller-side RPM
-  
-    }
-
-    public int readSpeedMap(int distance){
-        int neededRPMS = 0;
-        Logger.Debug("Distance: " + distance);
-        int distanceRemainder = distance % 16;
-        if(distanceRemainder == 0){   
-            if(distanceToShootMap.containsKey(distance)){
-                neededRPMS = distanceToShootMap.get(distance);
-            }else{
-                Logger.Debug("Shooter.java line 231 - key not found");
-            }
-            
-        }else{
-            neededRPMS = getSteppedRPMs(distance, distanceRemainder, distanceToShootMap);
-        }
-        double increasedRPMS = neededRPMS * (speedIncrease);
-        Logger.Debug("Needed RPMS: " + neededRPMS);
-        Logger.Debug("increasedRPMS: " + increasedRPMS);
-        return (int) increasedRPMS;
-    }
-
-    private int getSteppedRPMs(int distance, int distanceRemainder, HashMap<Integer, Integer> map){
-        int lowerDistance = distance - distanceRemainder;
-        int upperDistance = distance + (16 - distanceRemainder);
-        int lowerRPM = 0;
-        int upperRPM = 0;
-        if(distanceToShootMap.containsKey(lowerDistance)){
-            lowerRPM = distanceToShootMap.get(lowerDistance);
-            if(distanceToShootMap.containsKey(upperDistance)){
-                upperRPM = distanceToShootMap.get(upperDistance);
-            }
-        }
-        int steppedRPMs = 0;
-        int rpmGap = Math.abs(upperRPM - lowerRPM);
-        int rpmPerInch = rpmGap / 16;
-        int rpmAdjustment = distanceRemainder * rpmPerInch;
-        if(upperRPM < lowerRPM){
-            steppedRPMs = lowerRPM - rpmAdjustment;
-        }else{
-            steppedRPMs = lowerRPM + rpmAdjustment;
-        }
-        return (int) steppedRPMs;
-    }
-
-    private int getClosestRPMs(int distance, int distanceRemainder, HashMap<Integer, Integer> map){
-        int closestRPMs = 0;
-        if(distanceRemainder <= 8){
-            if(map.containsKey(distance - distanceRemainder)){
-                closestRPMs = map.get(distance - distanceRemainder);
-            }else{
-                Logger.Debug("Shooter.java line 239 - key not found");
-            }
-        }else{
-            if(map.containsKey(distance + (16 - distanceRemainder))){
-                closestRPMs = map.get(distance + (16 - distanceRemainder));
-            }else{
-                Logger.Debug("Shooter.java line 245 - key not found");
-            }
-        }
-        return closestRPMs;
-    }
-
+    
+    
     /** Takes a sample of what bus voltage is */
     private double getShooterBusVoltage (){
         return shooterMasterDrive.getBusVoltage();
@@ -312,21 +245,7 @@ public class Shooter extends Subsystem {
 
     /** Counts balls leaving the shooter based on voltage spikes. Delays the counter between shots to prevent fluctuations */
     public void countBalls (){
-        if(hasBegunCounting){
-            if(Timer.getFPGATimestamp() <= restartCounterTime){
-                return;
-            }
-            computeAverage(getShooterBusVoltage());
-            samplesTaken++;
-            double delta = Math.abs(shooterVoltageAverage - getShooterBusVoltage());
-            if(delta >= voltageSpikeSize){
-                ballsShot++;
-                restartCounterTime = Timer.getFPGATimestamp() + ballCounterDelay;
-            }
-            SmartDashboard.putNumber("BALLS SHOT", ballsShot);
-        }else{
-            // Logger.Debug("Ball Counter waiting to start");
-        }
+        
     }
 
     /** Enables the ball counter - still requires countBalls() to be run periodically */

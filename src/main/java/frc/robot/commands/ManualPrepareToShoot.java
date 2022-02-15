@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Shooter;
 
 public class ManualPrepareToShoot extends Command {
@@ -17,9 +18,6 @@ public class ManualPrepareToShoot extends Command {
   private Shooter theShooter = Robot.shooter;
   private double firstIsAtSpeedTime = 0;
   private double initialCounterDelay = 1.5;
-
-  // TODO: recheck default speed
-  private final double defaultSpeed = 4000;
 
   public ManualPrepareToShoot() {
     requires(theShooter);
@@ -34,7 +32,7 @@ public class ManualPrepareToShoot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double wantedSpeed = defaultSpeed;
+    double wantedSpeed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_SPEED;
     theShooter.setSpeed(wantedSpeed);
 
     if (theShooter.isAtSpeed() && firstIsAtSpeedTime == 0) {

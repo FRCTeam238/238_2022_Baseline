@@ -20,45 +20,20 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 @AutonomousModeAnnotation(parameterNames = {})
-public class IntakeExtendRetractCommand extends Command implements IAutonomousCommand {
+public class IntakeExtendCommand extends Command implements IAutonomousCommand {
 
     boolean isAuto = false;
     GenericHID controller;
     int pov;
 
-    public IntakeExtendRetractCommand(GenericHID controller) {
+    public IntakeExtendCommand(GenericHID controller) {
         this.controller = controller;
         requires(Robot.intake);
     }
 
     @Override
     protected void execute() {
-        pov = controller.getPOV(pov);
-        Logger.Debug("POV VALUE: " + pov);
-        switch (pov) {
-            // up
-            case 0:
-            case 45:
-            case 315:
-                Robot.intake.extendIntake();
-                break;
-
-            // down
-            case 180:
-            case 225:
-            case 135:
-                Robot.intake.retractIntake();
-                break;
-
-            // nothing is pressed
-            default:
-                break;
-        }
-        if (Robot.intake.getDirection() == Value.kReverse) {
-            Robot.intake.extendIntake();
-        } else {
-            Robot.intake.retractIntake();
-        }
+        Robot.intake.extendIntake();
     }
 
     @Override

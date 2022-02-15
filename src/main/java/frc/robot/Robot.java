@@ -69,14 +69,14 @@ public class Robot extends TimedRobot {
   public Robot() {
     navigationBoard = new NavigationBoard();
     drivetrain = new DrivetrainTrajectoryExtensions();
-    // vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
-    // shooter = new Shooter();
+    shooter = new Shooter();
     dashboard238 = new Dashboard238();
     feeder = new Feeder();
-    //hanger = new Hanger();
     intake = new Intake();
     led = new LED(2, 150);
 
+    // vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
+    //hanger = new Hanger();
     //SmartDashboard.putData(TrajectoryDrive.getExampleCommand());
   }
   
@@ -86,6 +86,8 @@ public class Robot extends TimedRobot {
     // navigationBoard.init();
     dashboard238.init();
     // populateAutomodes();
+
+    LiveWindow.disableAllTelemetry();
 
     //Coming Soon!
     // vision.initLimelight();

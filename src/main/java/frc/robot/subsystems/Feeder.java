@@ -33,12 +33,12 @@ public class Feeder extends Subsystem {
     //Victor doesnt exist, Spark is the new controller
     // public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
 
-    public final CANSparkMax transportController = RobotMap.FeederDevices.feederController;
+    public final CANSparkMax feederController = RobotMap.FeederDevices.feederController;
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
     // TODO: change FEEDER_OUTPUT to reasonable value;
-    private final double TRANSPORT_OUTPUT = 1;
-    private final double STOP_TRANSPORT_OUTPUT = 0;
+    private final double FEEDER_OUTPUT = 1;
+    private final double STOP_FEEDER_OUTPUT = 0;
     private int heldBallsNumber = 0;
 
     private double diagnosticStartTime = 0;
@@ -60,15 +60,15 @@ public class Feeder extends Subsystem {
 
     public void start() {
         //feederMasterDrive.set(ControlMode.PercentOutput, FEEDER_OUTPUT);
-        transportController.set(TRANSPORT_OUTPUT);
+        feederController.set(FEEDER_OUTPUT);
     }
 
     public double getPower(){
-        return transportController.get();
+        return feederController.get();
     }
 
     public void reverse() {
-        transportController.set(-1 * TRANSPORT_OUTPUT);
+        feederController.set(-1 * FEEDER_OUTPUT);
     }
 
     /*
@@ -82,7 +82,7 @@ public class Feeder extends Subsystem {
      */
 
     public void stop() {
-        transportController.set(STOP_TRANSPORT_OUTPUT);
+        feederController.set(STOP_FEEDER_OUTPUT);
     }
 
     public void countHeldBalls(){

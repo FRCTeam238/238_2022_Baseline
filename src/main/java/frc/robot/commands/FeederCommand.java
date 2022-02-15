@@ -57,7 +57,7 @@ public class FeederCommand extends Command {
     if(firstSensorBroken == false){ // First sensor IS tripped
       theFeeder.start();       
     }
-    if(secondSensorBroken == true && lastStateBroken == false){ // Second sensor is NOT tripped, but just WAS
+    if(secondSensorBroken == true && lastStateBroken == false){ // Secondq sensor is NOT tripped, but just WAS
       heldBallsNumber++;      
       Logger.Debug("Held Balls Count = " + heldBallsNumber);
       endNumber = beginningNumber + (14*heldBallsNumber);

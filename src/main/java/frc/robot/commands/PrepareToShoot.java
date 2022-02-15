@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.FieldConstants;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.Trig238;
 import frc.robot.subsystems.Shooter;
 import frc.core238.Logger;
@@ -47,7 +48,7 @@ public class PrepareToShoot extends Command {
     boolean shooterHasVision = hasVision();
     if(shooterHasVision){
       distance = getDistanceToTarget();
-      wantedSpeed = (double)theShooter.readSpeedMap((int)distance);
+      wantedSpeed =RobotMap.ShooterDevices.SHOOTER_DEFAULT_SPEED;
     }
     theShooter.setSpeed(wantedSpeed);
     if(theShooter.isAtSpeed() && firstIsAtSpeedTime == 0){ 
