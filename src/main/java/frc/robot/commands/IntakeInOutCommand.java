@@ -30,8 +30,9 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private boolean isAuto = false;
 
     // Speed; used to control the intake as well as the mecanum motor values
-    private double intakeSpeed = 0.5;
-    private double mecanumSpeed = 0.5;
+    private double intakeSpeed = 0.75;
+    private double mecanumSpeed = 0.75;
+
     private final double autoSpeed = 0.5;
     private double defaultIntakeSpeed = 0;
     private double defaultMecanumSpeed = 0;
@@ -42,14 +43,14 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private NetworkTableEntry mecanumEntry;
     private NetworkTableEntry deadzoneEntry;
     private double deadzoneDefaultValue = 0;
-    private double deadzoneValue = 0.1;
+    private double deadzoneValue = 0.5;
     private boolean intakeDiagnostics;
 
     public IntakeInOutCommand(GenericHID controller, int axis) {
         requires(Robot.intake);
         this.controller = controller;
         this.axis = axis;
-        intakeDiagnostics = Shuffleboard.getTab("DiagnosticTab").add("IntakeDiagnostics", true).withPosition(8, 3).getEntry().getBoolean(false);
+        intakeDiagnostics = Shuffleboard.getTab("DiagnosticTab").add("IntakeDiagnostics", false).withPosition(8, 3).getEntry().getBoolean(false);
         intakeEntry = Shuffleboard.getTab("DiagnosticTab").add("Intake Speed", defaultIntakeSpeed).withPosition(8, 4).getEntry();
         mecanumEntry = Shuffleboard.getTab("DiagnosticTab").add("Mecanum Speed", defaultMecanumSpeed).withPosition(7, 4).getEntry();
         deadzoneEntry = Shuffleboard.getTab("DiagnosticTab").add("Deadzone Value", deadzoneDefaultValue).withPosition(6, 4).getEntry();
@@ -61,7 +62,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     @Override
     protected void execute() {        
         if (intakeDiagnostics) {
-            runIntakeDiagnostics();
+            // runIntakeDiagnostics();
         }
         
         if (getIsAutonomousMode()) {
@@ -76,7 +77,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
                 Robot.intake.stop();
             } else {
                 //0.2 is deadzone; if it is greater, then run intake in; else if it is less than -0.2, spit thy balls
-                if (axisValue > deadzoneValue) {
+                if (axisValue < deadzoneValue) {
                     //Pulling In
                     Robot.intake.in(intakeSpeed, mecanumSpeed);
                 } else {

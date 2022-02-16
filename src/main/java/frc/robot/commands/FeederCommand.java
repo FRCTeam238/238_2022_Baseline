@@ -17,6 +17,7 @@ import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.LED;
+import frc.robot.subsystems.Shooter;
 
 public class FeederCommand extends Command {
 
@@ -24,9 +25,12 @@ public class FeederCommand extends Command {
   boolean lastStateBroken = true;
   boolean secondSensorBroken = true;
   boolean firstSensorBroken = true;
-  
+
+  boolean thirdSensorBroken = true;
 
   Feeder theFeeder = Robot.feeder;
+
+  Shooter theShooter = Robot.shooter;
   LED led = Robot.led;
 
   public FeederCommand() {
@@ -38,43 +42,50 @@ public class FeederCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    led.setColor(1, 150, 0, 0, 0); 
+    led.setColor(1, 150, 0, 0, 0);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {   
-    feederLogicLoop();    
+  protected void execute() {
+    feederLogicLoop();
   }
 
- public void feederLogicLoop(){
+  public void feederLogicLoop() {
     int beginningNumber = 10;
     int endNumber = 80;
     firstSensorBroken = theFeeder.firstDetector.get();
-    
-    secondSensorBroken = theFeeder.secondDetector.get();
-    
-    if(firstSensorBroken == false){ // First sensor IS tripped
-      theFeeder.start();       
-    }
-    if(secondSensorBroken == true && lastStateBroken == false){ // Secondq sensor is NOT tripped, but just WAS
-      heldBallsNumber++;      
-      Logger.Debug("Held Balls Count = " + heldBallsNumber);
-      endNumber = beginningNumber + (14*heldBallsNumber);
-      Color toSet = new Color(238, 238, 0);
-      led.setColor(beginningNumber, endNumber, toSet);
-      theFeeder.stop();
-    }
-    //activate LEDs here
-    
-    lastStateBroken = secondSensorBroken;
 
+    secondSensorBroken = theFeeder.secondDetector.get();
+
+    thirdSensorBroken = theFeeder.thirdDetector.get();
+
+    if (thirdSensorBroken == false) {
+      if (theShooter.isShooting == false) {
+        theFeeder.stop();
+      }
+    } else {
+      if (firstSensorBroken == false) { // First sensor IS tripped
+        theFeeder.start();
+      }
+      if (secondSensorBroken == true && lastStateBroken == false) { // Secondq sensor is NOT tripped, but just WAS
+        heldBallsNumber++;
+        Logger.Debug("Held Balls Count = " + heldBallsNumber);
+        endNumber = beginningNumber + (14 * heldBallsNumber);
+        Color toSet = new Color(238, 238, 0);
+        led.setColor(beginningNumber, endNumber, toSet);
+        theFeeder.stop();
+      }
+
+      // activate LEDs here
+
+      lastStateBroken = secondSensorBroken;
+
+    }
     SmartDashboard.putBoolean("First Sensor", firstSensorBroken);
     SmartDashboard.putBoolean("Second Sensor", secondSensorBroken);
-}
+  }
 
-
- 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -85,7 +96,7 @@ public class FeederCommand extends Command {
   @Override
   protected void end() {
     heldBallsNumber = 0;
-    //TODO change hard coded values
+    // TODO change hard coded values
     led.setColor(1, 60, 0, 0, 0);
     theFeeder.stop();
   }

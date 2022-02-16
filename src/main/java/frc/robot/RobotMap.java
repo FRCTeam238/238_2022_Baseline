@@ -72,7 +72,8 @@ public final class RobotMap {
     public static CANSparkMax shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
     public static double SHOOTER_SPEED_TOLERANCE = 200;
     public static double SHOOTER_DEFAULT_SPEED  = 3250;
-
+    public static double SHOOTER_ks = 0.31651;
+    public static double SHOOTER_kv = 0.12628;
   }
 
   public static class IntakeDevices {

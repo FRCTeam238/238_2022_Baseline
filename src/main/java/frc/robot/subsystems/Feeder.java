@@ -36,8 +36,10 @@ public class Feeder extends Subsystem {
     public final CANSparkMax feederController = RobotMap.FeederDevices.feederController;
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
+    public final DigitalInput thirdDetector = new DigitalInput(2);
+    
     // TODO: change FEEDER_OUTPUT to reasonable value;
-    private final double FEEDER_OUTPUT = 1;
+    private final double FEEDER_OUTPUT = 0.5;
     private final double STOP_FEEDER_OUTPUT = 0;
     private int heldBallsNumber = 0;
 

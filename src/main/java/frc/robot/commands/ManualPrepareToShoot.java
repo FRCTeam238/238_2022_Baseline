@@ -34,6 +34,7 @@ public class ManualPrepareToShoot extends Command {
   protected void execute() {
     double wantedSpeed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_SPEED;
     theShooter.setSpeed(wantedSpeed);
+    theShooter.isShooting = true;
 
     if (theShooter.isAtSpeed() && firstIsAtSpeedTime == 0) {
       firstIsAtSpeedTime = this.timeSinceInitialized();
@@ -57,6 +58,7 @@ public class ManualPrepareToShoot extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    theShooter.isShooting = false;
     theShooter.neutral();
   }
 

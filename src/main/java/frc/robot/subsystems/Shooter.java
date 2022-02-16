@@ -18,6 +18,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
@@ -74,6 +75,10 @@ public class Shooter extends Subsystem {
 
     private double speedIncrease = 0;
 
+    public boolean isShooting = false;
+
+    SimpleMotorFeedforward simpleMotorFeedforward;
+
     Dashboard238 dashboard;
     /*
      * private double integral = 0; private double derivative
@@ -88,12 +93,12 @@ public class Shooter extends Subsystem {
         // initLiveWindow();
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("Shooter At Speed", false).getEntry();
-        
+        simpleMotorFeedforward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.SHOOTER_ks, RobotMap.ShooterDevices.SHOOTER_kv); 
     }
 
     public void initSparkMax() {
         shooterMasterDrive.restoreFactoryDefaults();
-        shooterMasterDrive.setInverted(true);
+        shooterMasterDrive.setInverted(false);
         shooterFollowerDrive.restoreFactoryDefaults();
         shooterFollowerDrive.follow(shooterMasterDrive, true);
         shooterMasterDrive.setIdleMode(IdleMode.kCoast);
@@ -126,6 +131,9 @@ public class Shooter extends Subsystem {
     }
 
     public void setSpeed(double speedValue) {
+        double feedForward = simpleMotorFeedforward.calculate(speedValue);
+        //replace below getPIDController to match arbitrarty feed forward
+
         desiredSpeedPID = speedValue;
         shooterMasterDrive.getPIDController().setReference(desiredSpeedPID, CANSparkMax.ControlType.kVelocity);
     }

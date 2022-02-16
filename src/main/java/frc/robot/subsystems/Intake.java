@@ -54,7 +54,7 @@ public class Intake extends Subsystem {
 
     public void initTalons() {
         intakeMasterDrive.configFactoryDefault();
-        intakeMasterDrive.setInverted(true);
+        intakeMasterDrive.setInverted(false);
     }
 
     private void setPower(double speedValue, double mecanumSpeedValue){
