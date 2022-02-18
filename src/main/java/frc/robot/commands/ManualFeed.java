@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.core238.Logger;
 import frc.robot.Robot;
 
 public class ManualFeed extends Command {
@@ -25,7 +26,19 @@ public class ManualFeed extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.feeder.start();
+    boolean thirdSensorBroken = Robot.feeder.thirdDetector.get();
+    // if the top sensor is broken, and we are not trying to shoot, stop the feeder.
+    // Logger.Debug("sensor value = " + thirdSensorBroken);
+    if (thirdSensorBroken == false) {
+      if (Robot.shooter.isShooting == false) {
+        Robot.feeder.stop();
+      } else {
+        Robot.feeder.start();
+      }
+
+    } else {
+      Robot.feeder.start();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

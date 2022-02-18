@@ -9,12 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class ManualReverse extends Command {
   public ManualReverse() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.feeder);
+    requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
@@ -26,6 +28,7 @@ public class ManualReverse extends Command {
   @Override
   protected void execute() {
     Robot.feeder.reverse();
+    Robot.intake.out(RobotMap.IntakeDevices.outtakeSpeed, RobotMap.MecanumDevices.mecanumOutSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import frc.core238.Logger;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -58,8 +59,19 @@ public class Intake extends Subsystem {
     }
 
     private void setPower(double speedValue, double mecanumSpeedValue){
-        intakeMasterDrive.set(ControlMode.PercentOutput, speedValue);
-        mecanumMotor.set(ControlMode.PercentOutput, mecanumSpeedValue);
+        
+        
+        //if intake is deployed, run the intake
+        if (solenoid.get() == DoubleSolenoid.Value.kForward) {
+            intakeMasterDrive.set(ControlMode.PercentOutput, speedValue);
+            mecanumMotor.set(ControlMode.PercentOutput, mecanumSpeedValue);
+        } else {
+            //if intake isnt deployed, dont run
+            intakeMasterDrive.set(ControlMode.PercentOutput, 0);
+            mecanumMotor.set(ControlMode.PercentOutput, 0);
+        }
+        
+        
     }
 
 
@@ -69,12 +81,12 @@ public class Intake extends Subsystem {
     }
 
     public void in(double speed, double mecanumSpeed) {
-        setPower(speed, mecanumSpeed);
+        setPower(-speed, -mecanumSpeed);
     }
 
 
     public void out(double speed, double mecanumSpeed) {
-        setPower(-speed, -mecanumSpeed);
+        setPower(speed, mecanumSpeed);
     }
 
     public void stop(){

@@ -18,6 +18,7 @@ import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -30,10 +31,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private boolean isAuto = false;
 
     // Speed; used to control the intake as well as the mecanum motor values
-    private double intakeSpeed = 0.75;
-    private double mecanumSpeed = 0.75;
 
-    private final double autoSpeed = 0.5;
     private double defaultIntakeSpeed = 0;
     private double defaultMecanumSpeed = 0;
 
@@ -67,7 +65,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
         
         if (getIsAutonomousMode()) {
             // intakeSpeed = autoSpeed;
-            Robot.intake.in(autoSpeed, mecanumSpeed);
+            Robot.intake.in(RobotMap.IntakeDevices.intakeSpeed, RobotMap.MecanumDevices.mecanumInSpeed);
         } else {
             double axisValue = controller.getRawAxis(axis);
 
@@ -78,11 +76,11 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
             } else {
                 //0.2 is deadzone; if it is greater, then run intake in; else if it is less than -0.2, spit thy balls
                 if (axisValue < deadzoneValue) {
-                    //Pulling In
-                    Robot.intake.in(intakeSpeed, mecanumSpeed);
+                    //Spitting Out
+                    Robot.intake.out(RobotMap.IntakeDevices.outtakeSpeed, RobotMap.MecanumDevices.mecanumOutSpeed);
                 } else {
-                    //Spittng Out
-                    Robot.intake.out(intakeSpeed, mecanumSpeed);
+                    //Taking In
+                    Robot.intake.in(RobotMap.IntakeDevices.intakeSpeed, RobotMap.MecanumDevices.mecanumInSpeed);
                 }
             }
         }
@@ -122,18 +120,5 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
 
     }
 
-    private void runIntakeDiagnostics() {
-        // dashboard238.buildElement("Intake Speed", defaultIntakeSpeed, 1, 1, 1, 1);
-        
-        intakeSpeed = intakeEntry.getDouble(defaultIntakeSpeed);
-
-        // dashboard238.buildElement("Mecanum Speed", defaultMecanumSpeed, 1, 1, 2, 1);
-       
-        mecanumSpeed = mecanumEntry.getDouble(defaultMecanumSpeed);
-
-        // dashboard238.buildElement("Deadzone Value", deadzoneDefaultValue, 1, 1, 3, 1);
-        
-        deadzoneValue = deadzoneEntry.getDouble(deadzoneDefaultValue);
-    }
 
 }

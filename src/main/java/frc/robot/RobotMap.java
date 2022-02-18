@@ -73,22 +73,26 @@ public final class RobotMap {
     public static double SHOOTER_SPEED_TOLERANCE = 200;
     public static double SHOOTER_DEFAULT_SPEED  = 3250;
     public static double SHOOTER_ks = 0.31651;
-    public static double SHOOTER_kv = 0.12628;
+    public static double SHOOTER_kv = 0.0030083;
   }
 
   public static class IntakeDevices {
     public static int INTAKE_CONTROLLER_ID = 8;
     public static VictorSPX intakeVictor = new VictorSPX(INTAKE_CONTROLLER_ID);
     // TODO: change to real number
-    public static int FORWARD_CHANNEL = 1;
-    public static int REVERSE_CHANNEL = 6;
+    public static int FORWARD_CHANNEL = 6;
+    public static int REVERSE_CHANNEL = 1;
     public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, FORWARD_CHANNEL, REVERSE_CHANNEL);
+    public static double intakeSpeed = 1;
+    public static double outtakeSpeed = 0.50;
 
   }
 // MecanumDevices is a secondary set of wheels after the intake
   public static class MecanumDevices {
     public static int MECANUM_CONTROLLER_ID = 9;
     public static VictorSPX mecanumVictor = new VictorSPX(MECANUM_CONTROLLER_ID);
+    public static double mecanumInSpeed = 0.75;
+    public static double mecanumOutSpeed = 0.50;
   }
 
   public static class FeederDevices {
