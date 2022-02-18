@@ -34,10 +34,14 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
     requires(theFeeder);
     requires(theShooter);
 
-    addParallel(prepareToShootCommand);
+    
+    addParallel(new ManualPrepareToShoot());
 
-    addSequential(new IsAlignedCommand());
-    addSequential(feedCommand);
+    addSequential(new ReadyToShoot());
+    
+    //This stays the same since it is telling the feeder to run after the shooter
+    //is at speed
+    addSequential(new AutoFeed(1));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
@@ -80,12 +84,12 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
     if(prepareToShootCommand.timeSinceInitialized() >= 1){
       theShooter.beginCounting();
     }
-    theShooter.countBalls();
-    double ballsShot = theShooter.ballsShot;
-    boolean isDone = false;
-    if(ballsShot >= ballsToShoot){
-      isDone = true;
-    }
+    // theShooter.countBalls();
+    // double ballsShot = theShooter.ballsShot;
+     boolean isDone = false;
+    // if(ballsShot >= ballsToShoot){
+    //   isDone = true;
+    // }
     if(this.timeSinceInitialized() >= timeToRun){
       isDone = true;
     }
