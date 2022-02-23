@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
     // navigationBoard.init();
     dashboard238.init();
-    // populateAutomodes();
+    populateAutomodes();
 
     LiveWindow.disableAllTelemetry();
 

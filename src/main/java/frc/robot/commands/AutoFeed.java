@@ -28,7 +28,7 @@ public class AutoFeed extends Command {
   @Override
   protected void execute() {
     if(this.timeSinceInitialized() >= delay){
-      Robot.feeder.start();
+      Robot.feeder.up();
     }
   }
 

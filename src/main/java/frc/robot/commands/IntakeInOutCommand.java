@@ -69,10 +69,10 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
         } else {
             double axisValue = controller.getRawAxis(axis);
 
-
             //0.2 is the deadzone in thy controller
             if (Math.abs(axisValue) <= deadzoneValue) {
                 Robot.intake.stop();
+                
             } else {
                 //0.2 is deadzone; if it is greater, then run intake in; else if it is less than -0.2, spit thy balls
                 if (axisValue < deadzoneValue) {
@@ -81,6 +81,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
                 } else {
                     //Taking In
                     Robot.intake.in(RobotMap.IntakeDevices.intakeSpeed, RobotMap.MecanumDevices.mecanumInSpeed);
+                    
                 }
             }
         }

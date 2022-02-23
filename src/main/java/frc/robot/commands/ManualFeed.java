@@ -33,11 +33,11 @@ public class ManualFeed extends Command {
       if (Robot.shooter.isShooting == false) {
         Robot.feeder.stop();
       } else {
-        Robot.feeder.start();
+        Robot.feeder.up();
       }
 
     } else {
-      Robot.feeder.start();
+      Robot.feeder.up();
     }
   }
 

@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
@@ -24,6 +25,7 @@ import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.RobotMap.FeederDevices.FeederDirection;
 
 /**
  * Add your docs here.
@@ -37,6 +39,8 @@ public class Feeder extends Subsystem {
     public final DigitalInput firstDetector = new DigitalInput(0);
     public final DigitalInput secondDetector = new DigitalInput(1);
     public final DigitalInput thirdDetector = new DigitalInput(2);
+    public final Counter ballCounter = new Counter();
+    private FeederDirection prevFeedDirection;
     
     // TODO: change FEEDER_OUTPUT to reasonable value;
     private final double FEEDER_OUTPUT = 0.5;
@@ -53,25 +57,43 @@ public class Feeder extends Subsystem {
         // initLiveWindow();
         SmartDashboard.putData(this);
         dashboard = Robot.dashboard238;
+        prevFeedDirection = FeederDirection.up;
     }
 
     @Override
     protected void initDefaultCommand() {
         // TODO Auto-generated method stub
+
     }
 
-    public void start() {
-        //feederMasterDrive.set(ControlMode.PercentOutput, FEEDER_OUTPUT);
+    public void up() {
+        
+        if (prevFeedDirection == FeederDirection.down) {
+            ballCounter.setDownSource(thirdDetector);
+            ballCounter.setUpSource(firstDetector);
+            
+        }
+
         feederController.set(FEEDER_OUTPUT);
+        prevFeedDirection = FeederDirection.up;  
+        SmartDashboard.putNumber("balls in robot", ballCounter.get());      
+    }
+
+    public void down() {
+        if (prevFeedDirection == FeederDirection.up) {
+            ballCounter.setDownSource(firstDetector);
+            ballCounter.clearUpSource();
+        } 
+        feederController.set(-1 * FEEDER_OUTPUT);
+        prevFeedDirection = FeederDirection.down;
+        SmartDashboard.putNumber("balls in robot", ballCounter.get());
     }
 
     public double getPower(){
         return feederController.get();
     }
 
-    public void reverse() {
-        feederController.set(-1 * FEEDER_OUTPUT);
-    }
+   
 
     /*
      * if(firstDetector == broken){ turn on }
@@ -88,58 +110,10 @@ public class Feeder extends Subsystem {
     }
 
     public void countHeldBalls(){
-        if(secondDetector.get() == true && lastStateBroken == false){ // Second sensor is NOT tripped, but just WAS
-            heldBallsNumber++;
-        }
-        lastStateBroken = secondDetector.get();
-        // SmartDashboard.putNumber("Held Balls", heldBallsNumber - Robot.shooter.ballsShot);
+        
     }
-    // public BooleanSupplier getSensor1Triggered (){
-
-    // boolean test = firstDetector.get();
-
-    // BooleanSupplier testBS = new BooleanSupplier(){
-
-    // @Override
-    // public boolean getAsBoolean() {
-    // // TODO Auto-generated method stub
-    // return test;
-    // }
-    // };
-    // return testBS;
-    // }
-    // public void feederLogicLoop(){
-    // boolean lastStateBroken = false;
-    // boolean secondSensorBroken = false;
-    // boolean firstSensorBroken = false;
-    // //firstSensorBroken = firstDetector.get();
-    // //secondSensorBroken = secondDetector.get();
-    // if(firstSensorBroken == true){
-    // start();
-    // }
-    // if(secondSensorBroken == false && lastStateBroken == true){
-    // heldBallsNumber++;
-    // stop();
-    // }
-    // //activate LEDs here
-    // if(secondSensorBroken == true){
-    // lastStateBroken = true;
-    // }
-    // }
-    // for testing moved to feedercommand
-
-    // private double getMotorOutput(){
-    // double motorOutput = feederMasterDrive.getSelectedSensorPosition();
-    // return motorOutput;
-    // }
-
-    // private void initLiveWindow() {
-    // SendableWrapper motor = new SendableWrapper(builder -> {
-    // builder.addDoubleProperty("Motor", this::getMotorOutput, null);
-    // });
-
-    // addChild("Motor", motor);
-    // }
+        
+   
 
     private List<SendableWrapper> _sendables = new ArrayList<>();
 
@@ -157,9 +131,9 @@ public class Feeder extends Subsystem {
             stop();
         }
         if((diagnosticStartTime + 1) <= Timer.getFPGATimestamp() && diagnosticStartTime != 0){
-            reverse();
+            down();
         } else if(diagnosticStartTime != 0){
-            start();
+            up();
         }
 
     }

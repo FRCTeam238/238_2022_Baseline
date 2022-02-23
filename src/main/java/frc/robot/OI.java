@@ -44,11 +44,11 @@ public class OI {
   public OI() {
 
     // extend - up(dpad)
-    POVButton intakeExtendButton = new POVButton(operatorController, 0);
+    POVButton intakeExtendButton = new POVButton(operatorController, 180);
     intakeExtendButton.whenPressed(new IntakeExtendCommand(operatorController));
 
     // retract - down(dpad)
-    POVButton intakeRetractButton = new POVButton(operatorController, 180);
+    POVButton intakeRetractButton = new POVButton(operatorController, 0);
     intakeRetractButton.whenPressed(new IntakeRetractCommand(operatorController));
 
     // MANUAL shooter, uses right trigger

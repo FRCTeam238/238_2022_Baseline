@@ -66,7 +66,7 @@ public class FeederCommand extends Command {
       }
     } else {
       if (firstSensorBroken == false) { // First sensor IS tripped
-        theFeeder.start();
+        theFeeder.up();
       }
       if (secondSensorBroken == true && lastStateBroken == false) { // Secondq sensor is NOT tripped, but just WAS
         heldBallsNumber++;

@@ -6,146 +6,33 @@
           "Name": "AutoShooterCommand",
           "IsParallel": false,
           "Parameters": [
-            "5",
-            "4"
-          ]
-        },
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": false,
-          "Parameters": [
-            "Shoot-ToTrench_0"
-          ]
-        },
-        {
-          "Name": "IntakeExtendRetractCommand",
-          "IsParallel": false,
-          "Parameters": []
-        },
-        {
-          "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
-        },
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
-          "Parameters": [
-            "TrenchRunSLOW"
-          ]
-        },
-        {
-          "Name": "AutoShooterCommand",
-          "IsParallel": true,
-          "Parameters": [
-            "10",
-            "20"
-          ]
-        }
-      ],
-      "Name": "Center-ToTrenchShoot"
-    },
-    {
-      "Commands": [
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": false,
-          "Parameters": [
-            "StraightNShort"
-          ]
-        },
-        {
-          "Name": "AutoShooterCommand",
-          "IsParallel": false,
-          "Parameters": [
-            "4",
-            "10"
-          ]
-        }
-      ],
-      "Name": "Base-DriveShoot"
-    },
-    {
-      "Commands": [
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": false,
-          "Parameters": [
-            "LeftToFirstBall"
-          ]
-        },
-        {
-          "Name": "AutoShooterCommand",
-          "IsParallel": false,
-          "Parameters": [
-            "10",
-            "5"
-          ]
-        },
-        {
-          "Name": "IntakeExtendRetractCommand",
-          "IsParallel": false,
-          "Parameters": []
-        },
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
-          "Parameters": [
-            "TrenchRun"
-          ]
-        },
-        {
-          "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
-        },
-        {
-          "Name": "AutoShooterCommand",
-          "IsParallel": true,
-          "Parameters": [
-            "10",
-            "20"
-          ]
-        }
-      ],
-      "Name": "Left-ToTrenchShoot"
-    },
-    {
-      "Commands": [
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
-          "Parameters": [
-            "StraightSLOWMK1"
-          ]
-        },
-        {
-          "Name": "AutoShooterCommand",
-          "IsParallel": true,
-          "Parameters": [
             "3",
-            "5.5"
+            "7"
+          ]
+        },
+        {
+          "Name": "DriveStraightWithoutSensors",
+          "IsParallel": false,
+          "Parameters": [
+            "0.3",
+            "2.5"
           ]
         }
       ],
-      "Name": "StraightWhileShoot"
+      "Name": "ShootThenDrive"
     },
     {
       "Commands": [
         {
-          "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
-        },
-        {
-          "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
+          "Name": "DriveStraightWithoutSensors",
+          "IsParallel": false,
           "Parameters": [
-            "StraightSLOWMK1"
+            "0.3",
+            "2.5"
           ]
         }
       ],
-      "Name": "StraightWhileIntake"
+      "Name": "DriveForwardOnly"
     }
   ]
 }

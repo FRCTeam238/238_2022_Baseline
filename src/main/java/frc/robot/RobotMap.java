@@ -71,7 +71,7 @@ public final class RobotMap {
     public static CANSparkMax shooterController = new CANSparkMax(SHOOTER_CONTROLLER, MotorType.kBrushless);
     public static CANSparkMax shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
     public static double SHOOTER_SPEED_TOLERANCE = 200;
-    public static double SHOOTER_DEFAULT_SPEED  = 3250;
+    public static double SHOOTER_DEFAULT_SPEED = 3250;
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083;
   }
@@ -82,12 +82,14 @@ public final class RobotMap {
     // TODO: change to real number
     public static int FORWARD_CHANNEL = 6;
     public static int REVERSE_CHANNEL = 1;
-    public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, FORWARD_CHANNEL, REVERSE_CHANNEL);
+    public static DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, FORWARD_CHANNEL,
+        REVERSE_CHANNEL);
     public static double intakeSpeed = 1;
     public static double outtakeSpeed = 0.50;
 
   }
-// MecanumDevices is a secondary set of wheels after the intake
+
+  // MecanumDevices is a secondary set of wheels after the intake
   public static class MecanumDevices {
     public static int MECANUM_CONTROLLER_ID = 9;
     public static VictorSPX mecanumVictor = new VictorSPX(MECANUM_CONTROLLER_ID);
@@ -98,13 +100,16 @@ public final class RobotMap {
   public static class FeederDevices {
     public static int FEEDER_CONTROLLER = 10;
     public static CANSparkMax feederController = new CANSparkMax(FEEDER_CONTROLLER, MotorType.kBrushless);
-    // public static VictorSPX transportVictor = new VictorSPX(TRANSPORT_CONTROLLER);
+
+    public static enum FeederDirection {
+      up,
+      down
+    }
   }
 
   public static class HangerDevices {
     public static int HANGER_CONTROLLER = 2;
     public static WPI_TalonFX hangerTalon = new WPI_TalonFX(HANGER_CONTROLLER);
-   
 
   }
 }

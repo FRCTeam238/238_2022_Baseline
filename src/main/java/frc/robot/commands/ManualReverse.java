@@ -27,7 +27,7 @@ public class ManualReverse extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.feeder.reverse();
+    Robot.feeder.down();
     Robot.intake.out(RobotMap.IntakeDevices.outtakeSpeed, RobotMap.MecanumDevices.mecanumOutSpeed);
   }
 
