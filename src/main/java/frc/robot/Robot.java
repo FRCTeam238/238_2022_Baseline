@@ -188,7 +188,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
-    feeder.countHeldBalls();
+    SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
+    SmartDashboard.putNumber("counter Value", feeder.ballCounter.get()); 
+    SmartDashboard.putNumber("currentBallsHeld", feeder.currentBallsHeld);
     // SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
     // SmartDashboard.putNumber("Turret X error", vision.getYaw());
 

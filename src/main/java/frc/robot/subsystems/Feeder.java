@@ -13,6 +13,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
@@ -45,7 +47,7 @@ public class Feeder extends Subsystem {
     // TODO: change FEEDER_OUTPUT to reasonable value;
     private final double FEEDER_OUTPUT = 0.5;
     private final double STOP_FEEDER_OUTPUT = 0;
-    private int heldBallsNumber = 0;
+    public int currentBallsHeld = 0;
 
     private double diagnosticStartTime = 0;
 
@@ -58,6 +60,9 @@ public class Feeder extends Subsystem {
         SmartDashboard.putData(this);
         dashboard = Robot.dashboard238;
         prevFeedDirection = FeederDirection.up;
+        ballCounter.setDownSource(thirdDetector);
+        ballCounter.setUpSource(firstDetector);
+        feederController.setIdleMode(IdleMode.kBrake);
     }
 
     @Override
@@ -69,6 +74,7 @@ public class Feeder extends Subsystem {
     public void up() {
         
         if (prevFeedDirection == FeederDirection.down) {
+            updateBallsHeld();
             ballCounter.setDownSource(thirdDetector);
             ballCounter.setUpSource(firstDetector);
             
@@ -76,17 +82,20 @@ public class Feeder extends Subsystem {
 
         feederController.set(FEEDER_OUTPUT);
         prevFeedDirection = FeederDirection.up;  
-        SmartDashboard.putNumber("balls in robot", ballCounter.get());      
+        
     }
 
     public void down() {
+        
         if (prevFeedDirection == FeederDirection.up) {
+            updateBallsHeld();
             ballCounter.setDownSource(firstDetector);
             ballCounter.clearUpSource();
+            
         } 
         feederController.set(-1 * FEEDER_OUTPUT);
         prevFeedDirection = FeederDirection.down;
-        SmartDashboard.putNumber("balls in robot", ballCounter.get());
+
     }
 
     public double getPower(){
@@ -109,11 +118,19 @@ public class Feeder extends Subsystem {
         feederController.set(STOP_FEEDER_OUTPUT);
     }
 
-    public void countHeldBalls(){
-        
+    private void updateBallsHeld() {
+        currentBallsHeld += ballCounter.get();
+
+    }
+
+    public int getCurrentBallsHeld(){
+        return currentBallsHeld + ballCounter.get();
+    }
+    public void resetBallCount(){
+        ballCounter.reset();
+        currentBallsHeld = 0;
     }
         
-   
 
     private List<SendableWrapper> _sendables = new ArrayList<>();
 

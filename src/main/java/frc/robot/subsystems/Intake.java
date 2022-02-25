@@ -46,6 +46,7 @@ public class Intake extends Subsystem {
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("IntakeVelocity", 0).getEntry();
         //solenoid = RobotMap.IntakeDevices.intakeSolenoid;
+        retractIntake();
     }
 
     @Override 

@@ -84,6 +84,7 @@ public class FeederCommand extends Command {
     }
     SmartDashboard.putBoolean("First Sensor", firstSensorBroken);
     SmartDashboard.putBoolean("Second Sensor", secondSensorBroken);
+    SmartDashboard.putBoolean("Third Sensor", thirdSensorBroken);
   }
 
   // Make this return true when this Command no longer needs to run execute()

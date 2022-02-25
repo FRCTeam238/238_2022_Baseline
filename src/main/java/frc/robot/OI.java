@@ -18,6 +18,7 @@ import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
 import frc.robot.commands.ManualShooterCommand;
@@ -25,6 +26,7 @@ import frc.robot.commands.SetShooterSpeedCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ToggleLimelightZoom;
 // import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Feeder;
 
 //TODO: do we need the vision???????????? 
 //import frc.robot.commands.VisionDrive;
@@ -70,6 +72,10 @@ public class OI {
     JoystickButton manualFeederReverseButton = new JoystickButton(operatorController,
         XboxController.Button.kRightBumper.value);
     manualFeederReverseButton.whileHeld(new ManualReverse());
+
+    JoystickButton manualCounterReset = new JoystickButton(operatorController, 
+    XboxController.Button.kBack.value);
+    manualCounterReset.whenPressed(new ManualCountReset());
 
     // JoystickButton climbButton = new JoystickButton(operatorController,
     // XboxController.Button.kY.value);
