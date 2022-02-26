@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
+import frc.robot.commands.ClearIntake;
 import frc.robot.commands.DriveStraightNavBoard;
 
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
@@ -52,6 +55,8 @@ public class Robot extends TimedRobot {
   public static Hanger hanger;
   public static Intake intake;
   public static LED led;
+  public ClearIntake theClearIntake;
+  public UsbCamera intakeCamera;
 
   // Dictionary of auto mode names and commands to run
   HashMap<String, CommandGroup> m_autoModes;
@@ -71,11 +76,17 @@ public class Robot extends TimedRobot {
     drivetrain = new DrivetrainTrajectoryExtensions();
     shooter = new Shooter();
     dashboard238 = new Dashboard238();
-    feeder = new Feeder();
     intake = new Intake();
+    feeder = new Feeder();
     led = new LED(2, 150);
 
-    // vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
+    theClearIntake = new ClearIntake();
+    intakeCamera = CameraServer.startAutomaticCapture();
+    intakeCamera.setResolution(320, 240);
+    intakeCamera.setFPS(30);
+    
+
+    //vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
     //hanger = new Hanger();
     //SmartDashboard.putData(TrajectoryDrive.getExampleCommand());
   }
@@ -189,8 +200,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
     SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
-    SmartDashboard.putNumber("counter Value", feeder.ballCounter.get()); 
-    SmartDashboard.putNumber("currentBallsHeld", feeder.currentBallsHeld);
     // SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
     // SmartDashboard.putNumber("Turret X error", vision.getYaw());
 
@@ -282,7 +291,10 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putString("Assigned Color", getDataFromDriverStation);
     // vision.postValues();
 
-
+    if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {
+      feeder.updatePrevBallsHeld();
+      theClearIntake.start();
+  }
     
 
     //SmartDashboard.putData("RUN SHOOTER TEST", new SetShooterSpeedCommand(SmartDashboard.getNumber("Shooter RPM", 0)));

@@ -18,6 +18,8 @@ import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.IntakeRetractCommand;
+import frc.robot.commands.LowHubPrepareToShoot;
+import frc.robot.commands.LowerHubCommand;
 import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
@@ -57,6 +59,8 @@ public class OI {
     TriggerButton manualShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
     manualShoot.whileHeld(new ManualShooterCommand());
 
+    TriggerButton lowerHubShoot = new TriggerButton(operatorController, XboxController.Axis.kLeftTrigger.value);
+    lowerHubShoot.whileHeld((new LowerHubCommand()));
     // uses Y-axis of the right stick to control intake and mecanum wheels
     // (forwards/backward)
     Robot.intake.setDefaultCommand(new IntakeInOutCommand(operatorController, XboxController.Axis.kRightY.value));

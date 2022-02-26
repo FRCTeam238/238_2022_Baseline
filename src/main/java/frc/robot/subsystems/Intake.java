@@ -60,7 +60,7 @@ public class Intake extends Subsystem {
     }
 
     private void setPower(double speedValue, double mecanumSpeedValue){
-        
+         
         
         //if intake is deployed, run the intake
         if (solenoid.get() == DoubleSolenoid.Value.kForward) {
@@ -82,7 +82,13 @@ public class Intake extends Subsystem {
     }
 
     public void in(double speed, double mecanumSpeed) {
-        setPower(-speed, -mecanumSpeed);
+        if (Robot.feeder.getCurrentBallsHeld() >= 2){
+            setPower(0, 0);
+        } else {
+            setPower(-speed, -mecanumSpeed);
+        }
+        
+
     }
 
 

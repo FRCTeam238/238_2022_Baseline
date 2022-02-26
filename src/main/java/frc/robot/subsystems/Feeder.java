@@ -28,6 +28,7 @@ import frc.robot.Dashboard238;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.FeederDevices.FeederDirection;
+import frc.robot.commands.ClearIntake;
 
 /**
  * Add your docs here.
@@ -43,11 +44,12 @@ public class Feeder extends Subsystem {
     public final DigitalInput thirdDetector = new DigitalInput(2);
     public final Counter ballCounter = new Counter();
     private FeederDirection prevFeedDirection;
+    public int prevBallCount = 0;
     
     // TODO: change FEEDER_OUTPUT to reasonable value;
     private final double FEEDER_OUTPUT = 0.5;
     private final double STOP_FEEDER_OUTPUT = 0;
-    public int currentBallsHeld = 0;
+    private int ballCountOffset = 0;
 
     private double diagnosticStartTime = 0;
 
@@ -70,19 +72,21 @@ public class Feeder extends Subsystem {
         // TODO Auto-generated method stub
 
     }
+    public void up(){
+        up(FEEDER_OUTPUT);
+    }
 
-    public void up() {
+    public void up(double upSpeed) {
         
         if (prevFeedDirection == FeederDirection.down) {
             updateBallsHeld();
             ballCounter.setDownSource(thirdDetector);
             ballCounter.setUpSource(firstDetector);
-            
         }
 
-        feederController.set(FEEDER_OUTPUT);
+        feederController.set(upSpeed);
         prevFeedDirection = FeederDirection.up;  
-        
+        updatePrevBallsHeld();
     }
 
     public void down() {
@@ -95,40 +99,31 @@ public class Feeder extends Subsystem {
         } 
         feederController.set(-1 * FEEDER_OUTPUT);
         prevFeedDirection = FeederDirection.down;
-
+        updatePrevBallsHeld();
     }
 
     public double getPower(){
         return feederController.get();
     }
 
-   
-
-    /*
-     * if(firstDetector == broken){ turn on }
-     * 
-     * if(secondDetector == broken){ secondbroken = true } else { if(secondBroken ==
-     * true){ turn off secondBroken = false } }
-     * 
-     * 
-     * 
-     */
-
     public void stop() {
         feederController.set(STOP_FEEDER_OUTPUT);
     }
 
     private void updateBallsHeld() {
-        currentBallsHeld += ballCounter.get();
+        ballCountOffset += ballCounter.get();
 
     }
 
     public int getCurrentBallsHeld(){
-        return currentBallsHeld + ballCounter.get();
+        return ballCountOffset + ballCounter.get();
     }
     public void resetBallCount(){
         ballCounter.reset();
-        currentBallsHeld = 0;
+        ballCountOffset = 0;
+    }
+    public void updatePrevBallsHeld() {
+        prevBallCount = getCurrentBallsHeld();
     }
         
 

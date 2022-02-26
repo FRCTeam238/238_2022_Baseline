@@ -32,7 +32,7 @@ public class ManualPrepareToShoot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double wantedSpeed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_SPEED;
+    double wantedSpeed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB;
     theShooter.setSpeed(wantedSpeed);
     theShooter.isShooting = true;
 

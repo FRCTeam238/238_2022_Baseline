@@ -48,7 +48,7 @@ public class PrepareToShoot extends Command {
     boolean shooterHasVision = hasVision();
     if(shooterHasVision){
       distance = getDistanceToTarget();
-      wantedSpeed =RobotMap.ShooterDevices.SHOOTER_DEFAULT_SPEED;
+      wantedSpeed =RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB;
     }
     theShooter.setSpeed(wantedSpeed);
     if(theShooter.isAtSpeed() && firstIsAtSpeedTime == 0){ 

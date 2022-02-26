@@ -44,11 +44,11 @@ public class Shooter extends Subsystem {
     private RelativeEncoder shooterEncoder;
 
     //2021 pid values
-    private double kP = 0.0002;//0.00005;
+    private double kP = 4.8708E-05;//1.2708E-06;//0.0002;//0.00005;
     private double kI = 0;
-    private double kD = 0.001;//0.09;
+    private double kD = 0;//0.001;//0.09;
     private double kIZ = 0;
-    private double kFF = 1.8e-4;
+    private double kFF = 0;//1.8e-4;
     private double kMinOutput = 0;
     private double kMaxOutput = 12;
 
@@ -140,12 +140,12 @@ public class Shooter extends Subsystem {
     }
 
     public void setSpeed(double speedValue) {
-        double feedForward = simpleMotorFeedforward.calculate(speedValue);
+        double feedForward = simpleMotorFeedforward.calculate(speedValue/60);
         //replace below getPIDController to match arbitrarty feed forward
 
         desiredSpeedPID = speedValue;
-        //shooterMasterDrive.getPIDController().setReference(desiredSpeedPID, CANSparkMax.ControlType.kVelocity, 0, feedForward);
-        shooterMasterDrive.getPIDController().setReference(desiredSpeedPID, CANSparkMax.ControlType.kVelocity);
+        shooterMasterDrive.getPIDController().setReference(desiredSpeedPID, CANSparkMax.ControlType.kVelocity, 0, feedForward);
+        // shooterMasterDrive.getPIDController().setReference(desiredSpeedPID, CANSparkMax.ControlType.kVelocity);
     }
 
     public void setPower(double power){
