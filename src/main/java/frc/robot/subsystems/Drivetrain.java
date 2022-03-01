@@ -39,7 +39,14 @@ public class Drivetrain extends Subsystem {
 
   // private LiveWindow lw = LiveWindow.getInstance();
 
-  public final static double TICKS_PER_INCH = 193;
+  //ticks per rotation is 2048 (at motor)?
+  //gear raio: 14.7:1
+  //calc = 30105 ticks per wheel rev (ticks * gear ratio)
+  //circumference = 18.84in; diameter = 6in
+  //ticksPerInch = 1597
+
+  //double check
+  public final static double TICKS_PER_INCH = 1597; //193
   private final static double ANGLE_KP = 3;
   private final double kV = 3.47;// 0.00434
   private final double kA = 0.225;// 00.00434 * 0.15;

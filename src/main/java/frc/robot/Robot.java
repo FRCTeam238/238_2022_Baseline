@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     feeder = new Feeder();
     led = new LED(2, 150);
+    hanger = new Hanger();
 
     theClearIntake = new ClearIntake();
     intakeCamera = CameraServer.startAutomaticCapture();

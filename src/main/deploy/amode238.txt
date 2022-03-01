@@ -33,6 +33,19 @@
         }
       ],
       "Name": "DriveForwardOnly"
+    },
+    {
+      "Commands": [
+        {
+          "Name": "DriveStraightNavBoard",
+          "IsParallel": false,
+          "Parameters": [
+            "0.5",
+            "100"
+          ]
+        }
+      ],
+      "Name": "Basedrive"
     }
   ]
 }

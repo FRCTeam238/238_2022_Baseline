@@ -9,11 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.FieldConstants;
 import frc.robot.RobotMap;
@@ -22,23 +18,10 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Hanger extends Subsystem {
-
-    // private final TalonSRX hangerMasterDrive =
-    // RobotMap.HangerDevices.hangerTalon;
     double hangHeight = FieldConstants.hangHeight;
     double ticksPerInch;
     public Object resetEncoder;
-    // private final DoubleSolenoid brakeSolenoid =
-    // RobotMap.ClimberDevices.brakeSolenoid;
-    // private final DoubleSolenoid deploySolenoid =
-    // RobotMap.ClimberDevices.deploySolenoid;
     private final WPI_TalonFX climberTalon = RobotMap.HangerDevices.hangerTalon;
-    final private double yMinimum = 0.5;
-    // brakeDelayed is the time of delay we want between stopping the motor and
-    // braking. if zero, we assume we can brake immediately after starting motor.
-    private final double brakeDelayTime = 0;
-    private double timeToEngageBrake = -1;
-    public DoubleSolenoid.Value isDeployed = Value.kReverse;
 
     public Hanger() {
         initTalon();
@@ -47,74 +30,23 @@ public class Hanger extends Subsystem {
     @Override
     protected void initDefaultCommand() {
         // TODO Auto-generated method stub
-
     }
 
     private void initTalon() {
         climberTalon.configFactoryDefault();
         climberTalon.setNeutralMode(NeutralMode.Brake);
+        // double check forward vs reverse
+        climberTalon.configForwardSoftLimitThreshold(RobotMap.HangerDevices.upSoftLimitThreshold);
+        climberTalon.configReverseSoftLimitThreshold(RobotMap.HangerDevices.downSoftLimitThreshold);
+        climberTalon.configForwardSoftLimitEnable(true);
+        climberTalon.configReverseSoftLimitEnable(true);
     }
 
-    public void deploy() {
-
-        // deploySolenoid.set(DoubleSolenoid.Value.kForward);
-
+    public void raiseLower(double speed) {
+        climberTalon.set(speed);
     }
-
-    public DoubleSolenoid.Value getBrakeStatus() {
-        // TODO: double check what we're gonna use
-        return DoubleSolenoid.Value.kOff;
-
-    }
-
-    public DoubleSolenoid.Value getDeployStatus() {
-        // TODO: double check what we're gonna use
-        return DoubleSolenoid.Value.kOff;
-    }
-
-    /*
-     * public void toggleBrake(){ DoubleSolenoid.Value brakeStatus =
-     * getBrakeStatus(); if(brakeStatus == Value.kForward){
-     * brakeSolenoid.set(DoubleSolenoid.Value.kReverse); } else {
-     * brakeSolenoid.set(DoubleSolenoid.Value.kForward); } }
-     */
 
     public void brake() {
-
         climberTalon.set(ControlMode.PercentOutput, 0);
-        // brakeSolenoid.set(Value.kForward);
     }
-
-    public void unBrake() {
-
-        // brakeSolenoid.set(Value.kReverse);
-    }
-
-    // raising or lowering the climbing mechanism
-    // magnitude is the offset of the joystick used to control raising and lowering
-    // the climber
-    public void raise(double magnitude) {
-        // (tuningValue * (leftJsValue * leftJsValue * leftJsValue) + (1-tuningValue) *
-        // leftJsValue);
-
-        if ((Math.abs(magnitude) >= yMinimum) && (isDeployed == Value.kForward)) {
-
-            unBrake();
-            timeToEngageBrake = -1;
-            climberTalon.set(ControlMode.PercentOutput, magnitude);
-
-        } else {
-
-            if (timeToEngageBrake != -1) {
-
-                if (System.currentTimeMillis() >= timeToEngageBrake) {
-                    brake();
-                }
-            } else {
-                timeToEngageBrake = System.currentTimeMillis() + (brakeDelayTime * 1000);
-            }
-
-        }
-    }
-
 }

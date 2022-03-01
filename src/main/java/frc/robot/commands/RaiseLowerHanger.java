@@ -12,28 +12,25 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Hanger;
+import frc.robot.subsystems.Intake;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class RaiseLowerHanger extends Command {
-  
-//only accept value if x is within low range and if y is outside of small window
+
+  // only accept value if x is within low range and if y is outside of small
+  // window
 
   Hanger theHanger = Robot.hanger;
 
-  double magnitudeX = 0;
   double magnitudeY = 0;
-  final private double xMaximum = 0.1;
-  final private double tuningValue = 0.2;
-  public double leftOperatorJsValue;
-  DoubleSolenoid.Value isDeployed = Value.kOff;
 
   private GenericHID controller;
-  private int axisX;
   private int axisY;
-  public RaiseLowerHanger(GenericHID controller, int axisX, int axisY) {
+
+  public RaiseLowerHanger(GenericHID controller, int axisY) {
     requires(theHanger);
     this.controller = controller;
-    this.axisX = axisX;
     this.axisY = axisY;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -47,16 +44,15 @@ public class RaiseLowerHanger extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    magnitudeX = controller.getRawAxis(axisX);
-    
     magnitudeY = controller.getRawAxis(axisY);
-    
-    if(Math.abs(magnitudeX) <= xMaximum){
-
-      double power = magnitudeY * ( tuningValue * ( magnitudeY*magnitudeY - 1) + 1);
-      theHanger.raise(power);
-
+    if (magnitudeY >= RobotMap.HangerDevices.controllerDeadzone) {
+      theHanger.raiseLower(RobotMap.HangerDevices.hangerUpSpeed);
+    } else if (magnitudeY <= -RobotMap.HangerDevices.controllerDeadzone) {
+      theHanger.raiseLower(RobotMap.HangerDevices.hangerDownSpeed);
+    } else {
+      theHanger.brake();
     }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -68,13 +64,13 @@ public class RaiseLowerHanger extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    theHanger.raise(0);
+    theHanger.brake();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    theHanger.raise(0);
+
   }
 }

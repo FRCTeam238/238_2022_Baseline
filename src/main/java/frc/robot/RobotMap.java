@@ -111,6 +111,11 @@ public final class RobotMap {
   public static class HangerDevices {
     public static int HANGER_CONTROLLER = 2;
     public static WPI_TalonFX hangerTalon = new WPI_TalonFX(HANGER_CONTROLLER);
-
+    public static double controllerDeadzone = 0.2;
+    //TODO: these are placeholder values, change them when we know more about the needed speeds
+    public static double hangerUpSpeed = 0.50;
+    public static double hangerDownSpeed = -0.75;
+    public static double upSoftLimitThreshold = 0;
+    public static double downSoftLimitThreshold = 0;
   }
 }

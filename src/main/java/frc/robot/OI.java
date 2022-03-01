@@ -24,6 +24,7 @@ import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
 import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.RaiseLowerHanger;
 import frc.robot.commands.SetShooterSpeedCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ToggleLimelightZoom;
@@ -81,9 +82,7 @@ public class OI {
     XboxController.Button.kBack.value);
     manualCounterReset.whenPressed(new ManualCountReset());
 
-    // JoystickButton climbButton = new JoystickButton(operatorController,
-    // XboxController.Button.kY.value);
-    // climbButton.whenPressed(new HangCommand());
+    Robot.hanger.setDefaultCommand(new RaiseLowerHanger(operatorController, XboxController.Axis.kLeftY.value));
 
     // TODO: do we need the vision????????????
     // VisionDrive visionDrive = new VisionDrive();

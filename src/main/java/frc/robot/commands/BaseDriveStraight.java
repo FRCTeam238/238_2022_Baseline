@@ -23,7 +23,8 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
   private static final double DEL_T = 50.0;
 
   private double speed = 0;
-  private int distance = 0;
+  // private int distance = 0;
+  private double distance = 0;
   private double distanceTravelled = 0;
 
   private Drivetrain drivetrain;
@@ -62,30 +63,30 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
       double rightEncoderPos = drivetrain.rightDistanceTravelled();
 
       distanceTravelled = Math.abs(leftEncoderPos - initialPosL + rightEncoderPos - initialPosR) / 2;
-      
-      if (distanceTravelled >= Math.abs(distance)){
+
+      if (distanceTravelled >= Math.abs(distance)) {
         drivetrain.stop();
         return;
       }
 
       double timeToStop = Math.abs(currentVelocity / ACCELERATION);
       double distanceNeededToStop = (Math.abs(currentVelocity) / 2) * timeToStop;
-      
+
       boolean deAccelerate = (Math.abs(distance) - distanceTravelled <= distanceNeededToStop);
 
-//      double currentAccel;
+      // double currentAccel;
       if (deAccelerate ? !backwards : backwards) {
         currentVelocity -= (DEL_T / 1000) * ACCELERATION;
-//        currentAccel = -ACCELERATION;
+        // currentAccel = -ACCELERATION;
       } else {
         currentVelocity += (DEL_T / 1000) * ACCELERATION;
-//        currentAccel = ACCELERATION;
+        // currentAccel = ACCELERATION;
       }
 
       currentVelocity = Math.max(Math.min(speed, currentVelocity), -speed);
 
       // if (Math.abs(speed - Math.abs(currentVelocity)) < 0.5) {
-      //   currentAccel = 0;
+      // currentAccel = 0;
       // }
 
       double offset = getOffset();
@@ -114,7 +115,8 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
   @Override
   public void setParameters(List<String> parameters) {
     speed = Double.parseDouble(parameters.get(0));
-    distance = Integer.parseInt(parameters.get(1));
+    // distance = Integer.parseInt(parameters.get(1));
+    distance = Double.parseDouble(parameters.get(1));
     backwards = distance < 0;
   }
 
