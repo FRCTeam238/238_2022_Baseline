@@ -12,19 +12,21 @@ import java.util.List;
 import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.commands.BaseCommand;
 import frc.robot.commands.IAutonomousCommand;
 import frc.robot.subsystems.Drivetrain;
 
-@AutonomousModeAnnotation(parameterNames = { "Speed", "Distance" })
+@AutonomousModeAnnotation(parameterNames = { "Speed", "Distance", "Intaking" })
 public abstract class BaseDriveStraight extends BaseCommand implements IAutonomousCommand {
 
   private static final double ACCELERATION = 150; // 150 in/sec^2
-  private static final double DEL_T = 50.0;
+  private static final double DEL_T = 20.0;
 
   private double speed = 0;
   // private int distance = 0;
   private double distance = 0;
+  private boolean intaking = false;
   private double distanceTravelled = 0;
 
   private Drivetrain drivetrain;
@@ -38,6 +40,7 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
 
   public BaseDriveStraight() {
     requires(Robot.drivetrain);
+    requires(Robot.intake);
 
     drivetrain = Robot.drivetrain;
   }
@@ -45,25 +48,20 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    drivetrain.resetEncoders();
+    initialPosL = drivetrain.leftDistanceTravelled();
+    initialPosR = drivetrain.rightDistanceTravelled();
+    distanceTravelled = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Logger.Debug("DriveStraight.execute() : Speed: " + speed + ", Distance: " + distance);
-
-    if (!started) {
-      drivetrain.resetEncoders();
-      initialPosL = drivetrain.leftDistanceTravelled();
-      initialPosR = drivetrain.rightDistanceTravelled();
-      distanceTravelled = 0;
-      started = true;
-    } else {
       double leftEncoderPos = drivetrain.leftDistanceTravelled();
       double rightEncoderPos = drivetrain.rightDistanceTravelled();
 
       distanceTravelled = Math.abs(leftEncoderPos - initialPosL + rightEncoderPos - initialPosR) / 2;
-
+      Logger.Debug("DistanceTraveled: " + distanceTravelled);
       if (distanceTravelled >= Math.abs(distance)) {
         drivetrain.stop();
         return;
@@ -74,24 +72,28 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
 
       boolean deAccelerate = (Math.abs(distance) - distanceTravelled <= distanceNeededToStop);
 
-      // double currentAccel;
-      if (deAccelerate ? !backwards : backwards) {
-        currentVelocity -= (DEL_T / 1000) * ACCELERATION;
-        // currentAccel = -ACCELERATION;
-      } else {
-        currentVelocity += (DEL_T / 1000) * ACCELERATION;
-        // currentAccel = ACCELERATION;
-      }
-
-      currentVelocity = Math.max(Math.min(speed, currentVelocity), -speed);
-
-      // if (Math.abs(speed - Math.abs(currentVelocity)) < 0.5) {
-      // currentAccel = 0;
+      // // double currentAccel;
+      // if (deAccelerate ? !backwards : backwards) {
+      //   currentVelocity -= (DEL_T / 1000) * ACCELERATION;
+      //   // currentAccel = -ACCELERATION;
+      // } else {
+      //   currentVelocity += (DEL_T / 1000) * ACCELERATION;
+      //   // currentAccel = ACCELERATION;
       // }
 
+      // currentVelocity = Math.max(Math.min(speed, currentVelocity), -speed);
+
+      // // if (Math.abs(speed - Math.abs(currentVelocity)) < 0.5) {
+      // // currentAccel = 0;
+      // // }
+
       double offset = getOffset();
-      drivetrain.drive(currentVelocity, currentVelocity, offset);
-    }
+      Logger.Debug("Offset: " + offset);
+      drivetrain.drive(speed, speed, offset);
+
+      if(intaking) {
+        Robot.intake.in(RobotMap.IntakeDevices.intakeSpeed, RobotMap.MecanumDevices.mecanumInSpeed);
+      }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -104,6 +106,7 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
   @Override
   protected void end() {
     drivetrain.stop();
+    Robot.intake.stop();
   }
 
   // Called when another command which requires one or more of the same
@@ -117,6 +120,7 @@ public abstract class BaseDriveStraight extends BaseCommand implements IAutonomo
     speed = Double.parseDouble(parameters.get(0));
     // distance = Integer.parseInt(parameters.get(1));
     distance = Double.parseDouble(parameters.get(1));
+    intaking = Boolean.parseBoolean(parameters.get(2));
     backwards = distance < 0;
   }
 

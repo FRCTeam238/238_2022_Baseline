@@ -16,7 +16,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 
-@AutonomousModeAnnotation(parameterNames = { "NumberOfBalls", "TimeToRun"})
+@AutonomousModeAnnotation(parameterNames = {"Timeout"})
 public class AutoShooterCommand extends CommandGroup implements IAutonomousCommand {
   /**
    * Add your docs here.
@@ -24,9 +24,8 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
   boolean isAuto = false;
-  double ballsToShoot = 0;
   double startTime = 0;
-  double timeToRun;
+  double timeout;
   AutoFeed feedCommand = new AutoFeed(0.5);
   PrepareToShoot prepareToShootCommand = new PrepareToShoot();
 
@@ -62,6 +61,12 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
   }
 
   @Override
+  public void initialize()
+  {
+    setTimeout(timeout);
+  }
+
+  @Override
   public boolean getIsAutonomousMode() {
     // TODO Auto-generated method stub
     return false;
@@ -75,24 +80,11 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
 
   @Override
   public void setParameters(List<String> parameters) {
-    this.ballsToShoot = Double.parseDouble(parameters.get(0));
-    this.timeToRun = Double.parseDouble(parameters.get(1));
+    this.timeout = Double.parseDouble(parameters.get(0));
   }
 
   @Override
   public boolean isFinished(){
-    if(prepareToShootCommand.timeSinceInitialized() >= 1){
-      theShooter.beginCounting();
-    }
-    // theShooter.countBalls();
-    // double ballsShot = theShooter.ballsShot;
-     boolean isDone = false;
-    // if(ballsShot >= ballsToShoot){
-    //   isDone = true;
-    // }
-    if(this.timeSinceInitialized() >= timeToRun){
-      isDone = true;
-    }
-    return isDone;
+    return (isTimedOut() || Robot.feeder.getCurrentBallsHeld() == 0);
   }
 }

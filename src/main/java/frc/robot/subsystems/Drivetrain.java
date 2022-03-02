@@ -40,16 +40,18 @@ public class Drivetrain extends Subsystem {
   // private LiveWindow lw = LiveWindow.getInstance();
 
   //ticks per rotation is 2048 (at motor)?
-  //gear raio: 14.7:1
-  //calc = 30105 ticks per wheel rev (ticks * gear ratio)
+  //gear raio: 14.17:1
+  //calc = 29020 ticks per wheel rev (ticks * gear ratio)
   //circumference = 18.84in; diameter = 6in
-  //ticksPerInch = 1597
+  //ticksPerInch = 1540
 
   //double check
-  public final static double TICKS_PER_INCH = 1597; //193
-  private final static double ANGLE_KP = 3;
-  private final double kV = 3.47;// 0.00434
-  private final double kA = 0.225;// 00.00434 * 0.15;
+  public final static double TICKS_PER_INCH = 1540; //193
+ //private final static double ANGLE_KP = 3;
+ private final static double ANGLE_KP = 0;
+  //private final double kV = 3.47;// 0.00434
+  private final double kV = .347;
+  private final double kA = 0.0225;// 00.00434 * 0.15;
   private final double vSetpoint = 1.078;// 0.078
 
   protected final static WPI_TalonFX rightControllerDrive = RobotMap.DrivetrainControllers.RightDriveTrainController;
@@ -112,7 +114,7 @@ public class Drivetrain extends Subsystem {
       double angleVelocityAddend = desiredAngle * ANGLE_KP;
       angleVelocityAddend = Math.min(50, Math.max(angleVelocityAddend, -50));
 
-      accelerate(left + angleVelocityAddend, right - angleVelocityAddend, left, right);
+      drive(left, right);
     }
   }
 
@@ -220,7 +222,7 @@ public class Drivetrain extends Subsystem {
       talon.config_IntegralZone(kPIDLoopIdx, kIzone, kTimeoutMs);
       
       // Config encoders
-      talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
+      talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx, kTimeoutMs);
   
       talon.configClosedloopRamp(rampRate, kTimeoutMs);
   

@@ -23,11 +23,10 @@ import frc.robot.Robot;
 public class IntakeExtendCommand extends Command implements IAutonomousCommand {
 
     boolean isAuto = false;
-    GenericHID controller;
-    int pov;
+    // GenericHID controller;
+    // int pov;
 
-    public IntakeExtendCommand(GenericHID controller) {
-        this.controller = controller;
+    public IntakeExtendCommand() {
         requires(Robot.intake);
     }
 

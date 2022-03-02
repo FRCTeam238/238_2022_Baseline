@@ -238,6 +238,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    feeder.setCurrentBallsHeld(1);
     String autoMode = m_chooser.getSelected();
     // make sure we have a commandgroup corresponding to the autmode
     // AND it's ok to run auto. m_allowAuto will be false if teleop ini as been run

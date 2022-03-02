@@ -50,7 +50,7 @@ public class OI {
 
     // extend - up(dpad)
     POVButton intakeExtendButton = new POVButton(operatorController, 180);
-    intakeExtendButton.whenPressed(new IntakeExtendCommand(operatorController));
+    intakeExtendButton.whenPressed(new IntakeExtendCommand());
 
     // retract - down(dpad)
     POVButton intakeRetractButton = new POVButton(operatorController, 0);

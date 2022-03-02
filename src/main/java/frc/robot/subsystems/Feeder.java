@@ -112,7 +112,11 @@ public class Feeder extends Subsystem {
 
     private void updateBallsHeld() {
         ballCountOffset += ballCounter.get();
+    }
 
+    public void setCurrentBallsHeld(int ballCount)
+    {
+        ballCountOffset = ballCount - ballCounter.get();
     }
 
     public int getCurrentBallsHeld(){

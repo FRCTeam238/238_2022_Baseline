@@ -6,8 +6,7 @@
           "Name": "AutoShooterCommand",
           "IsParallel": false,
           "Parameters": [
-            "3",
-            "7"
+            "3"
           ]
         },
         {
@@ -41,11 +40,47 @@
           "IsParallel": false,
           "Parameters": [
             "0.5",
-            "100"
+            "18.84",
+            ""
           ]
         }
       ],
       "Name": "Basedrive"
+    },
+    {
+      "Commands": [
+        {
+          "Name": "IntakeExtendCommand",
+          "IsParallel": false,
+          "Parameters": []
+        },
+        {
+          "Name": "DriveStraightNavBoard",
+          "IsParallel": false,
+          "Parameters": [
+            "0.5",
+            "44",
+            "true"
+          ]
+        },
+        {
+          "Name": "DriveStraightNavBoard",
+          "IsParallel": false,
+          "Parameters": [
+            "-.5",
+            "85",
+            "false"
+          ]
+        },
+        {
+          "Name": "AutoShooterCommand",
+          "IsParallel": false,
+          "Parameters": [
+            "20"
+          ]
+        }
+      ],
+      "Name": "2BallDriveFirst"
     }
   ]
 }
