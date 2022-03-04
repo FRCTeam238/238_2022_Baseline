@@ -14,6 +14,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ColorSensorV3.ColorSensorMeasurementRate;
+import com.revrobotics.ColorSensorV3.ColorSensorResolution;
+import com.revrobotics.ColorSensorV3.GainFactor;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -65,6 +68,7 @@ public class Feeder extends Subsystem {
         ballCounter.setDownSource(thirdDetector);
         ballCounter.setUpSource(firstDetector);
         feederController.setIdleMode(IdleMode.kBrake);
+        RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
     }
 
     @Override
@@ -129,6 +133,7 @@ public class Feeder extends Subsystem {
     public void updatePrevBallsHeld() {
         prevBallCount = getCurrentBallsHeld();
     }
+    
         
 
     private List<SendableWrapper> _sendables = new ArrayList<>();

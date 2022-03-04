@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.wrappers.TriggerButton;
 import frc.robot.commands.FeederCommand;
+import frc.robot.commands.FeederCommandWithColor;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.IntakeRetractCommand;
@@ -68,7 +69,7 @@ public class OI {
 
     // There is no controller parameter since the feeder is automatic and will
     // relate to shooter
-    Robot.feeder.setDefaultCommand(new FeederCommand());
+    Robot.feeder.setDefaultCommand(new FeederCommandWithColor());
 
     JoystickButton manualFeederForwardButton = new JoystickButton(operatorController,
         XboxController.Button.kLeftBumper.value);

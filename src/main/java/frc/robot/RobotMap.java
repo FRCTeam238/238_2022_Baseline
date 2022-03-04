@@ -10,9 +10,11 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 // import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -101,6 +103,7 @@ public final class RobotMap {
   public static class FeederDevices {
     public static int FEEDER_CONTROLLER = 10;
     public static CANSparkMax feederController = new CANSparkMax(FEEDER_CONTROLLER, MotorType.kBrushless);
+     public static ColorSensorV3 ballColor = new ColorSensorV3(I2C.Port.kOnboard);// make this work on kMXP or robot
 
     public static enum FeederDirection {
       up,

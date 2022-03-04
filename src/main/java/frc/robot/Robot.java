@@ -55,7 +55,7 @@ public class Robot extends TimedRobot {
   public static Hanger hanger;
   public static Intake intake;
   public static LED led;
-  public ClearIntake theClearIntake;
+  public static ClearIntake theClearIntake;
   public UsbCamera intakeCamera;
 
   // Dictionary of auto mode names and commands to run
