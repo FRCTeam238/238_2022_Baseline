@@ -11,26 +11,18 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.wrappers.TriggerButton;
 import frc.robot.commands.FeederCommand;
 import frc.robot.commands.FeederCommandWithColor;
 import frc.robot.commands.IntakeExtendCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.IntakeRetractCommand;
-import frc.robot.commands.LowHubPrepareToShoot;
 import frc.robot.commands.LowerHubCommand;
 import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
 import frc.robot.commands.ManualShooterCommand;
 import frc.robot.commands.RaiseLowerHanger;
-import frc.robot.commands.SetShooterSpeedCommand;
-import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ToggleLimelightZoom;
-// import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Feeder;
 
 //TODO: do we need the vision???????????? 
 //import frc.robot.commands.VisionDrive;
@@ -80,52 +72,9 @@ public class OI {
     manualFeederReverseButton.whileHeld(new ManualReverse());
 
     JoystickButton manualCounterReset = new JoystickButton(operatorController, 
-    XboxController.Button.kBack.value);
+        XboxController.Button.kBack.value);
     manualCounterReset.whenPressed(new ManualCountReset());
 
     Robot.hanger.setDefaultCommand(new RaiseLowerHanger(operatorController, XboxController.Axis.kLeftY.value));
-
-    // TODO: do we need the vision????????????
-    // VisionDrive visionDrive = new VisionDrive();
-    // DriveStraightPID driveTenFeetPID = new DriveStraightPID(-48);
-    // JoystickButton visionTrackButton = new JoystickButton(leftStick,
-    // RobotMap.Buttons.visionTrack); button:1
-    // JoystickButton driveTenFeetButton = new JoystickButton(leftStick,
-    // RobotMap.Buttons.driveTenFeet); button: 6
-    // driveTenFeetButton.whenPressed(driveTenFeetPID);
-    // visionTrackButton.whileHeld(visionDrive);
-
-    // Uses right trigger and runs AUTOMATED shooting while held
-    // TriggerButton automatedShoot = new TriggerButton(operatorController,
-    // XboxController.Axis.kRightTrigger.value);
-    // automatedShoot.whileHeld(new ShooterCommand());
   }
-
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
-  // Joystick stick = new Joystick(port);
-  // Button button = new JoystickButton(stick, buttonNumber);
-
-  // There are a few additional built in buttons you can use. Additionally,
-  // by subclassing Button you can create custom triggers and bind those to
-  // commands the same as any other Button.
-
-  //// TRIGGERING COMMANDS WITH BUTTONS
-  // Once you have a button, it's trivial to bind it to a button in one of
-  // three ways:
-
-  // Start the command when the button is pressed and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenPressed(new ExampleCommand());
-
-  // Run the command while the button is being held down and interrupt it once
-  // the button is released.
-  // button.whileHeld(new ExampleCommand());
-
-  // Start the command when the button is released and let it run the command
-  // until it is finished as determined by it's isFinished method.
-  // button.whenReleased(new ExampleCommand());
 }

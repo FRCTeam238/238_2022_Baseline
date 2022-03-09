@@ -25,7 +25,6 @@ import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.ClearIntake;
-import frc.robot.commands.DriveStraightNavBoard;
 import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
@@ -87,10 +86,6 @@ public class Robot extends TimedRobot {
     intakeCamera.setResolution(320, 240);
     intakeCamera.setFPS(30);
     
-
-    //vision = new Vision(FieldConstants.VisionConstants.targetHeight, FieldConstants.VisionConstants.cameraHeight);
-    //hanger = new Hanger();
-    //SmartDashboard.putData(TrajectoryDrive.getExampleCommand());
   }
   
   @Override
@@ -101,20 +96,6 @@ public class Robot extends TimedRobot {
     populateAutomodes();
 
     LiveWindow.disableAllTelemetry();
-
-    //Coming Soon!
-    // vision.initLimelight();
-
-    //This is a backup for auto modes if the populate auto modes fails
-    // List<String> params= new ArrayList<>();
-    // params.add("Straight");
-    // TrajectoryDriveCommand driveStraightTrajectory = new TrajectoryDriveCommand();
-    // driveStraightTrajectory.setParameters(params);
-    // SmartDashboard.putData("Drive Straight - trajectory", driveStraightTrajectory);
-
-    // LiveWindow.disableAllTelemetry();
-
-    // SmartDashboard.putNumber("Shooter Speed Scalar", 1);
   }
 
   private void populateAutomodes() {
@@ -125,52 +106,6 @@ public class Robot extends TimedRobot {
       AutonomousModesReader reader = new AutonomousModesReader(autoModesDataSource);
       m_autoModes = reader.getAutonmousModes();
     } else {
-      m_autoModes = new HashMap<>();
-
-      // CommandGroup cg = new CommandGroup();
-      // // DriveStraightNavBoard cmd = new DriveStraightNavBoard();
-      // DriveStraightPID drivefrwrd = new DriveStraightPID(48);
-      // DriveStraightPID drivebckwrd = new DriveStraightPID(-72);
-      // //List<String> parameters = new ArrayList<>();
-      // //parameters.add("5");
-      // //parameters.add("10");
-      // //cmd.setParameters(parameters);
-      // cg.addSequential(drivefrwrd);
-      // cg.addSequential(drivebckwrd);
-
-      // m_autoModes.put("Drive forward, then backward", cg);
-
-      CommandGroup cg2 = new CommandGroup();
-      DriveStraightNavBoard cmd2 = new DriveStraightNavBoard();
-      List<String> parameters2 = new ArrayList<>();
-      parameters2.add("15");
-      parameters2.add("100");
-      cmd2.setParameters(parameters2);
-      cg2.addSequential(cmd2);
-
-      DriveStraightNavBoard cmd3 = new DriveStraightNavBoard();
-      List<String> parameters3 = new ArrayList<>();
-      parameters3.add("5");
-      parameters3.add("1000");
-      cmd3.setParameters(parameters3);
-      cg2.addSequential(cmd3);
-
-      //m_autoModes.put("Simulate - Drive Straight: sp 15, dist 100", cg2);
-      // CommandGroup cg3 = new CommandGroup();
-      // cg3.addSequential(cg);
-      // cg3.addSequential(cg2);
-      // m_autoModes.put("Simulate - Auto1/Auto2", cg3);
-    }
-
-    if (m_autoModes.size() == 0){
-      CommandGroup cg = new CommandGroup();
-      DriveStraightNavBoard cmd = new DriveStraightNavBoard();
-      List<String> parameters = new ArrayList<>();
-      parameters.add("0.5");
-      parameters.add("1000000");
-      cmd.setParameters(parameters);
-      cg.addSequential(cmd);
-      m_autoModes.put("No auto modes found -- default command!", cg);
     }
 
     if (m_autoModes.size() > 0) {
@@ -202,10 +137,6 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
     SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
-    // SmartDashboard.putNumber("Shooter RPM", shooter.getSpeed());
-    // SmartDashboard.putNumber("Turret X error", vision.getYaw());
-
-    // shooter.increaseSpeed(SmartDashboard.getNumber("Shooter Speed Scalar", 1));
   }
 
   /**
@@ -267,8 +198,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // prevent auto from running after teleop has been initialized
-    m_allowAuto = false;
     IntakeInOutCommand.isDone = false;
     FeederCommand.isDone = false;
     // This makes sure that the autonomous stops running when
@@ -290,20 +219,12 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-
-    String getDataFromDriverStation = DriverStation.getGameSpecificMessage();
-    //SmartDashboard.putString("Assigned Color", getDataFromDriverStation);
-    // vision.postValues();
-
     if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {
       feeder.updatePrevBallsHeld();
       theClearIntake.start();
+    }
   }
     
-
-    //SmartDashboard.putData("RUN SHOOTER TEST", new SetShooterSpeedCommand(SmartDashboard.getNumber("Shooter RPM", 0)));
-  }
-
   /**
    * This function is called periodically during test mode.
    */

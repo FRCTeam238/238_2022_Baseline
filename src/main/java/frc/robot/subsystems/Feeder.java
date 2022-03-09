@@ -49,7 +49,6 @@ public class Feeder extends Subsystem {
     private FeederDirection prevFeedDirection;
     public int prevBallCount = 0;
     
-    // TODO: change FEEDER_OUTPUT to reasonable value;
     private final double FEEDER_OUTPUT = 0.5;
     private final double STOP_FEEDER_OUTPUT = 0;
     private int ballCountOffset = 0;
@@ -134,8 +133,6 @@ public class Feeder extends Subsystem {
         prevBallCount = getCurrentBallsHeld();
     }
     
-        
-
     private List<SendableWrapper> _sendables = new ArrayList<>();
 
     private void addChild(String name, SendableWrapper wrapper) {
