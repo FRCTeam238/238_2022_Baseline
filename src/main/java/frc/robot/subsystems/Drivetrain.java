@@ -36,6 +36,8 @@ import frc.robot.commands.drivetrainparameters.DriverJoysticks;
  * Add your docs here.
  */
 public class Drivetrain extends Subsystem {
+  //2'8 + 6.5 = 32+6.5 = 0.98meters (length)
+  //2'3 + 6.5 = 27+6.5 = 0.85meters (width)
 
   // private LiveWindow lw = LiveWindow.getInstance();
 
@@ -44,7 +46,7 @@ public class Drivetrain extends Subsystem {
   //calc = 29020 ticks per wheel rev (ticks * gear ratio)
   //circumference = 18.84in; diameter = 6in
   //ticksPerInch = 1540
-
+  //252.5Inches/13Wheel rotations
   //double check
   public final static double TICKS_PER_INCH = 1540; //193
  //private final static double ANGLE_KP = 3;
@@ -62,10 +64,10 @@ public class Drivetrain extends Subsystem {
 
   
 
-  public static double kP = 1;
+  public static double kP = 0.00026915;
   public static double kI = 0;
   public static double kD = 0;
-  public static double kF = 1023 / 6800;
+  public static double kF = 0;
   public static int kIzone = 400;
   public static int kPIDLoopIdx = 0;
   public static int kTimeoutMs = 30;
@@ -120,16 +122,6 @@ public class Drivetrain extends Subsystem {
 
   private static double calcTicks(double distance){
     return distance * TICKS_PER_INCH;
-  }
-
-  /** Drive a number of inches using TalonSRX PID loops */
-  public void driveWithTicks(double distance) {
-    initPID(rightControllerDrive);
-    initPID(leftControllerDrive);
-    //resetEncoders() is done in initPID
-    double ticks = calcTicks(distance);
-    setPosition(rightControllerDrive, ticks);
-    setPosition(leftControllerDrive, ticks);
   }
 
   // method to accelerate rather than set straigt power
@@ -219,12 +211,12 @@ public class Drivetrain extends Subsystem {
       talon.config_kI(kPIDLoopIdx, kI, kTimeoutMs);
       talon.config_kD(kPIDLoopIdx, kD, kTimeoutMs);
       talon.config_kF(kPIDLoopIdx, kF, kTimeoutMs);
-      talon.config_IntegralZone(kPIDLoopIdx, kIzone, kTimeoutMs);
+      //talon.config_IntegralZone(kPIDLoopIdx, kIzone, kTimeoutMs);
       
       // Config encoders
       talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, kPIDLoopIdx, kTimeoutMs);
   
-      talon.configClosedloopRamp(rampRate, kTimeoutMs);
+      //talon.configClosedloopRamp(rampRate, kTimeoutMs);
   
       // Ensure motor output and encoder velocity are proportional to each other
       // If they become inverted, set these to true

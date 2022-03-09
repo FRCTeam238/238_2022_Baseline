@@ -50,11 +50,11 @@ public class OI {
   public OI() {
 
     // extend - up(dpad)
-    POVButton intakeExtendButton = new POVButton(operatorController, 180);
+    POVButton intakeExtendButton = new POVButton(operatorController, 0);
     intakeExtendButton.whenPressed(new IntakeExtendCommand());
 
     // retract - down(dpad)
-    POVButton intakeRetractButton = new POVButton(operatorController, 0);
+    POVButton intakeRetractButton = new POVButton(operatorController, 180);
     intakeRetractButton.whenPressed(new IntakeRetractCommand(operatorController));
 
     // MANUAL shooter, uses right trigger
@@ -69,7 +69,7 @@ public class OI {
 
     // There is no controller parameter since the feeder is automatic and will
     // relate to shooter
-    Robot.feeder.setDefaultCommand(new FeederCommandWithColor());
+    Robot.feeder.setDefaultCommand(new FeederCommand());
 
     JoystickButton manualFeederForwardButton = new JoystickButton(operatorController,
         XboxController.Button.kLeftBumper.value);

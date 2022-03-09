@@ -1,0 +1,34 @@
+[
+  {
+    "CommandName": "IntakeExtendCommand",
+	"ParameterNames": []
+  },
+  {
+    "CommandName": "IntakeRetractCommand",
+	"ParameterNames": []
+  },
+  {
+    "CommandName": "AutoShooterCommand",
+	"ParameterNames": ["Timeout"]
+  },
+  {
+    "CommandName": "IntakeInOutCommand",
+	"ParameterNames": []
+  },
+  {
+    "CommandName": "TrajectoryDriveCommand",
+	"ParameterNames": ["TrajectoryName"]
+  },
+  {
+    "CommandName": "ResetCommands",
+	"ParameterNames": []
+  },
+  {
+    "CommandName": "FeederCommand",
+	"ParameterNames": []
+  },
+    {
+    "CommandName": "DriveStraightWithoutSensors",
+	"ParameterNames": ["Speed", "Time"]
+  }
+]

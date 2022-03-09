@@ -26,7 +26,8 @@ import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.ClearIntake;
 import frc.robot.commands.DriveStraightNavBoard;
-
+import frc.robot.commands.FeederCommand;
+import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hanger;
@@ -268,7 +269,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     // prevent auto from running after teleop has been initialized
     m_allowAuto = false;
-
+    IntakeInOutCommand.isDone = false;
+    FeederCommand.isDone = false;
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

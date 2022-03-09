@@ -59,7 +59,7 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
     Trajectory trajectory;
     try {
       trajectory = TrajectoryUtil
-          .fromPathweaverJson(Paths.get("/home/lvuser/deploy/" + trajectoryName + ".wpilib.json"));
+          .fromPathweaverJson(Paths.get("/home/lvuser/deploy/pathplanner/generatedJSON/" + trajectoryName + ".wpilib.json"));
       SmartDashboard.putString("Running Trajectory", trajectoryName);
       Transform2d transform = new Pose2d(0, 0, Rotation2d.fromDegrees(0)).minus(trajectory.getInitialPose());
       Trajectory newTrajectory = trajectory.transformBy(transform);

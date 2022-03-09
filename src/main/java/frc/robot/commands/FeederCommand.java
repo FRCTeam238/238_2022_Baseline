@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
@@ -19,9 +20,11 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Shooter;
 
-public class FeederCommand extends Command {
+public class FeederCommand extends Command implements IAutonomousCommand {
 
+  public static boolean isDone = false;
   public int heldBallsNumber = 0;
+  boolean isAuto = false;
   boolean lastStateBroken = true;
   boolean secondSensorBroken = true;
   boolean firstSensorBroken = true;
@@ -90,7 +93,7 @@ public class FeederCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return isDone && getIsAutonomousMode();
   }
 
   // Called once after isFinished returns true
@@ -107,5 +110,23 @@ public class FeederCommand extends Command {
   @Override
   protected void interrupted() {
     theFeeder.stop();
+  }
+
+  @Override
+  public boolean getIsAutonomousMode() {
+      // TODO Auto-generated method stub
+      return isAuto;
+  }
+
+  @Override
+  public void setIsAutonomousMode(boolean isAutonomousMode) {
+      // TODO Auto-generated method stub
+      isAuto = isAutonomousMode;
+  }
+
+  @Override
+  public void setParameters(List<String> parameters) {
+      // TODO Auto-generated method stub
+
   }
 }

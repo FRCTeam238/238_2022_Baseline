@@ -11,6 +11,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -24,8 +28,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
-
+import frc.core238.Logger;
 import frc.robot.Robot;
+import frc.robot.commands.FeederCommand;
+import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.commands.RamseteCommand;
 
 /**
@@ -217,6 +223,17 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
     rightControllerDrive.setVoltage(rightVolts);
   }
 
+  public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
+    SmartDashboard.putNumber("Desired L_Velocity", metersPerSecToStepsPerDecisec(leftVelocity));
+    SmartDashboard.putNumber("Desired R_Velocity", metersPerSecToStepsPerDecisec(rightVelocity));
+    SmartDashboard.putNumber("Actual L_Velocity", leftControllerDrive.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("Actual R_Velocity", leftControllerDrive.getSelectedSensorVelocity());
+    SmartDashboard.putNumber("L_FeedForward", DriveTrain.FEED_FORWARD.calculate(leftVelocity));
+    SmartDashboard.putNumber("MotorOutput", leftControllerDrive.getMotorOutputVoltage());
+    leftControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(leftVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(leftVelocity))/12);
+    rightControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(rightVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(rightVelocity))/12);
+  }
+
   /**
    * Returns the current wheel speeds of the robot.
    *
@@ -229,30 +246,30 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   }
 
   public Command createCommandForTrajectory(Trajectory trajectory) {
-
-    InstantCommand initializeDifferentialDrive = new InstantCommand(this, () -> setUseDifferentialDrive(false));
+    InstantCommand initializeDifferentialDrive = new InstantCommand(this, () -> {
+      setUseDifferentialDrive(false); 
+    });
     RamseteCommand rc = new RamseteCommand(
             trajectory,
             this::getCurrentPose,
             new RamseteController(Auto.RAMSETE_B, Auto.RAMSETE_ZETA),
-            DriveTrain.FEED_FORWARD,
             DriveTrain.DRIVE_KINEMATICS,
-            this::getWheelSpeeds,
-            new PIDController(DriveTrain.P_GAIN_DRIVE_VEL, 0, DriveTrain.D_GAIN_DRIVE_VEL),
-            new PIDController(DriveTrain.P_GAIN_DRIVE_VEL, 0, DriveTrain.D_GAIN_DRIVE_VEL),
-            this::tankDriveVolts,
+            this::tankDriveVelocity,
             this);
 
     InstantCommand endCommand = new InstantCommand(this, () -> {
             //setUseDifferentialDrive(true);
             //arcadeDrive(0, 0);
             tankDrive(0, 0);
+            IntakeInOutCommand.isDone = true;
+            FeederCommand.isDone = true;
         });
 
     CommandGroup cg = new CommandGroup("TrajectoryDrive");
     cg.addSequential(initializeDifferentialDrive);
     cg.addSequential(rc);;
     cg.addSequential(endCommand);
+
 
     return cg;
   }
@@ -274,7 +291,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    * @return encoder steps
    */
   public static double insToSteps(double inches) {
-    return (insToRevs(inches) * DriveTrain.SENSOR_UNITS_PER_ROTATION);
+    return (insToRevs(inches) * DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION);
   }
 
   /**
@@ -294,23 +311,24 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
    * @return meters
    */
   public static double stepsToMeters(int steps) {
-    return (DriveTrain.WHEEL_CIRCUMFERENCE_METERS / DriveTrain.SENSOR_UNITS_PER_ROTATION) * steps;
+    return (DriveTrain.WHEEL_CIRCUMFERENCE_METERS / DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION) * steps;
+  }
+
+  public static double metersToSteps(double meters) {
+    return ((meters/DriveTrain.WHEEL_CIRCUMFERENCE_METERS) * (DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION));
   }
 
   public static double stepsPerDecisecToMetersPerSec(double stepsPerDecisec) {
     return stepsToMeters((int)stepsPerDecisec * 10);
   }
 
-  public static final class DriveTrain {
-    public static final int DEVICE_ID_LEFT_MASTER = 15;
-    public static final int DEVICE_ID_LEFT_SLAVE = 14;
-    public static final int DEVICE_ID_LEFT_SLAVE_TWO = 13;
-    public static final int DEVICE_ID_RIGHT_MASTER = 0;
-    public static final int DEVICE_ID_RIGHT_SLAVE = 1;
-    public static final int DEVICE_ID_RIGHT_SLAVE_TWO = 2;
+  public static double metersPerSecToStepsPerDecisec(double metersPerSec) {
+    return metersToSteps(metersPerSec)/10;
+  }
 
-    public static final int SENSOR_UNITS_PER_ROTATION = 4096;
-    public static final double WHEEL_DIAMETER_INCHES = 6d;
+  public static final class DriveTrain {
+    public static final double SENSOR_UNITS_PER_WHEEL_ROTATION = 2048*14.17;
+    public static final double WHEEL_DIAMETER_INCHES = 6.18;//6d;
     public static final double WHEEL_CIRCUMFERENCE_INCHES = WHEEL_DIAMETER_INCHES * Math.PI;
     public static final double WHEEL_CIRCUMFERENCE_METERS = Units.inchesToMeters(WHEEL_DIAMETER_INCHES) * Math.PI;
 
@@ -319,26 +337,20 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
         TRACK_WIDTH_METERS);
 
     /** Voltage needed to overcome the motor’s static friction. kS */
-    public static final double STATIC_VOLTS = 1.2;
+    public static final double STATIC_VOLTS = .6002;
 
     /** Voltage needed to hold (or "cruise") at a given constant velocity. kV */
-    public static final double VOLT_SECONDS_PER_METER = 2.79;
+    public static final double VOLT_SECONDS_PER_METER = 3.1246;
 
     /** Voltage needed to induce a given acceleration in the motor shaft. kA */
-    public static final double VOLT_SECONDS_SQUARED_PER_METER = 0.439;
+    public static final double VOLT_SECONDS_SQUARED_PER_METER = 0.28332;
 
     public static final SimpleMotorFeedforward FEED_FORWARD = 
         new SimpleMotorFeedforward(STATIC_VOLTS, VOLT_SECONDS_PER_METER, VOLT_SECONDS_SQUARED_PER_METER);
-
-    public static final double P_GAIN_DRIVE_VEL = 2;//0.340d;
-    public static final double D_GAIN_DRIVE_VEL = 0;
   }
 
   public static final class Auto {
-
-    public static final double MAX_SPEED_METERS_PER_SECOND = 3;
-    public static final double MAX_ACCELERATION_METERS_PER_SECOND = Math.sqrt(3);
-    public static final double MAX_VOLTAGE = 11;
+    public static final double MAX_VOLTAGE = 12;
 
     public static final DifferentialDriveVoltageConstraint VOLTAGE_CONSTRAINT = 
         new DifferentialDriveVoltageConstraint(DriveTrain.FEED_FORWARD, DriveTrain.DRIVE_KINEMATICS, MAX_VOLTAGE);

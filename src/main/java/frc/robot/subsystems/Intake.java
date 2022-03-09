@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.core238.Logger;
@@ -84,8 +85,10 @@ public class Intake extends Subsystem {
     public void in(double speed, double mecanumSpeed) {
         if (Robot.feeder.getCurrentBallsHeld() >= 2){
             setPower(0, 0);
+            Robot.oi.operatorController.setRumble(RumbleType.kRightRumble, .5);
         } else {
             setPower(-speed, -mecanumSpeed);
+            Robot.oi.operatorController.setRumble(RumbleType.kRightRumble, 0);
         }
         
 
@@ -94,10 +97,12 @@ public class Intake extends Subsystem {
 
     public void out(double speed, double mecanumSpeed) {
         setPower(speed, mecanumSpeed);
+        Robot.oi.operatorController.setRumble(RumbleType.kRightRumble, 0);
     }
 
     public void stop(){
         setPower(0, 0);
+        Robot.oi.operatorController.setRumble(RumbleType.kRightRumble, 0);
     }
 
     public void extendIntake() {

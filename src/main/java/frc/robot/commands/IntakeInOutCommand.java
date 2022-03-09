@@ -25,7 +25,7 @@ import frc.robot.RobotMap;
  */
 @AutonomousModeAnnotation(parameterNames = {})
 public class IntakeInOutCommand extends Command implements IAutonomousCommand {
-    private boolean isDone = false;
+    public static boolean isDone = false;
     private GenericHID controller;
     private int axis;
     private boolean isAuto = false;
@@ -58,7 +58,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     }
 
     @Override
-    protected void execute() {        
+    protected void execute() {       
         if (intakeDiagnostics) {
             // runIntakeDiagnostics();
         }
@@ -100,7 +100,8 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     @Override
     protected boolean isFinished() {
         // TODO Auto-generated method stub
-        return isDone;
+        return isDone && isAuto;
+        //return false;
     }
 
     @Override
