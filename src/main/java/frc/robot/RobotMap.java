@@ -77,6 +77,8 @@ public final class RobotMap {
     public static double SHOOTER_DEFAULT_LOW_HUB = 1500;
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083*42;
+
+    public static double settlingTime = 0.25;
   }
 
   public static class IntakeDevices {

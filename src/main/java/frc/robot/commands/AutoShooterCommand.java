@@ -10,8 +10,10 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
@@ -26,7 +28,7 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
   boolean isAuto = false;
   double startTime = 0;
   double timeout;
-  AutoFeed feedCommand = new AutoFeed(0.5);
+  FeedForShoot feedCommand = new FeedForShoot(0.5);
   PrepareToShoot prepareToShootCommand = new PrepareToShoot();
 
   public AutoShooterCommand() {
@@ -34,30 +36,11 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
     requires(theShooter);
 
     
-    addParallel(new ManualPrepareToShoot());
-
-    addSequential(new ReadyToShoot());
-    
+    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB));
+   
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed
-    addSequential(new AutoFeed(1));
-
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
-
-    // A command group will require all of the subsystems that each member
-    // would require.
-    // e.g. if Command1 requires chassis, and Command2 requires arm,
-    // a CommandGroup containing them would require both the chassis and the
-    // arm.
+    addSequential(new FeedForShoot(0));
   }
 
   @Override
@@ -85,6 +68,6 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
 
   @Override
   public boolean isFinished(){
-    return (isTimedOut() /*|| Robot.feeder.getCurrentBallsHeld() == 0*/);
+    return (isTimedOut() || Robot.feeder.getCurrentBallsHeld() == 0);
   }
 }

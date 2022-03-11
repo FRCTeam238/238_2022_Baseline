@@ -51,39 +51,20 @@ public class FeederCommand extends Command implements IAutonomousCommand {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    feederLogicLoop();
-  }
-
-  public void feederLogicLoop() {
-    int beginningNumber = 10;
-    int endNumber = 80;
     firstSensorBroken = theFeeder.firstDetector.get();
-
     secondSensorBroken = theFeeder.secondDetector.get();
-
     thirdSensorBroken = theFeeder.thirdDetector.get();
 
-    if (thirdSensorBroken == false) {
-      if (theShooter.isShooting == false) {
-        theFeeder.stop();
-      }
+    if (thirdSensorBroken == false) { // is tripped
+      theFeeder.stop();
     } else {
-      if (firstSensorBroken == false) { // First sensor IS tripped
+      if (firstSensorBroken == false) {
         theFeeder.up();
-      }
-      if (secondSensorBroken == true && lastStateBroken == false) { // Secondq sensor is NOT tripped, but just WAS
-        heldBallsNumber++;
-        Logger.Debug("Held Balls Count = " + heldBallsNumber);
-        endNumber = beginningNumber + (14 * heldBallsNumber);
-        Color toSet = new Color(238, 238, 0);
-        led.setColor(beginningNumber, endNumber, toSet);
+      } else if (secondSensorBroken == false) {
+        theFeeder.up();
+      } else {
         theFeeder.stop();
       }
-
-      // activate LEDs here
-
-      lastStateBroken = secondSensorBroken;
-
     }
     SmartDashboard.putBoolean("First Sensor", firstSensorBroken);
     SmartDashboard.putBoolean("Second Sensor", secondSensorBroken);
@@ -114,19 +95,19 @@ public class FeederCommand extends Command implements IAutonomousCommand {
 
   @Override
   public boolean getIsAutonomousMode() {
-      // TODO Auto-generated method stub
-      return isAuto;
+    // TODO Auto-generated method stub
+    return isAuto;
   }
 
   @Override
   public void setIsAutonomousMode(boolean isAutonomousMode) {
-      // TODO Auto-generated method stub
-      isAuto = isAutonomousMode;
+    // TODO Auto-generated method stub
+    isAuto = isAutonomousMode;
   }
 
   @Override
   public void setParameters(List<String> parameters) {
-      // TODO Auto-generated method stub
+    // TODO Auto-generated method stub
 
   }
 }

@@ -7,12 +7,13 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrainparameters.DrivetrainParameters;
 import frc.robot.commands.drivetrainparameters.IDrivetrainParametersSource;
 import frc.robot.subsystems.Drivetrain;
 
-public class TankDrive extends BaseCommand {
+public class TankDrive extends Command {
   private Drivetrain drivetrain;
   private IDrivetrainParametersSource parameterSource;
   private IDrivetrainParametersSource defaultParameterSource;

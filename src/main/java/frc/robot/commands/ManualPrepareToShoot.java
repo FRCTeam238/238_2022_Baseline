@@ -7,8 +7,10 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Shooter;
@@ -16,50 +18,48 @@ import frc.robot.subsystems.Shooter;
 public class ManualPrepareToShoot extends Command {
 
   private Shooter theShooter = Robot.shooter;
-  private double firstIsAtSpeedTime = 0;
-  private double initialCounterDelay = 1.5;
+  private boolean firstIsAtSpeed = true;
+  private Timer timer;
+  private double settlingTime = RobotMap.ShooterDevices.settlingTime;
+  private double rpm;
 
-  public ManualPrepareToShoot() {
+  public ManualPrepareToShoot(double rpm) {
+    this.timer = new Timer();
+    this.rpm = rpm;
     requires(theShooter);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    timer.reset();
+    firstIsAtSpeed = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double wantedSpeed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB;
-    theShooter.setSpeed(wantedSpeed);
+    theShooter.setSpeed(rpm);
     theShooter.isShooting = true;
 
-    if (theShooter.isAtSpeed() && firstIsAtSpeedTime == 0) {
-      firstIsAtSpeedTime = this.timeSinceInitialized();
+    if (theShooter.isAtSpeed() && firstIsAtSpeed) {
+      firstIsAtSpeed = false;
+      timer.start();
     }
-
-    if ((firstIsAtSpeedTime + initialCounterDelay) <= this.timeSinceInitialized()) {
-      theShooter.beginCounting();
-    }
-
-    // TODO: do we need to count balls in the shooter?
-    theShooter.countBalls();
-    SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    Logger.Debug("TIMER: " + timer.get());
+    return timer.get() > settlingTime;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
     theShooter.isShooting = false;
-    theShooter.neutral();
+    // theShooter.neutral();
   }
 
   // Called when another command which requires one or more of the same

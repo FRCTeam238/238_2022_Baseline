@@ -10,13 +10,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutoFeed extends Command {
+public class FeedForShoot extends Command {
   private double delay;
-  public AutoFeed(double delayTime) {
+  public FeedForShoot(double delayTime) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     this.delay = delayTime;
     requires(Robot.feeder);
+    requires(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
@@ -43,12 +44,15 @@ public class AutoFeed extends Command {
   @Override
   protected void end() {
     Robot.feeder.stop();
+    Robot.shooter.neutral();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
+  //**this is where the command "ends"**
   @Override
   protected void interrupted() {
     Robot.feeder.stop();
+    Robot.shooter.neutral();
   }
 }

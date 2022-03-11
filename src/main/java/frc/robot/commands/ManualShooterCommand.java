@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
@@ -25,13 +26,11 @@ public class ManualShooterCommand extends CommandGroup {
     requires(theShooter);
 
     
-    addParallel(new ManualPrepareToShoot());
-
-    addSequential(new ReadyToShoot());
+    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB));
     
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed
-    addSequential(new AutoFeed(1));
+    addSequential(new FeedForShoot(0));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
