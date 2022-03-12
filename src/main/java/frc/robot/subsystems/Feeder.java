@@ -67,7 +67,7 @@ public class Feeder extends Subsystem {
         ballCounter.setDownSource(thirdDetector);
         ballCounter.setUpSource(firstDetector);
         feederController.setIdleMode(IdleMode.kBrake);
-        RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
+        checkColorReset();
     }
 
     @Override
@@ -75,6 +75,13 @@ public class Feeder extends Subsystem {
         // TODO Auto-generated method stub
 
     }
+
+    public void checkColorReset() {
+        if (RobotMap.FeederDevices.ballColor.hasReset()) {
+            RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
+        }
+    }
+
     public void up(){
         up(FEEDER_OUTPUT);
     }
@@ -123,7 +130,13 @@ public class Feeder extends Subsystem {
     }
 
     public int getCurrentBallsHeld(){
-        return ballCountOffset + ballCounter.get();
+        int count = ballCounter.get();
+        if (ballCountOffset + count < 0) {
+            resetBallCount();
+            return 0;
+        }
+        // return ballCountOffset + ballCounter.get();
+        return ballCountOffset + count;
     }
     public void resetBallCount(){
         ballCounter.reset();

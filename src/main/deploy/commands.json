@@ -4,10 +4,6 @@
 	"ParameterNames": []
   },
   {
-    "CommandName": "IntakeRetractCommand",
-	"ParameterNames": []
-  },
-  {
     "CommandName": "AutoShooterCommand",
 	"ParameterNames": ["Timeout"]
   },
@@ -21,6 +17,10 @@
   },
   {
     "CommandName": "ResetCommands",
+	"ParameterNames": []
+  },
+   {
+    "CommandName": "ManualCountReset",
 	"ParameterNames": []
   },
   {

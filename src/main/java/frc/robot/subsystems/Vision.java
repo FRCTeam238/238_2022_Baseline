@@ -118,7 +118,7 @@ public class Vision extends Subsystem {
   public void postValues(){
     //SmartDashboard.putNumber("Limelight Yaw", getYaw());
     //SmartDashboard.putNumber("Limelight Pitch", getPitch());
-    SmartDashboard.putNumber("Limelight Distance to Target", getDistanceToTarget());
+    // SmartDashboard.putNumber("Limelight Distance to Target", getDistanceToTarget());
   }
 
   public boolean isWithinRange(){

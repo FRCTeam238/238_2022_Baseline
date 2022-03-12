@@ -58,7 +58,7 @@ public class PrepareToShoot extends Command {
       theShooter.beginCounting();
     }
     theShooter.countBalls();
-    SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
+    // SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
   }
   // find speed to run at, in ticks per 100ms
   // tell shooter to run at that speed

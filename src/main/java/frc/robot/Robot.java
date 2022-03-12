@@ -83,8 +83,8 @@ public class Robot extends TimedRobot {
 
     theClearIntake = new ClearIntake();
     intakeCamera = CameraServer.startAutomaticCapture();
-    intakeCamera.setResolution(320, 240);
-    intakeCamera.setFPS(30);
+    intakeCamera.setResolution(160, 120);
+    intakeCamera.setFPS(20);
     
   }
   
@@ -137,6 +137,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
     SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
+    feeder.checkColorReset(); //check if there is a better spot for this
   }
 
   /**

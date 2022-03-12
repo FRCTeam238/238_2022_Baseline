@@ -68,6 +68,6 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
 
   @Override
   public boolean isFinished(){
-    return (isTimedOut() || Robot.feeder.getCurrentBallsHeld() == 0);
+    return (isTimedOut()); //|| Robot.feeder.getCurrentBallsHeld() == 0);
   }
 }

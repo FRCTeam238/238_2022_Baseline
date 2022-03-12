@@ -51,7 +51,7 @@ public class ManualPrepareToShoot extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    Logger.Debug("TIMER: " + timer.get());
+    // Logger.Debug("TIMER: " + timer.get());
     return timer.get() > settlingTime;
   }
 

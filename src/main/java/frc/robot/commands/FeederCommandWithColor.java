@@ -29,6 +29,8 @@ public class FeederCommandWithColor extends Command {
     Shooter theShooter = Robot.shooter;
     LED led = Robot.led;
 
+    public boolean colorMode;
+
     public FeederCommandWithColor() {
         requires(theFeeder);
         // Use requires() here to declare subsystem dependencies
@@ -38,79 +40,54 @@ public class FeederCommandWithColor extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        SmartDashboard.putBoolean("Color Sensing?", colorMode);
         led.setColor(1, 150, 0, 0, 0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        feederLogicLoop();
-    }
+        colorMode = SmartDashboard.getBoolean("Color Sensing?", true);
 
-    public void feederLogicLoop() {
-        int beginningNumber = 10;
-        int endNumber = 80;
-        firstSensorBroken = theFeeder.firstDetector.get();
-
-        secondSensorBroken = theFeeder.secondDetector.get();
-
-        thirdSensorBroken = theFeeder.thirdDetector.get();
-
-        if (thirdSensorBroken == false) {
-            if (theShooter.isShooting == false) {
+            firstSensorBroken = theFeeder.firstDetector.get();
+            secondSensorBroken = theFeeder.secondDetector.get();
+            thirdSensorBroken = theFeeder.thirdDetector.get();
+    
+            if (thirdSensorBroken == false) { // is tripped
                 theFeeder.stop();
-            }
-        } else {
-            if (firstSensorBroken == false) { // First sensor IS tripped
-                if (secondSensorBroken == true) {// second sensor IS NOT tripped
-                    // if (DriverStation.getAlliance() == Alliance.Red) {
-                    //     if (RobotMap.FeederDevices.ballColor.getBlue() > RobotMap.FeederDevices.ballColor.getRed()) {
-                    //         Logger.Debug("blue ball!");
-                    //         theFeeder.stop();
-                    //         Robot.theClearIntake.start();
-                    //     } else {
-                    //         theFeeder.up();
-                    //     }
-                    // } else {
-                    //     if (RobotMap.FeederDevices.ballColor.getBlue() < RobotMap.FeederDevices.ballColor.getRed()) {
-                    //         Logger.Debug("Red ball!");
-                    //         theFeeder.stop();
-                    //         Robot.theClearIntake.start();
-                    //     } else {
-                    //         theFeeder.up();
-                    //     }
-                    // }
-                    preventWrongColor();
-                } else {
+            } else {
+                if (firstSensorBroken == false && secondSensorBroken == true) {
+                    if(colorMode)
+                    {
+                        preventWrongColor(); ///check this placement
+                    } else {
+                        theFeeder.up();
+                    }
+                } else if (secondSensorBroken == false) {
                     theFeeder.up();
+                } else {
+                    theFeeder.stop();
                 }
             }
-            if (secondSensorBroken == true && lastStateBroken == false) { // Secondq sensor is NOT tripped, but just WAS
-                heldBallsNumber++;
-                Logger.Debug("Held Balls Count = " + heldBallsNumber);
-                endNumber = beginningNumber + (14 * heldBallsNumber);
-                Color toSet = new Color(238, 238, 0);
-                led.setColor(beginningNumber, endNumber, toSet);
-                theFeeder.stop();
-            }
-
-            // activate LEDs here
-
-            lastStateBroken = secondSensorBroken;
-
-        }
+        
         SmartDashboard.putBoolean("First Sensor", firstSensorBroken);
         SmartDashboard.putBoolean("Second Sensor", secondSensorBroken);
         SmartDashboard.putBoolean("Third Sensor", thirdSensorBroken);
     }
 
     public String getBallColor() {
-        String colorOfBall;
-        if (RobotMap.FeederDevices.ballColor.getBlue() > RobotMap.FeederDevices.ballColor.getRed()) {
-            colorOfBall = "blue";
+        String colorOfBall = "";
+        if (RobotMap.FeederDevices.ballColor.isConnected()) {
+            if (RobotMap.FeederDevices.ballColor.getBlue() > RobotMap.FeederDevices.ballColor.getRed()) {
+                colorOfBall = "blue";
+            } else {
+                colorOfBall = "red";
+            }
         } else {
-            colorOfBall = "red";
+            colorOfBall = "none";
+            Logger.Debug("SENSOR IS NOT CONNECTED");
         }
+
         return colorOfBall;
     }
 

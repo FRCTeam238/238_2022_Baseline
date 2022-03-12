@@ -46,7 +46,7 @@ public class LowHubPrepareToShoot extends Command {
 
     // TODO: do we need to count balls in the shooter?
     theShooter.countBalls();
-    SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
+    // SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
   }
 
   // Make this return true when this Command no longer needs to run execute()
