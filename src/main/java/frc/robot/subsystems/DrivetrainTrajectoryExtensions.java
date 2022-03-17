@@ -110,7 +110,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
         Rotation2d.fromDegrees(getHeading()),
         stepsToMeters((int)getLeftEncoderPosition()),
         stepsToMeters((int)getRightEncoderPosition()));
-    SmartDashboard.putString("Pose", differentialDriveOdometry.getPoseMeters().toString());
+    // SmartDashboard.putString("Pose", differentialDriveOdometry.getPoseMeters().toString());
   }
 
   /**
@@ -224,12 +224,12 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   }
 
   public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
-    SmartDashboard.putNumber("Desired L_Velocity", metersPerSecToStepsPerDecisec(leftVelocity));
-    SmartDashboard.putNumber("Desired R_Velocity", metersPerSecToStepsPerDecisec(rightVelocity));
-    SmartDashboard.putNumber("Actual L_Velocity", leftControllerDrive.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("Actual R_Velocity", leftControllerDrive.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("L_FeedForward", DriveTrain.FEED_FORWARD.calculate(leftVelocity));
-    SmartDashboard.putNumber("MotorOutput", leftControllerDrive.getMotorOutputVoltage());
+    // SmartDashboard.putNumber("Desired L_Velocity", metersPerSecToStepsPerDecisec(leftVelocity));
+    // SmartDashboard.putNumber("Desired R_Velocity", metersPerSecToStepsPerDecisec(rightVelocity));
+    // SmartDashboard.putNumber("Actual L_Velocity", leftControllerDrive.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("Actual R_Velocity", leftControllerDrive.getSelectedSensorVelocity());
+    // SmartDashboard.putNumber("L_FeedForward", DriveTrain.FEED_FORWARD.calculate(leftVelocity));
+    // SmartDashboard.putNumber("MotorOutput", leftControllerDrive.getMotorOutputVoltage());
     leftControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(leftVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(leftVelocity))/12);
     rightControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(rightVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(rightVelocity))/12);
   }

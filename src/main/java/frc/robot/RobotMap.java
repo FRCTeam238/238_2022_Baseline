@@ -7,12 +7,14 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
@@ -116,11 +118,12 @@ public final class RobotMap {
   public static class HangerDevices {
     public static int HANGER_CONTROLLER = 2;
     public static WPI_TalonFX hangerTalon = new WPI_TalonFX(HANGER_CONTROLLER);
+    public static DigitalInput downLimitSwitch = new DigitalInput(3); 
     public static double controllerDeadzone = 0.2;
     //TODO: these are placeholder values, change them when we know more about the needed speeds
-    public static double hangerUpSpeed = 0.50;
-    public static double hangerDownSpeed = -0.75;
-    public static double upSoftLimitThreshold = 0;
+    public static double hangerUpSpeed = 0.5;
+    public static double hangerDownSpeed = -0.5;
+    public static double upSoftLimitThreshold = -204000;
     public static double downSoftLimitThreshold = 0;
   }
 }

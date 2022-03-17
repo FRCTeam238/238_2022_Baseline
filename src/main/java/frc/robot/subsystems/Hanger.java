@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.core238.Logger;
 import frc.robot.FieldConstants;
 import frc.robot.RobotMap;
 
@@ -36,14 +37,25 @@ public class Hanger extends Subsystem {
         climberTalon.configFactoryDefault();
         climberTalon.setNeutralMode(NeutralMode.Brake);
         // double check forward vs reverse
-        climberTalon.configForwardSoftLimitThreshold(RobotMap.HangerDevices.upSoftLimitThreshold);
-        climberTalon.configReverseSoftLimitThreshold(RobotMap.HangerDevices.downSoftLimitThreshold);
-        climberTalon.configForwardSoftLimitEnable(true);
+        // climberTalon.configForwardSoftLimitThreshold(RobotMap.HangerDevices.upSoftLimitThreshold);
+        climberTalon.configReverseSoftLimitThreshold(RobotMap.HangerDevices.upSoftLimitThreshold);
+        // climberTalon.configForwardSoftLimitEnable(false);
         climberTalon.configReverseSoftLimitEnable(true);
     }
 
     public void raiseLower(double speed) {
-        climberTalon.set(speed);
+        Logger.Debug("Speed: " + speed);
+        if (RobotMap.HangerDevices.downLimitSwitch.get() != false) {
+            climberTalon.set(speed);
+        } else {
+            Logger.Debug("LIMIT SWITCH IS TRIGGERED");
+            if (speed < 0) { //check pos or neg
+                Logger.Debug("Going Up!!!!!");
+                climberTalon.set(speed);
+            } else {
+                climberTalon.set(0);
+            }
+        }
     }
 
     public void brake() {

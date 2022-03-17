@@ -61,7 +61,7 @@ public class Feeder extends Subsystem {
 
     public Feeder() {
         // initLiveWindow();
-        SmartDashboard.putData(this);
+        // SmartDashboard.putData(this);
         dashboard = Robot.dashboard238;
         prevFeedDirection = FeederDirection.up;
         ballCounter.setDownSource(thirdDetector);

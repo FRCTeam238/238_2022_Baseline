@@ -21,6 +21,7 @@ import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
 
+
 public class NavigationBoard extends Subsystem {
 
   public final static double NAVIGATION_TURNING_DEADZONE = 1.5;

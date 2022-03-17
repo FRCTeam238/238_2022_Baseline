@@ -96,7 +96,7 @@ public class Drivetrain extends Subsystem {
     myDriverJoysticks.invertJoysticks();
     TankDrive tankDriveCommand = new TankDrive(myDriverJoysticks, this);
     setDefaultCommand(tankDriveCommand);
-    SmartDashboard.putData("Drivetrain command", this);
+    // SmartDashboard.putData("Drivetrain command", this);
   }
 
   public void drive(double left, double right) {
