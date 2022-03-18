@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.core238.Logger;
 import frc.robot.FieldConstants;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * Add your docs here.
@@ -44,18 +45,23 @@ public class Hanger extends Subsystem {
     }
 
     public void raiseLower(double speed) {
-        Logger.Debug("Speed: " + speed);
         if (RobotMap.HangerDevices.downLimitSwitch.get() != false) {
             climberTalon.set(speed);
         } else {
-            Logger.Debug("LIMIT SWITCH IS TRIGGERED");
             if (speed < 0) { //check pos or neg
-                Logger.Debug("Going Up!!!!!");
                 climberTalon.set(speed);
             } else {
                 climberTalon.set(0);
             }
         }
+    }
+
+    public void extendTraversal() {
+        RobotMap.HangerDevices.traversalSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retractTraversal() {
+        RobotMap.HangerDevices.traversalSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void brake() {

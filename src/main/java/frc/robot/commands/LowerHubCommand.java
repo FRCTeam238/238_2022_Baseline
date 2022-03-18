@@ -25,7 +25,7 @@ public class LowerHubCommand extends CommandGroup {
     requires(theFeeder);
     requires(theShooter);
     
-    addParallel(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
+    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
 
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

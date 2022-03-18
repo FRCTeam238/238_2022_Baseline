@@ -22,7 +22,10 @@ import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
 import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.TraversalSequence;
 import frc.robot.commands.RaiseLowerHanger;
+import frc.robot.commands.TraversalExtendCommand;
+import frc.robot.commands.TraversalRetractCommand;
 
 //TODO: do we need the vision???????????? 
 //import frc.robot.commands.VisionDrive;
@@ -74,6 +77,18 @@ public class OI {
     JoystickButton manualCounterReset = new JoystickButton(operatorController, 
         XboxController.Button.kBack.value);
     manualCounterReset.whenPressed(new ManualCountReset());
+
+    JoystickButton extendTraversal = new JoystickButton(operatorController, 
+        XboxController.Button.kY.value);
+    extendTraversal.whenPressed(new TraversalExtendCommand());
+
+    JoystickButton retractTraversal = new JoystickButton(operatorController, 
+    XboxController.Button.kA.value);
+    retractTraversal.whenPressed(new TraversalRetractCommand());
+
+    JoystickButton traversalSequence = new JoystickButton(operatorController, 
+    XboxController.Button.kB.value);
+    traversalSequence.whileHeld(new TraversalSequence());
 
     Robot.hanger.setDefaultCommand(new RaiseLowerHanger(operatorController, XboxController.Axis.kLeftY.value));
   }

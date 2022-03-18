@@ -75,7 +75,7 @@ public final class RobotMap {
     public static CANSparkMax shooterController = new CANSparkMax(SHOOTER_CONTROLLER, MotorType.kBrushless);
     public static CANSparkMax shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
     public static double SHOOTER_SPEED_TOLERANCE = 200;
-    public static double SHOOTER_DEFAULT_HIGH_HUB = 2900;
+    public static double SHOOTER_DEFAULT_HIGH_HUB = 2975;
     public static double SHOOTER_DEFAULT_LOW_HUB = 1500;
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083*42;
@@ -125,5 +125,9 @@ public final class RobotMap {
     public static double hangerDownSpeed = -0.5;
     public static double upSoftLimitThreshold = -204000;
     public static double downSoftLimitThreshold = 0;
+    public static int FORWARD_CHANNEL = 4;
+    public static int REVERSE_CHANNEL = 3;
+    public static DoubleSolenoid traversalSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, FORWARD_CHANNEL,
+        REVERSE_CHANNEL);
   }
 }
