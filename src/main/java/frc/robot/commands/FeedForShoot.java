@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class FeedForShoot extends Command {
   private double delay;
@@ -30,7 +31,7 @@ public class FeedForShoot extends Command {
   protected void execute() {
     if(this.timeSinceInitialized() >= delay){
       //makes the feeder go full power into the shooter
-      Robot.feeder.up(1);
+      Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
     }
   }
 

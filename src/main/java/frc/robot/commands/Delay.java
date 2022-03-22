@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 
 @AutonomousModeAnnotation(parameterNames = { "DelayTime" })
@@ -26,14 +27,20 @@ public class Delay extends Command implements IAutonomousCommand {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    startTime = Timer.getFPGATimestamp();
+    // startTime = Timer.getFPGATimestamp();
+    startTime = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Timer.getFPGATimestamp() - startTime >= timeToWait){
-      isDone = true;
+    if (startTime == 0) {
+      startTime = Timer.getFPGATimestamp();
+    }
+    double timeProgressed = Timer.getFPGATimestamp() - startTime;
+    Logger.Debug("progressedTime: " + timeProgressed);
+    if(timeProgressed >= timeToWait){
+       isDone = true;
     }
   }
 

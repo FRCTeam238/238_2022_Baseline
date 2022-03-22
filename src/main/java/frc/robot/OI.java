@@ -83,11 +83,11 @@ public class OI {
     extendTraversal.whenPressed(new TraversalExtendCommand());
 
     JoystickButton retractTraversal = new JoystickButton(operatorController, 
-    XboxController.Button.kA.value);
+    XboxController.Button.kB.value);
     retractTraversal.whenPressed(new TraversalRetractCommand());
 
     JoystickButton traversalSequence = new JoystickButton(operatorController, 
-    XboxController.Button.kB.value);
+    XboxController.Button.kX.value);
     traversalSequence.whileHeld(new TraversalSequence());
 
     Robot.hanger.setDefaultCommand(new RaiseLowerHanger(operatorController, XboxController.Axis.kLeftY.value));

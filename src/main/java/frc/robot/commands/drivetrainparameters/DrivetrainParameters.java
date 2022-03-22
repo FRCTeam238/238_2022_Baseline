@@ -12,8 +12,8 @@ package frc.robot.commands.drivetrainparameters;
  */
 public class DrivetrainParameters {
     
-    public final double Left;
-    public final double Right;
+    public double Left; //public final
+    public double Right; //public final
     public final double Angle;
 
     public DrivetrainParameters(double left, double right, double angle) {

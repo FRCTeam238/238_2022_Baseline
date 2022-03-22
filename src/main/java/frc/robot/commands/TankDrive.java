@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.core238.Logger;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrainparameters.DrivetrainParameters;
 import frc.robot.commands.drivetrainparameters.IDrivetrainParametersSource;
@@ -43,6 +44,12 @@ public class TankDrive extends Command {
   protected void execute() {
       IDrivetrainParametersSource source = parameterSource == null ? defaultParameterSource : parameterSource;
       DrivetrainParameters parameters = source.Get();
+      if (Math.abs(parameters.Left) < RobotMap.DrivetrainControllers.deadBandZoneValue) {
+        parameters.Left = 0;
+      } 
+      if (Math.abs(parameters.Right) < RobotMap.DrivetrainControllers.deadBandZoneValue) {
+        parameters.Right = 0;
+      }
       drivetrain.drive(parameters.Left, parameters.Right);// , parameters.Angle);
   }
 
