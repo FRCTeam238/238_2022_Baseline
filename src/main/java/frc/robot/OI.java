@@ -64,7 +64,8 @@ public class OI {
 
     // There is no controller parameter since the feeder is automatic and will
     // relate to shooter
-    Robot.feeder.setDefaultCommand(new FeederCommand());
+    // Robot.feeder.setDefaultCommand(new FeederCommand());
+    Robot.feeder.setDefaultCommand(new FeederCommandWithColor());
 
     JoystickButton manualFeederForwardButton = new JoystickButton(operatorController,
         XboxController.Button.kLeftBumper.value);

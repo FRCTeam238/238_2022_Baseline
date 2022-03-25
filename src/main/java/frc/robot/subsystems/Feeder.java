@@ -9,10 +9,12 @@ package frc.robot.subsystems;
 
 import java.util.ArrayList;
 import java.util.List;
+import edu.wpi.first.wpilibj.I2C;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.ColorSensorV3.ColorSensorMeasurementRate;
 import com.revrobotics.ColorSensorV3.ColorSensorResolution;
@@ -20,6 +22,7 @@ import com.revrobotics.ColorSensorV3.GainFactor;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -59,6 +62,8 @@ public class Feeder extends Subsystem {
 
     Dashboard238 dashboard;
 
+    private NetworkTableEntry feederSpeedFromDashboard;
+
     public Feeder() {
         // initLiveWindow();
         // SmartDashboard.putData(this);
@@ -67,7 +72,10 @@ public class Feeder extends Subsystem {
         ballCounter.setDownSource(thirdDetector);
         ballCounter.setUpSource(firstDetector);
         feederController.setIdleMode(IdleMode.kBrake);
-        checkColorReset();
+        // checkColorReset();
+        RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
+
+        feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.upSpeed).getEntry();
     }
 
     @Override
@@ -78,8 +86,12 @@ public class Feeder extends Subsystem {
 
     public void checkColorReset() {
         if (RobotMap.FeederDevices.ballColor.hasReset()) {
+            Logger.Debug("CONFIGURING COLOR SENSOR");
+            RobotMap.FeederDevices.ballColor = new ColorSensorV3(I2C.Port.kMXP);
             RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
-        }
+        /*}else if (RobotMap.FeederDevices.ballColor.getBlue() == 0){
+            RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
+        */}
     }
 
     public void up(){
@@ -152,6 +164,11 @@ public class Feeder extends Subsystem {
         _sendables.add(wrapper);
         addChild(name, (Sendable) wrapper);
     }
+
+    public double getFeederSpeedFromDashboard(){
+        return feederSpeedFromDashboard.getDouble(RobotMap.FeederDevices.upSpeed);
+    }
+
 
     public void runFeederDiagnostics(){
         Shuffleboard.selectTab("DiagnosticTab");

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
@@ -24,6 +25,10 @@ public class LowerHubCommand extends CommandGroup {
   public LowerHubCommand() {
     requires(theFeeder);
     requires(theShooter);
+
+    double shooterSpeed = theShooter.getLowSpeedFromDashboard();
+    addSequential(new ManualPrepareToShoot(shooterSpeed));
+    Logger.Debug("shooterSpeed" + shooterSpeed);
     
     addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
 

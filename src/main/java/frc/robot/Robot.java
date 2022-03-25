@@ -138,6 +138,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
     SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
     feeder.checkColorReset(); //check if there is a better spot for this
+
+    SmartDashboard.putNumber("Get Blue", RobotMap.FeederDevices.ballColor.getBlue());
+    SmartDashboard.putNumber("Get Red", RobotMap.FeederDevices.ballColor.getRed());
   }
 
   /**

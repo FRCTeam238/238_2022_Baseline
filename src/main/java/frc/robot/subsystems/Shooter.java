@@ -80,6 +80,9 @@ public class Shooter extends Subsystem {
 
     private NetworkTableEntry entry;
 
+    private NetworkTableEntry highHubSpeedFromDashboard;
+    private NetworkTableEntry lowHubSpeedFromDashboard;
+
     private boolean shooterAtSpeed = false;
 
     private double speedIncrease = 0;
@@ -103,6 +106,9 @@ public class Shooter extends Subsystem {
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("Shooter At Speed", false).getEntry();
         simpleMotorFeedforward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.SHOOTER_ks, RobotMap.ShooterDevices.SHOOTER_kv); 
+
+        highHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter high hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB).getEntry();
+        lowHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter low hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB).getEntry();
     }
 
     public void initSparkMax() {
@@ -217,6 +223,14 @@ public class Shooter extends Subsystem {
         shooterPID.setReference(0, CANSparkMax.ControlType.kVoltage);
         desiredSpeedPID = 0;
         stopCounting();
+    }
+
+    public double getHighSpeedFromDashboard(){
+        return highHubSpeedFromDashboard.getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB);
+    }
+
+    public double getLowSpeedFromDashboard(){
+        return lowHubSpeedFromDashboard.getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB);
     }
 
     private void initLiveWindow() {

@@ -49,27 +49,26 @@ public class FeederCommandWithColor extends Command {
     protected void execute() {
         colorMode = SmartDashboard.getBoolean("Color Sensing?", true);
 
-            firstSensorBroken = theFeeder.firstDetector.get();
-            secondSensorBroken = theFeeder.secondDetector.get();
-            thirdSensorBroken = theFeeder.thirdDetector.get();
-    
-            if (thirdSensorBroken == false) { // is tripped
-                theFeeder.stop();
-            } else {
-                if (firstSensorBroken == false && secondSensorBroken == true) {
-                    if(colorMode)
-                    {
-                        preventWrongColor(); ///check this placement
-                    } else {
-                        theFeeder.up();
-                    }
-                } else if (secondSensorBroken == false) {
-                    theFeeder.up();
+        firstSensorBroken = theFeeder.firstDetector.get();
+        secondSensorBroken = theFeeder.secondDetector.get();
+        thirdSensorBroken = theFeeder.thirdDetector.get();
+
+        if (thirdSensorBroken == false) { // is tripped
+            theFeeder.stop();
+        } else {
+            if (firstSensorBroken == false && secondSensorBroken == true) {
+                if (colorMode) {
+                    preventWrongColor(); /// check this placement
                 } else {
-                    theFeeder.stop();
+                    theFeeder.up();
                 }
+            } else if (secondSensorBroken == false) {
+                theFeeder.up();
+            } else {
+                theFeeder.stop();
             }
-        
+        }
+
         SmartDashboard.putBoolean("First Sensor", firstSensorBroken);
         SmartDashboard.putBoolean("Second Sensor", secondSensorBroken);
         SmartDashboard.putBoolean("Third Sensor", thirdSensorBroken);
@@ -87,11 +86,12 @@ public class FeederCommandWithColor extends Command {
             colorOfBall = "none";
             Logger.Debug("SENSOR IS NOT CONNECTED");
         }
-
+        SmartDashboard.putString("Ball Color", colorOfBall);
         return colorOfBall;
     }
 
     public void preventWrongColor() {
+        Logger.Debug("CHECKING COLOR");
         if (DriverStation.getAlliance() == Alliance.Red) {
             if (getBallColor() == "blue") {
                 Logger.Debug("blue ball!");

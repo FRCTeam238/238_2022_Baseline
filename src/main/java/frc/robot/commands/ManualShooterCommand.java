@@ -7,7 +7,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.core238.Logger;
+import frc.robot.Dashboard238;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
@@ -19,14 +24,16 @@ public class ManualShooterCommand extends CommandGroup {
    */
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
-
+  
 
   public ManualShooterCommand() {
     requires(theFeeder);
     requires(theShooter);
 
     
-    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB));
+    double shooterSpeed = theShooter.getHighSpeedFromDashboard();
+    addSequential(new ManualPrepareToShoot(shooterSpeed));
+    Logger.Debug("shooterSpeed" + shooterSpeed);
     
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

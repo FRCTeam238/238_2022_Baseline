@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
@@ -31,7 +32,10 @@ public class FeedForShoot extends Command {
   protected void execute() {
     if(this.timeSinceInitialized() >= delay){
       //makes the feeder go full power into the shooter
-      Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
+      // Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
+      double feederSpeedFromDashboard = Robot.feeder.getFeederSpeedFromDashboard();
+      Robot.feeder.up(feederSpeedFromDashboard);
+      Logger.Debug("Feeder Speed: " + feederSpeedFromDashboard);
     }
   }
 
