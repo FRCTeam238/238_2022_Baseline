@@ -40,6 +40,7 @@ public class ManualPrepareToShoot extends Command {
   @Override
   protected void execute() {
     theShooter.setSpeed(rpm);
+    Logger.Debug("RPM: " + rpm);
     theShooter.isShooting = true;
 
     if (theShooter.isAtSpeed() && firstIsAtSpeed) {

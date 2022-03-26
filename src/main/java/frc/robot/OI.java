@@ -22,6 +22,8 @@ import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
 import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.RaiseHanger;
+import frc.robot.commands.LowerHanger;
 import frc.robot.commands.TraversalSequence;
 import frc.robot.commands.RaiseLowerHanger;
 import frc.robot.commands.TraversalExtendCommand;
@@ -92,5 +94,9 @@ public class OI {
     traversalSequence.whileHeld(new TraversalSequence());
 
     Robot.hanger.setDefaultCommand(new RaiseLowerHanger(operatorController, XboxController.Axis.kLeftY.value));
+
+    JoystickButton manualHangerSequence = new JoystickButton(operatorController, 
+        XboxController.Button.kA.value);
+    manualHangerSequence.whenPressed(new LowerHanger());
   }
 }

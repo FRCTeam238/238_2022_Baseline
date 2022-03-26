@@ -33,7 +33,6 @@ public class ManualShooterCommand extends CommandGroup {
     
     double shooterSpeed = theShooter.getHighSpeedFromDashboard();
     addSequential(new ManualPrepareToShoot(shooterSpeed));
-    Logger.Debug("shooterSpeed" + shooterSpeed);
     
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

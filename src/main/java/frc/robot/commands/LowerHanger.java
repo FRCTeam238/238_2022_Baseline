@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Hanger;
+import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.HangerDevices;
@@ -48,6 +49,7 @@ public class LowerHanger extends Command {
   @Override
   protected void end() {
     theHanger.brake();
+    Logger.Debug("done lowering");
   }
 
   // Called when another command which requires one or more of the same

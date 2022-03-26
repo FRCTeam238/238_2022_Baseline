@@ -27,6 +27,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
@@ -62,7 +63,7 @@ public class Feeder extends Subsystem {
 
     Dashboard238 dashboard;
 
-    private NetworkTableEntry feederSpeedFromDashboard;
+    private SimpleWidget feederSpeedFromDashboard;
 
     public Feeder() {
         // initLiveWindow();
@@ -75,7 +76,7 @@ public class Feeder extends Subsystem {
         // checkColorReset();
         RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
 
-        feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.upSpeed).getEntry();
+        feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.upSpeed);
     }
 
     @Override
@@ -139,6 +140,7 @@ public class Feeder extends Subsystem {
     public void setCurrentBallsHeld(int ballCount)
     {
         ballCountOffset = ballCount - ballCounter.get();
+        
     }
 
     public int getCurrentBallsHeld(){
@@ -166,7 +168,13 @@ public class Feeder extends Subsystem {
     }
 
     public double getFeederSpeedFromDashboard(){
-        return feederSpeedFromDashboard.getDouble(RobotMap.FeederDevices.upSpeed);
+        double speed;
+        if (Robot.shooter.isTuningShooter() == true) {
+            speed = feederSpeedFromDashboard.getEntry().getDouble(RobotMap.FeederDevices.upSpeed);
+        } else {
+            speed = RobotMap.FeederDevices.upSpeed;
+        }
+        return speed;
     }
 
 

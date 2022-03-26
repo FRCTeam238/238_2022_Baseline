@@ -122,8 +122,8 @@ public final class RobotMap {
     public static DigitalInput downLimitSwitch = new DigitalInput(3); 
     public static double controllerDeadzone = 0.2;
     //TODO: these are placeholder values, change them when we know more about the needed speeds
-    public static double hangerUpSpeed = 0.5;
-    public static double hangerDownSpeed = -0.5;
+    public static double hangerDownSpeed = 0.5;
+    public static double hangerUpSpeed = -0.5;
     public static double upSoftLimitThreshold = -214000;//-204000;
     public static double downSoftLimitThreshold = 0;
     public static int FORWARD_CHANNEL = 4;

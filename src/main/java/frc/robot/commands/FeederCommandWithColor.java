@@ -21,6 +21,7 @@ public class FeederCommandWithColor extends Command {
     boolean lastStateBroken = true;
     boolean secondSensorBroken = true;
     boolean firstSensorBroken = true;
+    boolean hasIllegalBall = false;
 
     boolean thirdSensorBroken = true;
 
@@ -53,17 +54,34 @@ public class FeederCommandWithColor extends Command {
         secondSensorBroken = theFeeder.secondDetector.get();
         thirdSensorBroken = theFeeder.thirdDetector.get();
 
-        if (thirdSensorBroken == false) { // is tripped
+        if (thirdSensorBroken == false && hasIllegalBall == false) { // is tripped
             theFeeder.stop();
         } else {
             if (firstSensorBroken == false && secondSensorBroken == true) {
                 if (colorMode) {
                     preventWrongColor(); /// check this placement
-                } else {
+                    
+                }
+                if (hasIllegalBall){
+                    theFeeder.down();
+                    Robot.theClearIntake.start();
+                }else{
                     theFeeder.up();
                 }
+                
+
             } else if (secondSensorBroken == false) {
-                theFeeder.up();
+                if (hasIllegalBall){
+                    theFeeder.down();
+                    Robot.theClearIntake.start();
+                    preventWrongColor();
+                    theFeeder.setCurrentBallsHeld(0);// this is because it accidentally increments after we do this
+                    Logger.Debug("ball count?           ---         " + theFeeder.getCurrentBallsHeld());
+                   
+                }else{
+                    theFeeder.up();
+                }
+                
             } else {
                 theFeeder.stop();
             }
@@ -95,19 +113,17 @@ public class FeederCommandWithColor extends Command {
         if (DriverStation.getAlliance() == Alliance.Red) {
             if (getBallColor() == "blue") {
                 Logger.Debug("blue ball!");
-                theFeeder.down();
-                Robot.theClearIntake.start();
-
+                hasIllegalBall = true;
             } else {
-                theFeeder.up();
+                hasIllegalBall = false;
             }
         } else {
             if (getBallColor() == "red") {
                 Logger.Debug("red ball!");
-                theFeeder.down();
-                Robot.theClearIntake.start();
+                hasIllegalBall = true;
             } else {
-                theFeeder.up();
+                //theFeeder.up();
+                hasIllegalBall = false;
             }
 
         }

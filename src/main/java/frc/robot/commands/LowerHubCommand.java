@@ -28,9 +28,8 @@ public class LowerHubCommand extends CommandGroup {
 
     double shooterSpeed = theShooter.getLowSpeedFromDashboard();
     addSequential(new ManualPrepareToShoot(shooterSpeed));
-    Logger.Debug("shooterSpeed" + shooterSpeed);
     
-    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
+    // addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
 
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

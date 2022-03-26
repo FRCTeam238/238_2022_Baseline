@@ -46,9 +46,9 @@ public class RaiseLowerHanger extends Command {
   protected void execute() {
     magnitudeY = controller.getRawAxis(axisY);
     if (magnitudeY >= RobotMap.HangerDevices.controllerDeadzone) {
-      theHanger.raiseLower(RobotMap.HangerDevices.hangerUpSpeed);
-    } else if (magnitudeY <= -RobotMap.HangerDevices.controllerDeadzone) {
       theHanger.raiseLower(RobotMap.HangerDevices.hangerDownSpeed);
+    } else if (magnitudeY <= -RobotMap.HangerDevices.controllerDeadzone) {
+      theHanger.raiseLower(RobotMap.HangerDevices.hangerUpSpeed);
     } else {
       theHanger.brake();
     }

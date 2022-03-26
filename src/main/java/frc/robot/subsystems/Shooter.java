@@ -24,6 +24,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
@@ -80,8 +81,9 @@ public class Shooter extends Subsystem {
 
     private NetworkTableEntry entry;
 
-    private NetworkTableEntry highHubSpeedFromDashboard;
-    private NetworkTableEntry lowHubSpeedFromDashboard;
+    private SimpleWidget highHubSpeedFromDashboard;
+    private SimpleWidget lowHubSpeedFromDashboard;
+    private SimpleWidget isTuningShooter;
 
     private boolean shooterAtSpeed = false;
 
@@ -107,8 +109,9 @@ public class Shooter extends Subsystem {
         entry = Shuffleboard.getTab("DiagnosticTab").add("Shooter At Speed", false).getEntry();
         simpleMotorFeedforward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.SHOOTER_ks, RobotMap.ShooterDevices.SHOOTER_kv); 
 
-        highHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter high hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB).getEntry();
-        lowHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter low hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB).getEntry();
+        highHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter high hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB);
+        lowHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter low hub RPM", RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB);
+        isTuningShooter = Shuffleboard.getTab("Shooter Tuning").add("Tuning Shooter?", false);
     }
 
     public void initSparkMax() {
@@ -225,12 +228,28 @@ public class Shooter extends Subsystem {
         stopCounting();
     }
 
+    public boolean isTuningShooter() {
+        return isTuningShooter.getEntry().getBoolean(false);
+    }
+
     public double getHighSpeedFromDashboard(){
-        return highHubSpeedFromDashboard.getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB);
+        double speed;
+        if (isTuningShooter() == true) {
+            speed = highHubSpeedFromDashboard.getEntry().getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB);
+        } else {
+            speed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB;
+        }
+        return speed;
     }
 
     public double getLowSpeedFromDashboard(){
-        return lowHubSpeedFromDashboard.getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB);
+        double speed;
+        if (isTuningShooter() == true) {
+            speed = lowHubSpeedFromDashboard.getEntry().getDouble(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB);
+        } else {
+            speed = RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB;
+        }
+        return speed;
     }
 
     private void initLiveWindow() {
