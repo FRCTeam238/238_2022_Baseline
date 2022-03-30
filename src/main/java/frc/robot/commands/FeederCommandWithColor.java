@@ -75,7 +75,12 @@ public class FeederCommandWithColor extends Command {
                     theFeeder.down();
                     Robot.theClearIntake.start();
                     preventWrongColor();
-                    theFeeder.setCurrentBallsHeld(0);// this is because it accidentally increments after we do this
+                    if (DriverStation.getAlliance() == Alliance.Red){
+                        theFeeder.setCurrentBallsHeld(0);
+                    } else {
+                        theFeeder.setCurrentBallsHeld(1);
+                    }
+                   
                     Logger.Debug("ball count?           ---         " + theFeeder.getCurrentBallsHeld());
                    
                 }else{

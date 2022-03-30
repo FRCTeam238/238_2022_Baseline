@@ -217,6 +217,67 @@
     {
       "Commands": [
         {
+          "Name": "IntakeExtendCommand",
+          "IsParallel": false,
+          "Parameters": []
+        },
+        {
+          "Name": "IntakeInOutCommand",
+          "IsParallel": true,
+          "Parameters": []
+        },
+        {
+          "Name": "FeederCommand",
+          "IsParallel": true,
+          "Parameters": []
+        },
+        {
+          "Name": "TrajectoryDriveCommand",
+          "IsParallel": true,
+          "Parameters": [
+            "2BallDriveFirst"
+          ]
+        },
+        {
+          "Name": "Delay",
+          "IsParallel": false,
+          "Parameters": [
+            "2"
+          ]
+        },
+        {
+          "Name": "ManualCountReset",
+          "IsParallel": false,
+          "Parameters": []
+        },
+        {
+          "Name": "ResetCommands",
+          "IsParallel": false,
+          "Parameters": []
+        },
+        {
+          "Name": "TrajectoryDriveCommand",
+          "IsParallel": true,
+          "Parameters": [
+            "4BallSecondPath"
+          ]
+        },
+        {
+          "Name": "IntakeInOutCommand",
+          "IsParallel": true,
+          "Parameters": []
+        },
+        {
+          "Name": "FeederCommand",
+          "IsParallel": true,
+          "Parameters": []
+        }
+      ],
+      "Name": "4BallNoShooter"
+    },
+    {
+      "Commands": [
+        {
           "Name": "DriveStraightWithoutSensors",
           "IsParallel": false,
           "Parameters": [
@@ -264,11 +325,6 @@
     {
       "Commands": [
         {
-          "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
-        },
-        {
           "Name": "Delay",
           "IsParallel": false,
           "Parameters": [
@@ -276,11 +332,9 @@
           ]
         },
         {
-          "Name": "AutoShooterCommand",
+          "Name": "IntakeExtendCommand",
           "IsParallel": false,
-          "Parameters": [
-            "2"
-          ]
+          "Parameters": []
         }
       ],
       "Name": "Delaytest"
