@@ -35,7 +35,6 @@ public class FeedForShoot extends Command {
       // Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
       double feederSpeedFromDashboard = Robot.feeder.getFeederSpeedFromDashboard();
       Robot.feeder.up(feederSpeedFromDashboard);
-      Logger.Debug("Feeder Speed: " + feederSpeedFromDashboard);
     }
   }
 

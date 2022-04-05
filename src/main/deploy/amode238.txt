@@ -291,6 +291,13 @@
     {
       "Commands": [
         {
+          "Name": "Delay",
+          "IsParallel": false,
+          "Parameters": [
+            "4"
+          ]
+        },
+        {
           "Name": "IntakeExtendCommand",
           "IsParallel": false,
           "Parameters": []

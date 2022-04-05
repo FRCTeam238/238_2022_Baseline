@@ -76,7 +76,7 @@ public class Feeder extends Subsystem {
         // checkColorReset();
         RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
 
-        feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.upSpeed);
+        feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.highHubUpSpeed);
     }
 
     @Override
@@ -140,7 +140,6 @@ public class Feeder extends Subsystem {
     public void setCurrentBallsHeld(int ballCount)
     {
         ballCountOffset = ballCount - ballCounter.get();
-        
     }
 
     public int getCurrentBallsHeld(){
@@ -170,9 +169,9 @@ public class Feeder extends Subsystem {
     public double getFeederSpeedFromDashboard(){
         double speed;
         if (Robot.shooter.isTuningShooter() == true) {
-            speed = feederSpeedFromDashboard.getEntry().getDouble(RobotMap.FeederDevices.upSpeed);
+            speed = feederSpeedFromDashboard.getEntry().getDouble(RobotMap.FeederDevices.highHubUpSpeed);
         } else {
-            speed = RobotMap.FeederDevices.upSpeed;
+            speed = RobotMap.FeederDevices.highHubUpSpeed;
         }
         return speed;
     }

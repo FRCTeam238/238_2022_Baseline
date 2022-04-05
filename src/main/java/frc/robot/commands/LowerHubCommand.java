@@ -33,6 +33,6 @@ public class LowerHubCommand extends CommandGroup {
 
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed
-    addSequential(new FeedForShoot(0));
+    addSequential(new LowHubFeedForShoot(0));
   }
 }
