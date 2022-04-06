@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
@@ -223,10 +224,14 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {
+    Logger.Debug("current balls" + feeder.getCurrentBallsHeld());
+    Logger.Debug("prevBallCount __________________" + feeder.prevBallCount);
+    if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {//
       feeder.updatePrevBallsHeld();
+    
       theClearIntake.start();
     }
+    
   }
     
   /**

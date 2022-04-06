@@ -54,11 +54,6 @@ public class PrepareToShoot extends Command {
     if(theShooter.isAtSpeed() && firstIsAtSpeedTime == 0){ 
       firstIsAtSpeedTime = this.timeSinceInitialized();
     }
-    if((firstIsAtSpeedTime + initialCounterDelay) <= this.timeSinceInitialized()){
-      theShooter.beginCounting();
-    }
-    theShooter.countBalls();
-    // SmartDashboard.putNumber("Balls Shot", theShooter.ballsShot);
   }
   // find speed to run at, in ticks per 100ms
   // tell shooter to run at that speed

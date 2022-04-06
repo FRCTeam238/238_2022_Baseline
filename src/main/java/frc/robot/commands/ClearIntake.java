@@ -15,7 +15,7 @@ public class ClearIntake extends Command {
    protected void initialize() {
        // TODO Auto-generated method stub
        setInterruptible(false);
-       setTimeout(1);
+       setTimeout(RobotMap.IntakeDevices.clearIntakeTime);
    }
 
    @Override

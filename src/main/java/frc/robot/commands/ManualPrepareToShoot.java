@@ -22,10 +22,18 @@ public class ManualPrepareToShoot extends Command {
   private Timer timer;
   private double settlingTime = RobotMap.ShooterDevices.settlingTime;
   private double rpm;
+  private double backspinRpm = 0;
 
   public ManualPrepareToShoot(double rpm) {
     this.timer = new Timer();
     this.rpm = rpm;
+    requires(theShooter);
+  }
+
+  public ManualPrepareToShoot(double rpm, double backspinRpm) {
+    this.timer = new Timer();
+    this.rpm = rpm;
+    this.backspinRpm = backspinRpm;
     requires(theShooter);
   }
 
@@ -39,7 +47,9 @@ public class ManualPrepareToShoot extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    theShooter.setSpeed(rpm);
+    //remove backspin??
+    theShooter.setSpeed(rpm, backspinRpm);
+
     // Logger.Debug("RPM: " + rpm);
     theShooter.isShooting = true;
 

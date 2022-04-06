@@ -21,7 +21,7 @@ import frc.robot.commands.LowerHubCommand;
 import frc.robot.commands.ManualCountReset;
 import frc.robot.commands.ManualFeed;
 import frc.robot.commands.ManualReverse;
-import frc.robot.commands.ManualShooterCommand;
+import frc.robot.commands.HighHubCommand;
 import frc.robot.commands.RaiseHanger;
 import frc.robot.commands.LowerHanger;
 import frc.robot.commands.TraversalSequence;
@@ -55,8 +55,8 @@ public class OI {
     intakeRetractButton.whenPressed(new IntakeRetractCommand(operatorController));
 
     // MANUAL shooter, uses right trigger
-    TriggerButton manualShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
-    manualShoot.whileHeld(new ManualShooterCommand());
+    TriggerButton highHubShoot = new TriggerButton(operatorController, XboxController.Axis.kRightTrigger.value);
+    highHubShoot.whileHeld(new HighHubCommand());
 
     TriggerButton lowerHubShoot = new TriggerButton(operatorController, XboxController.Axis.kLeftTrigger.value);
     lowerHubShoot.whileHeld((new LowerHubCommand()));

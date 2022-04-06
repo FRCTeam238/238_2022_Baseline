@@ -18,7 +18,7 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-public class ManualShooterCommand extends CommandGroup {
+public class HighHubCommand extends CommandGroup {
   /**
    * Add your docs here.
    */
@@ -26,13 +26,13 @@ public class ManualShooterCommand extends CommandGroup {
   Feeder theFeeder = Robot.feeder;
   
 
-  public ManualShooterCommand() {
+  public HighHubCommand() {
     requires(theFeeder);
     requires(theShooter);
 
     
     double shooterSpeed = theShooter.getHighSpeedFromDashboard();
-    addSequential(new ManualPrepareToShoot(shooterSpeed));
+    addSequential(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH));
     
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

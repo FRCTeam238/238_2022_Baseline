@@ -27,9 +27,9 @@ public class LowerHubCommand extends CommandGroup {
     requires(theShooter);
 
     double shooterSpeed = theShooter.getLowSpeedFromDashboard();
-    addSequential(new ManualPrepareToShoot(shooterSpeed));
+    addSequential(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_LOW));
     
-    // addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_LOW_HUB));
+    
 
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed
