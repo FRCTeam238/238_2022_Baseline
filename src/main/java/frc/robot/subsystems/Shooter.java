@@ -53,6 +53,14 @@ public class Shooter extends Subsystem {
     private double kMinOutput = 0;
     private double kMaxOutput = 12;
 
+    private double BSkP = 4.8708E-05;// 1.2708E-06;//0.0002;//0.00005;
+    private double BSkI = 0;
+    private double BSkD = 0;// 0.001;//0.09;
+    private double BSkIZ = 0;
+    private double BSkFF = 0;// 1.8e-4;
+    private double BSkMinOutput = 0;
+    private double BSkMaxOutput = 12;
+
     private double desiredSpeedPID = 0;
 
     private double desiredPositionPID = 0;
@@ -67,7 +75,8 @@ public class Shooter extends Subsystem {
 
     public boolean isShooting = false;
 
-    SimpleMotorFeedforward simpleMotorFeedforward;
+    SimpleMotorFeedforward mainWheelFeedForward;
+    SimpleMotorFeedforward backspinWheelFeedForward;
 
     Dashboard238 dashboard;
 
@@ -75,8 +84,10 @@ public class Shooter extends Subsystem {
         initSparkMax();
         dashboard = Robot.dashboard238;
         entry = Shuffleboard.getTab("DiagnosticTab").add("Shooter At Speed", false).getEntry();
-        simpleMotorFeedforward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.SHOOTER_ks,
+        mainWheelFeedForward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.SHOOTER_ks,
                 RobotMap.ShooterDevices.SHOOTER_kv);
+        backspinWheelFeedForward = new SimpleMotorFeedforward(RobotMap.ShooterDevices.BACKSPIN_ks,
+                RobotMap.ShooterDevices.BACKSPIN_kv);
 
         highHubSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Shooter high hub RPM",
                 RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB);
@@ -112,17 +123,18 @@ public class Shooter extends Subsystem {
         // should we set this inverted??
         backspinController.restoreFactoryDefaults();
         backspinController.setIdleMode(IdleMode.kCoast);
+        backspinController.setInverted(true);
         backspinPID = backspinController.getPIDController();
         backspinEncoder = backspinController.getEncoder();
 
         backspinEncoder.setPosition(0);
         backspinController.setSmartCurrentLimit(40);
-        backspinPID.setP(kP);
-        backspinPID.setI(kI);
-        backspinPID.setD(kD);
-        backspinPID.setIZone(kIZ);
-        backspinPID.setFF(kFF);
-        backspinPID.setOutputRange(kMinOutput, kMaxOutput);
+        backspinPID.setP(BSkP);
+        backspinPID.setI(BSkI);
+        backspinPID.setD(BSkD);
+        backspinPID.setIZone(BSkIZ);
+        backspinPID.setFF(BSkFF);
+        backspinPID.setOutputRange(BSkMinOutput, BSkMaxOutput);
     }
 
     @Override
@@ -131,7 +143,7 @@ public class Shooter extends Subsystem {
 
     // set speed for one set of wheels
     public void setSpeed(double speedValue) {
-        double feedForward = simpleMotorFeedforward.calculate(speedValue / 60);
+        double feedForward = mainWheelFeedForward.calculate(speedValue / 60);
         // replace below getPIDController to match arbitrarty feed forward
 
         desiredSpeedPID = speedValue;
@@ -143,8 +155,8 @@ public class Shooter extends Subsystem {
 
     // set speed 2.0 with ALL NEW BACKSPIN WHEEL TECHNOLOGY
     public void setSpeed(double speedValue, double backspinSpeedValue) {
-        double feedForward = simpleMotorFeedforward.calculate(speedValue / 60);
-        double backspinFeedForward = simpleMotorFeedforward.calculate(backspinSpeedValue / 60);
+        double feedForward = mainWheelFeedForward.calculate(speedValue / 60);
+        double backspinFeedForward = backspinWheelFeedForward.calculate(backspinSpeedValue / 60);
 
         // do backspin?? pid stuff
         desiredSpeedPID = speedValue;

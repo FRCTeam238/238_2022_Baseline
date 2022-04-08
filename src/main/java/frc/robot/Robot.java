@@ -224,13 +224,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    Logger.Debug("current balls" + feeder.getCurrentBallsHeld());
-    Logger.Debug("prevBallCount __________________" + feeder.prevBallCount);
-    if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {//
-      feeder.updatePrevBallsHeld();
     
+    if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {     
       theClearIntake.start();
     }
+    feeder.updatePrevBallsHeld();
     
   }
     

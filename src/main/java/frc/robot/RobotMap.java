@@ -89,16 +89,18 @@ public final class RobotMap {
     public static CANSparkMax shooterController = new CANSparkMax(SHOOTER_CONTROLLER, MotorType.kBrushless);
     public static CANSparkMax shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
     public static double SHOOTER_SPEED_TOLERANCE = 200;
-    public static double SHOOTER_DEFAULT_HIGH_HUB = 3090;//3078;//3095;//3110; // 3120;//(yellow hex: 4) ||||||| //3195;
+    public static double SHOOTER_DEFAULT_HIGH_HUB = 1800;//3078;//3095;//3110; // 3120;//(yellow hex: 4) ||||||| //3195;
                                                          // //ReadingSunday(Yellow Hex: 2)
-    public static double SHOOTER_DEFAULT_LOW_HUB = 2040;// 1950; //1900
+    public static double SHOOTER_DEFAULT_LOW_HUB = 1520;// 1950; //1900
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083 * 42;
 
     //backspin??
     public static CANSparkMax BackspinController = new CANSparkMax(BACKSPIN_CONTROLLER, MotorType.kBrushless);
-    public static double SHOOTER_DEFAULT_BACKSPIN_HIGH = 3090;
-    public static double SHOOTER_DEFAULT_BACKSPIN_LOW = 2040;
+    public static double SHOOTER_DEFAULT_BACKSPIN_HIGH = 2500;
+    public static double SHOOTER_DEFAULT_BACKSPIN_LOW = 5400;
+    public static double BACKSPIN_ks = 0.31651;
+    public static double BACKSPIN_kv = 0.0030083 * 42;
 
     public static double settlingTime = 0.4;
   }
@@ -114,7 +116,7 @@ public final class RobotMap {
     public static double intakeSpeed = 1;
     public static double outtakeSpeed = 0.50;
 
-    public static double clearIntakeTime = 3;
+    public static double clearIntakeTime = 0.5;
 
   }
 

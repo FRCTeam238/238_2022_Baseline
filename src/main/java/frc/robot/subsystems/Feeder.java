@@ -109,7 +109,7 @@ public class Feeder extends Subsystem {
 
         feederController.set(upSpeed);
         prevFeedDirection = FeederDirection.up;  
-        updatePrevBallsHeld();
+        //updatePrevBallsHeld();
     }
 
     public void down() {
@@ -122,7 +122,7 @@ public class Feeder extends Subsystem {
         } 
         feederController.set(-1 * FEEDER_OUTPUT);
         prevFeedDirection = FeederDirection.down;
-        updatePrevBallsHeld();
+        //updatePrevBallsHeld();
     }
 
     public double getPower(){
