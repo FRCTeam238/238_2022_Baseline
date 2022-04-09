@@ -18,14 +18,16 @@ public class TankDrive extends Command {
   private Drivetrain drivetrain;
   private IDrivetrainParametersSource parameterSource;
   private IDrivetrainParametersSource defaultParameterSource;
+  private double driverSlowSpeedMultiplier;
 
   private boolean isStarted = false;
  
   public TankDrive(IDrivetrainParametersSource defaultParameterSource, Drivetrain drivetrain) {
     // added drivetrain as a constructor parameter as sim mode was returning Robot.drivetrain = null
     requires(drivetrain);
- 
+    
     this.drivetrain = drivetrain;
+    this.driverSlowSpeedMultiplier = RobotMap.DrivetrainControllers.driverSlowSpeedMultiplier;
     this.defaultParameterSource = defaultParameterSource;
   }
 
@@ -50,7 +52,12 @@ public class TankDrive extends Command {
       if (Math.abs(parameters.Right) < RobotMap.DrivetrainControllers.deadBandZoneValue) {
         parameters.Right = 0;
       }
-      drivetrain.drive(parameters.Left, parameters.Right);// , parameters.Angle);
+      if (RobotMap.Joysticks.driverStickLeft.getTrigger() || RobotMap.Joysticks.driverStickRight.getTrigger()) {
+        drivetrain.drive(parameters.Left*driverSlowSpeedMultiplier, parameters.Right*driverSlowSpeedMultiplier);
+      }else{
+        drivetrain.drive(parameters.Left, parameters.Right);// , parameters.Angle);
+      }
+     
   }
 
   // Make this return true when this Command no longer needs to run execute()

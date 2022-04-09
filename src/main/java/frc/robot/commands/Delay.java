@@ -20,8 +20,17 @@ public class Delay extends Command implements IAutonomousCommand {
   private boolean isAutonomousMode = false;
   private double startTime = 0;
   private boolean isDone = false;
+  
   public Delay() {
     
+  }
+
+  public Delay(double timeToWait) {
+    this.timeToWait = timeToWait;
+  }
+
+  public void timeout(double time) {
+    timeToWait = time;
   }
 
   // Called just before this Command runs the first time

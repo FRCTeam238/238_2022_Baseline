@@ -44,6 +44,7 @@ public final class RobotMap {
     public static WPI_TalonFX RightDriveTrainFollower = new WPI_TalonFX(DRIVE_TRAIN_RIGHT_FOLLOWER);
 
     public static double deadBandZoneValue = 0.05;
+    public static double driverSlowSpeedMultiplier = 0.7;
   }
 
   /** Driver joysticks and operator controllers */
@@ -91,14 +92,14 @@ public final class RobotMap {
     public static double SHOOTER_SPEED_TOLERANCE = 200;
     public static double SHOOTER_DEFAULT_HIGH_HUB = 1800;//3078;//3095;//3110; // 3120;//(yellow hex: 4) ||||||| //3195;
                                                          // //ReadingSunday(Yellow Hex: 2)
-    public static double SHOOTER_DEFAULT_LOW_HUB = 1520;// 1950; //1900
+    public static double SHOOTER_DEFAULT_LOW_HUB = 1200;//1520;// 1950; //1900
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083 * 42;
 
     //backspin??
     public static CANSparkMax BackspinController = new CANSparkMax(BACKSPIN_CONTROLLER, MotorType.kBrushless);
     public static double SHOOTER_DEFAULT_BACKSPIN_HIGH = 2500;
-    public static double SHOOTER_DEFAULT_BACKSPIN_LOW = 5400;
+    public static double SHOOTER_DEFAULT_BACKSPIN_LOW = 1650;
     public static double BACKSPIN_ks = 0.31651;
     public static double BACKSPIN_kv = 0.0030083 * 42;
 

@@ -26,6 +26,7 @@ import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.ClearIntake;
+import frc.robot.commands.ClearIntakeCommandGroup;
 import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static LED led;
   public static ClearIntake theClearIntake;
+  public static ClearIntakeCommandGroup theClearIntakeCommandGroup;
+
   public UsbCamera intakeCamera;
 
   // Dictionary of auto mode names and commands to run
@@ -226,7 +229,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     
     if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {     
-      theClearIntake.start();
+      // theClearIntake.start();
+      theClearIntakeCommandGroup.start();
     }
     feeder.updatePrevBallsHeld();
     

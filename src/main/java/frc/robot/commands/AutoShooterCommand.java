@@ -36,7 +36,7 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
     requires(theShooter);
 
     
-    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB));
+    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH));
    
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed

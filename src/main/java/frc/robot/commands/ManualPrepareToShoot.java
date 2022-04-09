@@ -24,11 +24,11 @@ public class ManualPrepareToShoot extends Command {
   private double rpm;
   private double backspinRpm = 0;
 
-  public ManualPrepareToShoot(double rpm) {
-    this.timer = new Timer();
-    this.rpm = rpm;
-    requires(theShooter);
-  }
+  // public ManualPrepareToShoot(double rpm) {
+  //   this.timer = new Timer();
+  //   this.rpm = rpm;
+  //   requires(theShooter);
+  // }
 
   public ManualPrepareToShoot(double rpm, double backspinRpm) {
     this.timer = new Timer();
