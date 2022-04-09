@@ -8,6 +8,10 @@
 	"ParameterNames": ["Timeout"]
   },
   {
+    "CommandName": "Delay",
+	  "ParameterNames": ["DelayTime"]
+  },
+  {
     "CommandName": "IntakeInOutCommand",
 	"ParameterNames": []
   },
