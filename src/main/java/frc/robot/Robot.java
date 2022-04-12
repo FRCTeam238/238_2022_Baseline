@@ -13,6 +13,7 @@ import java.util.List;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -99,6 +100,8 @@ public class Robot extends TimedRobot {
     // navigationBoard.init();
     dashboard238.init();
     populateAutomodes();
+
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
 
     LiveWindow.disableAllTelemetry();
   }
