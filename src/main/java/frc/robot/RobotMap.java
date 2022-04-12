@@ -92,7 +92,7 @@ public final class RobotMap {
     public static double SHOOTER_SPEED_TOLERANCE = 200;
     public static double SHOOTER_DEFAULT_HIGH_HUB = 1800;//3078;//3095;//3110; // 3120;//(yellow hex: 4) ||||||| //3195;
                                                          // //ReadingSunday(Yellow Hex: 2)
-    public static double SHOOTER_DEFAULT_LOW_HUB = 1200;//1520;// 1950; //1900
+    public static double SHOOTER_DEFAULT_LOW_HUB = 900;//1520;// 1950; //1900
     public static double SHOOTER_ks = 0.31651;
     public static double SHOOTER_kv = 0.0030083 * 42;
 
