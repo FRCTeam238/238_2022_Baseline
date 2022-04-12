@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     hanger = new Hanger();
 
     theClearIntake = new ClearIntake();
+    theClearIntakeCommandGroup = new ClearIntakeCommandGroup();
     intakeCamera = CameraServer.startAutomaticCapture();
     intakeCamera.setResolution(160, 120);
     intakeCamera.setFPS(20);
