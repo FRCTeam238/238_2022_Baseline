@@ -223,6 +223,8 @@ public class Robot extends TimedRobot {
     if(fmsConnected){
       enteredTeleop = true;
     }
+
+    drivetrain.setCurrentLimits();
   }
 
   /**

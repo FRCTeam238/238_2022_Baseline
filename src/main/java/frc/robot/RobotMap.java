@@ -43,7 +43,7 @@ public final class RobotMap {
     public static WPI_TalonFX RightDriveTrainController = new WPI_TalonFX(DRIVE_TRAIN_RIGHT_CONTROLLER);
     public static WPI_TalonFX RightDriveTrainFollower = new WPI_TalonFX(DRIVE_TRAIN_RIGHT_FOLLOWER);
 
-    public static double deadBandZoneValue = 0.05;
+    public static double deadBandZoneValue = 0.07;//0.05;
     public static double driverSlowSpeedMultiplier = 0.7;
   }
 

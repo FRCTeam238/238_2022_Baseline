@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -97,6 +98,13 @@ public class Drivetrain extends Subsystem {
     TankDrive tankDriveCommand = new TankDrive(myDriverJoysticks, this);
     setDefaultCommand(tankDriveCommand);
     // SmartDashboard.putData("Drivetrain command", this);
+  }
+
+  public void setCurrentLimits() {
+      rightControllerDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));
+      leftControllerDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));
+      rightDriveFollower1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));
+      leftDriveFollower1.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));
   }
 
   public void drive(double left, double right) {
