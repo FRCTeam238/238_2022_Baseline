@@ -71,7 +71,7 @@ public class OI {
     Robot.feeder.setDefaultCommand(new FeederCommand());
     // Robot.feeder.setDefaultCommand(new FeederCommandWithColor());
 
-    DriverJoysticks myDriverJoysticks = new DriverJoysticks();
+    DriverJoysticks myDriverJoysticks = new DriverJoysticks(leftStick, rightStick);
     myDriverJoysticks.invertJoysticks();
     TankDrive tankDriveCommand = new TankDrive(myDriverJoysticks, Robot.drivetrain);
     Robot.drivetrain.setDefaultCommand(tankDriveCommand);

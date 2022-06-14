@@ -19,9 +19,9 @@ public class DriverJoysticks implements IDrivetrainParametersSource {
     private Joystick right;
     private boolean isInverted = false;
 
-    public DriverJoysticks() {
-        this.right = Robot.oi.rightStick;
-        this.left = Robot.oi.leftStick;
+    public DriverJoysticks(Joystick leftStick, Joystick rightStick) {
+        this.right = rightStick;
+        this.left = leftStick;
     }
 
     @Override
