@@ -20,7 +20,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import frc.core238.wrappers.SendableWrapper;
@@ -31,7 +31,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Shooter extends Subsystem {
+public class Shooter extends SubsystemBase {
     private final CANSparkMax shooterMasterDrive = RobotMap.ShooterDevices.shooterController;
     private CANSparkMax shooterFollowerDrive = RobotMap.ShooterDevices.shooterFollower;
 
@@ -135,10 +135,6 @@ public class Shooter extends Subsystem {
         backspinPID.setIZone(BSkIZ);
         backspinPID.setFF(BSkFF);
         backspinPID.setOutputRange(BSkMinOutput, BSkMaxOutput);
-    }
-
-    @Override
-    public void initDefaultCommand() {
     }
 
     // set speed for one set of wheels

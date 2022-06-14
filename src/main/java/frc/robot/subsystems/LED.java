@@ -9,14 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.core238.Logger;
 
 /**
  * Add your docs here.
  */
-public class LED extends Subsystem {
+public class LED extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   AddressableLED m_led;
@@ -28,13 +28,6 @@ public class LED extends Subsystem {
   public LED(final int portId, final int numLeds) {
     this.m_dioPort = portId;
     this.m_numLeds = numLeds;
-
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
     m_led = new AddressableLED(m_dioPort);
     m_ledBuffer = new AddressableLEDBuffer(m_numLeds);
 
@@ -43,7 +36,6 @@ public class LED extends Subsystem {
     // Set the data
     m_led.setData(m_ledBuffer);
     m_led.start();
-
   }
 
   /* sets the color of LED id starting at begin thru end */

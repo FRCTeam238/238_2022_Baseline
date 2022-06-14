@@ -25,7 +25,9 @@ import frc.robot.commands.HighHubCommand;
 import frc.robot.commands.RaiseHanger;
 import frc.robot.commands.LowerHanger;
 import frc.robot.commands.TraversalSequence;
+import frc.robot.commands.drivetrainparameters.DriverJoysticks;
 import frc.robot.commands.RaiseLowerHanger;
+import frc.robot.commands.TankDrive;
 import frc.robot.commands.TraversalExtendCommand;
 import frc.robot.commands.TraversalRetractCommand;
 
@@ -68,6 +70,11 @@ public class OI {
     // relate to shooter
     Robot.feeder.setDefaultCommand(new FeederCommand());
     // Robot.feeder.setDefaultCommand(new FeederCommandWithColor());
+
+    DriverJoysticks myDriverJoysticks = new DriverJoysticks();
+    myDriverJoysticks.invertJoysticks();
+    TankDrive tankDriveCommand = new TankDrive(myDriverJoysticks, Robot.drivetrain);
+    Robot.drivetrain.setDefaultCommand(tankDriveCommand);
 
     JoystickButton manualFeederForwardButton = new JoystickButton(operatorController,
         XboxController.Button.kLeftBumper.value);

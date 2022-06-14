@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.core238.Logger;
 import frc.robot.Dashboard238;
@@ -28,7 +28,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Intake extends Subsystem {
+public class Intake extends SubsystemBase {
     private final VictorSPX intakeMasterDrive = RobotMap.IntakeDevices.intakeVictor;//IntakeDevices.INTAKE_MASTER_TALON;
     private DoubleSolenoid solenoid = RobotMap.IntakeDevices.intakeSolenoid;
 
@@ -48,11 +48,6 @@ public class Intake extends Subsystem {
         entry = Shuffleboard.getTab("DiagnosticTab").add("IntakeVelocity", 0).getEntry();
         //solenoid = RobotMap.IntakeDevices.intakeSolenoid;
         retractIntake();
-    }
-
-    @Override 
-    public void initDefaultCommand() {
-
     }
 
     public void initTalons() {
@@ -75,7 +70,6 @@ public class Intake extends Subsystem {
         
         
     }
-
 
     private double getPower(){
         double power = intakeMasterDrive.getMotorOutputPercent();

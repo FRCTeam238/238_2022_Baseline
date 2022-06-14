@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.Logger;
@@ -22,7 +22,7 @@ import frc.robot.Trig238;
 /**
  * Add your docs here.
  */
-public class Vision extends Subsystem {
+public class Vision extends SubsystemBase {
 
   NetworkTable table;
   NetworkTableEntry tx;
