@@ -16,8 +16,10 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -27,7 +29,6 @@ import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
 import frc.core238.autonomous.IAutonomousModeDataSource;
 import frc.robot.commands.ClearIntake;
-import frc.robot.commands.ClearIntakeCommandGroup;
 import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeInOutCommand;
 import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
@@ -58,8 +59,8 @@ public class Robot extends TimedRobot {
   public static Hanger hanger;
   public static Intake intake;
   public static LED led;
-  public static ClearIntake theClearIntake;
-  public static ClearIntakeCommandGroup theClearIntakeCommandGroup;
+  public static Command theClearIntake;
+  public static SequentialCommandGroup theClearIntakeCommandGroup;
 
   public UsbCamera intakeCamera;
 
@@ -86,8 +87,8 @@ public class Robot extends TimedRobot {
     led = new LED(2, 150);
     hanger = new Hanger();
 
-    theClearIntake = new ClearIntake();
-    theClearIntakeCommandGroup = new ClearIntakeCommandGroup();
+    theClearIntake = new ClearIntake().withTimeout(RobotMap.IntakeDevices.clearIntakeTime);
+    theClearIntakeCommandGroup = new SequentialCommandGroup(new WaitCommand(0.5), theClearIntake);
     intakeCamera = CameraServer.startAutomaticCapture();
     intakeCamera.setResolution(160, 120);
     intakeCamera.setFPS(20);
@@ -165,7 +166,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -205,7 +206,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -232,11 +233,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
     
     if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {     
-      // theClearIntake.start();
-      theClearIntakeCommandGroup.start();
+      theClearIntakeCommandGroup.schedule(false);
     }
     feeder.updatePrevBallsHeld();
     
