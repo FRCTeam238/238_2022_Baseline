@@ -7,29 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class LowHubFeedForShoot extends Command {
+public class LowHubFeedForShoot extends CommandBase {
   private double delay;
   public LowHubFeedForShoot(double delayTime) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    // Use addRequirements() here to declare subsystem dependencies
+    // eg. addRequirements(chassis);
     this.delay = delayTime;
-    requires(Robot.feeder);
-    requires(Robot.shooter);
+    addRequirements(Robot.feeder);
+    addRequirements(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     if(this.timeSinceInitialized() >= delay){
       double feederSpeedFromDashboard = RobotMap.FeederDevices.lowHubUpSpeed;//Robot.feeder.getFeederSpeedFromDashboard();
       Robot.feeder.up(feederSpeedFromDashboard);
@@ -38,13 +38,13 @@ public class LowHubFeedForShoot extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.feeder.stop();
     Robot.shooter.neutral();
   }
@@ -53,7 +53,7 @@ public class LowHubFeedForShoot extends Command {
   // subsystems is scheduled to run
   //**this is where the command "ends"**
   @Override
-  protected void interrupted() {
+  public void interrupted() {
     Robot.feeder.stop();
     Robot.shooter.neutral();
   }

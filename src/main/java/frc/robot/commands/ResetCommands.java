@@ -15,14 +15,14 @@ public class ResetCommands extends InstantCommand implements IAutonomousCommand 
   boolean isAutonomousMode;
   /** Add your docs here. */
   public ResetCommands() {
-    requires(Robot.intake);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    addRequirements(Robot.intake);
+    // Use addRequirements() here to declare subsystem dependencies
+    // eg. addRequirements(chassis);
   }
 
   // Called once when the command executes
   @Override
-  protected void initialize() {
+  public void initialize() {
     IntakeInOutCommand.isDone = false;
     FeederCommand.isDone = false;
   }

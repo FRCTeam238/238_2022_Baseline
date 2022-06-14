@@ -7,14 +7,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrainparameters.DrivetrainParameters;
 import frc.robot.commands.drivetrainparameters.IDrivetrainParametersSource;
 import frc.robot.subsystems.Drivetrain;
 
-public class TankDrive extends Command {
+public class TankDrive extends CommandBase {
   private Drivetrain drivetrain;
   private IDrivetrainParametersSource parameterSource;
   private IDrivetrainParametersSource defaultParameterSource;
@@ -24,7 +24,7 @@ public class TankDrive extends Command {
  
   public TankDrive(IDrivetrainParametersSource defaultParameterSource, Drivetrain drivetrain) {
     // added drivetrain as a constructor parameter as sim mode was returning Robot.drivetrain = null
-    requires(drivetrain);
+    addRequirements(drivetrain);
     
     this.drivetrain = drivetrain;
     this.driverSlowSpeedMultiplier = RobotMap.DrivetrainControllers.driverSlowSpeedMultiplier;
@@ -33,7 +33,7 @@ public class TankDrive extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
 
   }
 
@@ -43,7 +43,7 @@ public class TankDrive extends Command {
   Finally it pulls the individual values from the parameters object and inputs them into the drivetrain drive() method.
   */
   @Override
-  protected void execute() {
+  public void execute() {
       IDrivetrainParametersSource source = parameterSource == null ? defaultParameterSource : parameterSource;
       DrivetrainParameters parameters = source.Get();
       if (Math.abs(parameters.Left) < RobotMap.DrivetrainControllers.deadBandZoneValue) {
@@ -62,19 +62,19 @@ public class TankDrive extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  public void interrupted() {
   }
 
   public void setParameterSource(IDrivetrainParametersSource parameterSource){

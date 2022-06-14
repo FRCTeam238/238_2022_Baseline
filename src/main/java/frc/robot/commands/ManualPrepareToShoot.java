@@ -8,14 +8,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Shooter;
 
-public class ManualPrepareToShoot extends Command {
+public class ManualPrepareToShoot extends CommandBase {
 
   private Shooter theShooter = Robot.shooter;
   private boolean firstIsAtSpeed = true;
@@ -27,26 +27,26 @@ public class ManualPrepareToShoot extends Command {
   // public ManualPrepareToShoot(double rpm) {
   //   this.timer = new Timer();
   //   this.rpm = rpm;
-  //   requires(theShooter);
+  //   addRequirements(theShooter);
   // }
 
   public ManualPrepareToShoot(double rpm, double backspinRpm) {
     this.timer = new Timer();
     this.rpm = rpm;
     this.backspinRpm = backspinRpm;
-    requires(theShooter);
+    addRequirements(theShooter);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     timer.reset();
     firstIsAtSpeed = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     //remove backspin??
     theShooter.setSpeed(rpm, backspinRpm);
 
@@ -61,14 +61,14 @@ public class ManualPrepareToShoot extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     // Logger.Debug("TIMER: " + timer.get());
     return timer.get() > settlingTime;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     theShooter.isShooting = false;
     // theShooter.neutral();
   }
@@ -76,7 +76,7 @@ public class ManualPrepareToShoot extends Command {
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-    end();
+  public void interrupted() {
+    end(boolean interrupted);
   }
 }

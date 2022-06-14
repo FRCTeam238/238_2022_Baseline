@@ -5,7 +5,7 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.core238.Logger;
@@ -15,7 +15,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Shooter;
 
-public class FeederCommandWithColor extends Command {
+public class FeederCommandWithColor extends CommandBase {
 
     public int heldBallsNumber = 0;
     boolean lastStateBroken = true;
@@ -33,21 +33,21 @@ public class FeederCommandWithColor extends Command {
     public boolean colorMode;
 
     public FeederCommandWithColor() {
-        requires(theFeeder);
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        addRequirements(theFeeder);
+        // Use addRequirements() here to declare subsystem dependencies
+        // eg. addRequirements(chassis);
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         SmartDashboard.putBoolean("Color Sensing?", colorMode);
         led.setColor(1, 150, 0, 0, 0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         colorMode = SmartDashboard.getBoolean("Color Sensing?", true);
 
         firstSensorBroken = theFeeder.firstDetector.get();
@@ -64,7 +64,7 @@ public class FeederCommandWithColor extends Command {
                 }
                 if (hasIllegalBall){
                     theFeeder.down();
-                    Robot.theClearIntake.start();
+                    Robot.theClearIntake.schedule();
                 }else{
                     theFeeder.up();
                 }
@@ -136,23 +136,16 @@ public class FeederCommandWithColor extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         heldBallsNumber = 0;
         // TODO change hard coded values
         led.setColor(1, 60, 0, 0, 0);
-        theFeeder.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
         theFeeder.stop();
     }
 }

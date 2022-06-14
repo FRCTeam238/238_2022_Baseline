@@ -11,7 +11,7 @@ import java.util.List;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.Logger;
@@ -24,7 +24,7 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 @AutonomousModeAnnotation(parameterNames = {})
-public class IntakeInOutCommand extends Command implements IAutonomousCommand {
+public class IntakeInOutCommand extends CommandBase implements IAutonomousCommand {
     public static boolean isDone = false;
     private GenericHID controller;
     private int axis;
@@ -45,7 +45,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     private boolean intakeDiagnostics;
 
     public IntakeInOutCommand(GenericHID controller, int axis) {
-        requires(Robot.intake);
+        addRequirements(Robot.intake);
         this.controller = controller;
         this.axis = axis;
         intakeDiagnostics = Shuffleboard.getTab("DiagnosticTab").add("IntakeDiagnostics", false).withPosition(8, 3).getEntry().getBoolean(false);
@@ -58,7 +58,7 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     }
 
     @Override
-    protected void execute() {       
+    public void execute() {       
         if (intakeDiagnostics) {
             // runIntakeDiagnostics();
         }
@@ -88,17 +88,17 @@ public class IntakeInOutCommand extends Command implements IAutonomousCommand {
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.intake.stop();
     }
 
     @Override
-    protected void interrupted() {
-        end();
+    public void interrupted() {
+        end(boolean interrupted);
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // TODO Auto-generated method stub
         return isDone && isAuto;
         //return false;

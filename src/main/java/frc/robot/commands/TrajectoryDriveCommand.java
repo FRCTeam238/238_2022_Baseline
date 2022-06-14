@@ -35,12 +35,12 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
    * Add your docs here.
    */
   /*public TrajectoryDriveCommand(Trajectory trajectory) {
-    requires(Robot.drivetrain);
+    addRequirements(Robot.drivetrain);
     addSequential(drivetrain.createCommandForTrajectory(trajectory));
   } */
 
   public TrajectoryDriveCommand() {
-    requires(Robot.drivetrain);
+    addRequirements(Robot.drivetrain);
   }
 
   @Override
@@ -71,7 +71,7 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     drivetrain.resetOdometry();
   }
 

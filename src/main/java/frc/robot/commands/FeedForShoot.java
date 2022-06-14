@@ -7,55 +7,39 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class FeedForShoot extends Command {
+public class FeedForShoot extends CommandBase {
   private double delay;
-  public FeedForShoot(double delayTime) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    this.delay = delayTime;
-    requires(Robot.feeder);
-    requires(Robot.shooter);
+  public FeedForShoot() {
+    addRequirements(Robot.feeder);
+    addRequirements(Robot.shooter);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-    if(this.timeSinceInitialized() >= delay){
-      //makes the feeder go full power into the shooter
-      // Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
+  public void execute() {
       double feederSpeedFromDashboard = Robot.feeder.getFeederSpeedFromDashboard();
       Robot.feeder.up(feederSpeedFromDashboard);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-    Robot.feeder.stop();
-    Robot.shooter.neutral();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  //**this is where the command "ends"**
-  @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
     Robot.feeder.stop();
     Robot.shooter.neutral();
   }

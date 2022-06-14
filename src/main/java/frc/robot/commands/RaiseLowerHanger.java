@@ -10,13 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.Intake;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class RaiseLowerHanger extends Command {
+public class RaiseLowerHanger extends CommandBase {
 
   // only accept value if x is within low range and if y is outside of small
   // window
@@ -29,21 +29,21 @@ public class RaiseLowerHanger extends Command {
   private int axisY;
 
   public RaiseLowerHanger(GenericHID controller, int axisY) {
-    requires(theHanger);
+    addRequirements(theHanger);
     this.controller = controller;
     this.axisY = axisY;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    // Use addRequirements() here to declare subsystem dependencies
+    // eg. addRequirements(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     magnitudeY = controller.getRawAxis(axisY);
     if (magnitudeY >= RobotMap.HangerDevices.controllerDeadzone) {
       theHanger.raiseLower(RobotMap.HangerDevices.hangerDownSpeed);
@@ -57,20 +57,20 @@ public class RaiseLowerHanger extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     theHanger.brake();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  public void interrupted() {
 
   }
 }

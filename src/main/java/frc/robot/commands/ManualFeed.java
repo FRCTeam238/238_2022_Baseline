@@ -7,25 +7,25 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.Robot;
 
-public class ManualFeed extends Command {
+public class ManualFeed extends CommandBase {
   public ManualFeed() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.feeder);
+    // Use addRequirements() here to declare subsystem dependencies
+    // eg. addRequirements(chassis);
+    addRequirements(Robot.feeder);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     boolean thirdSensorBroken = Robot.feeder.thirdDetector.get();
     // if the top sensor is broken, and we are not trying to shoot, stop the feeder.
     // Logger.Debug("sensor value = " + thirdSensorBroken);
@@ -43,20 +43,20 @@ public class ManualFeed extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     Robot.feeder.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
+  public void interrupted() {
     Robot.feeder.stop();
   }
 }
