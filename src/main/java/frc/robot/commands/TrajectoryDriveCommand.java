@@ -74,6 +74,7 @@ public class TrajectoryDriveCommand extends SequentialCommandGroup implements IA
   @Override
   public void initialize() {
     drivetrain.resetOdometry();
+    super.initialize();
   }
 
   /*public static TrajectoryDriveCommand getExampleCommand() {

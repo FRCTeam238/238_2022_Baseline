@@ -31,6 +31,7 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   Timer timer;
 
   public AutoShooterCommand() {
+    timer = new Timer();
     addRequirements(theFeeder);
     addRequirements(theShooter);
 
@@ -42,6 +43,7 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   @Override
   public void initialize()
   {
+    super.initialize();
     timer.reset();
     timer.start();
   }
