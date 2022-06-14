@@ -93,11 +93,6 @@ public class IntakeInOutCommand extends CommandBase implements IAutonomousComman
     }
 
     @Override
-    public void interrupted() {
-        end(boolean interrupted);
-    }
-
-    @Override
     public boolean isFinished() {
         // TODO Auto-generated method stub
         return isDone && isAuto;

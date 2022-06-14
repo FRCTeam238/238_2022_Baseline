@@ -42,11 +42,4 @@ public class ManualReverse extends CommandBase {
   public void end(boolean interrupted) {
     Robot.feeder.stop();
   }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  public void interrupted() {
-    Robot.feeder.stop();
-  }
 }

@@ -13,11 +13,9 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 public class LowHubFeedForShoot extends CommandBase {
-  private double delay;
-  public LowHubFeedForShoot(double delayTime) {
+  public LowHubFeedForShoot() {
     // Use addRequirements() here to declare subsystem dependencies
     // eg. addRequirements(chassis);
-    this.delay = delayTime;
     addRequirements(Robot.feeder);
     addRequirements(Robot.shooter);
   }
@@ -30,10 +28,8 @@ public class LowHubFeedForShoot extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    if(this.timeSinceInitialized() >= delay){
       double feederSpeedFromDashboard = RobotMap.FeederDevices.lowHubUpSpeed;//Robot.feeder.getFeederSpeedFromDashboard();
       Robot.feeder.up(feederSpeedFromDashboard);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -45,15 +41,6 @@ public class LowHubFeedForShoot extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    Robot.feeder.stop();
-    Robot.shooter.neutral();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  //**this is where the command "ends"**
-  @Override
-  public void interrupted() {
     Robot.feeder.stop();
     Robot.shooter.neutral();
   }

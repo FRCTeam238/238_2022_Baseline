@@ -72,11 +72,4 @@ public class ManualPrepareToShoot extends CommandBase {
     theShooter.isShooting = false;
     // theShooter.neutral();
   }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  public void interrupted() {
-    end(boolean interrupted);
-  }
 }

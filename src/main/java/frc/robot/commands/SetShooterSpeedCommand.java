@@ -50,11 +50,4 @@ public class SetShooterSpeedCommand extends CommandBase {
   public void end(boolean interrupted) {
     //Robot.shooter.neutral();
   }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  public void interrupted() {
-    Robot.shooter.neutral();
-  }
 }

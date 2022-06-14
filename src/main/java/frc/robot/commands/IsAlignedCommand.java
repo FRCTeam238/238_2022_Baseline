@@ -39,10 +39,4 @@ public class IsAlignedCommand extends CommandBase {
   public void end(boolean interrupted) {
     Logger.Debug("SHOOTER ALIGNED");
   }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  public void interrupted() {
-  }
 }

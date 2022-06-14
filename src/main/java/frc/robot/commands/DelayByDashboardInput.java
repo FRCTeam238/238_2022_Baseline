@@ -10,13 +10,13 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Dashboard238;
 
 @AutonomousModeAnnotation(parameterNames = { "DashboardObjectName"})
-public class DelayByDashboardInput extends Command implements IAutonomousCommand {
+public class DelayByDashboardInput extends CommandBase implements IAutonomousCommand {
   private boolean isAutonomousMode = false;
   private double timeToDelay = 0;
   private String dashboardID;
@@ -28,14 +28,14 @@ public class DelayByDashboardInput extends Command implements IAutonomousCommand
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     timeToDelay = SmartDashboard.getNumber(dashboardID, 0);
     startTime = Timer.getFPGATimestamp();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     if(Timer.getFPGATimestamp() - startTime >= timeToDelay){
       isDone = true;
     }
@@ -43,19 +43,13 @@ public class DelayByDashboardInput extends Command implements IAutonomousCommand
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return isDone;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
   }
 
   @Override

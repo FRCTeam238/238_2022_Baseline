@@ -51,9 +51,6 @@ public class PrepareToShoot extends CommandBase {
       wantedSpeed =RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB;
     }
     theShooter.setSpeed(wantedSpeed);
-    if(theShooter.isAtSpeed() && firstIsAtSpeedTime == 0){ 
-      firstIsAtSpeedTime = this.timeSinceInitialized();
-    }
   }
   // find speed to run at, in ticks per 100ms
   // tell shooter to run at that speed
@@ -131,12 +128,5 @@ public class PrepareToShoot extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     theShooter.neutral();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  public void interrupted() {
-    end(boolean interrupted);
   }
 }

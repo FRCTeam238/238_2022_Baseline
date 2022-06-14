@@ -10,12 +10,12 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 
 @AutonomousModeAnnotation(parameterNames = { "DelayTime" })
-public class Delay extends Command implements IAutonomousCommand {
+public class Delay extends CommandBase implements IAutonomousCommand {
   private double timeToWait = 0;
   private boolean isAutonomousMode = false;
   private double startTime = 0;
@@ -35,14 +35,14 @@ public class Delay extends Command implements IAutonomousCommand {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     // startTime = Timer.getFPGATimestamp();
     startTime = 0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     if (startTime == 0) {
       startTime = Timer.getFPGATimestamp();
     }
@@ -55,24 +55,17 @@ public class Delay extends Command implements IAutonomousCommand {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return isDone;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
+  public void end(boolean interrupted) {
   }
 
   @Override
   public boolean getIsAutonomousMode() {
-    // TODO Auto-generated method stub
     return isAutonomousMode;
   }
 
@@ -84,7 +77,6 @@ public class Delay extends Command implements IAutonomousCommand {
 
   @Override
   public void setParameters(List<String> parameters) {
-    // TODO Auto-generated method stub
     timeToWait = Double.parseDouble(parameters.get(0));
   }
 }

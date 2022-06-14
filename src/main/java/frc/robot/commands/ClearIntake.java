@@ -1,33 +1,28 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Intake;
 
-public class ClearIntake extends Command {
+public class ClearIntake extends CommandBase {
 
     public ClearIntake(){
-        requires(Robot.intake);
+        addRequirements(Robot.intake);
     }
    @Override
-   protected void initialize() {
-       // TODO Auto-generated method stub
-       setInterruptible(false);
-       setTimeout(RobotMap.IntakeDevices.clearIntakeTime);
+   public void initialize() {
    }
 
    @Override
-   protected void execute() {
-       // TODO Auto-generated method stub
+   public void execute() {
        Robot.intake.out(RobotMap.IntakeDevices.outtakeSpeed, RobotMap.MecanumDevices.mecanumOutSpeed);
    }
    
     @Override
-    protected boolean isFinished() {
-        // TODO Auto-generated method stub
-        return isTimedOut();
+    public boolean isFinished() {
+        return false;
     }
     
 }

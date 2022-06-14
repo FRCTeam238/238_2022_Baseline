@@ -73,7 +73,7 @@ public class FeederCommandWithColor extends CommandBase {
             } else if (secondSensorBroken == false) {
                 if (hasIllegalBall){
                     theFeeder.down();
-                    Robot.theClearIntake.start();
+                    Robot.theClearIntake.schedule(false);
                     preventWrongColor();
                     if (DriverStation.getAlliance() == Alliance.Red){
                         theFeeder.setCurrentBallsHeld(0);
