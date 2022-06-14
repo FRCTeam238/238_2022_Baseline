@@ -8,9 +8,9 @@
 package frc.robot.subsystems;
 
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
@@ -32,7 +32,7 @@ import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.commands.FeederCommand;
 import frc.robot.commands.IntakeInOutCommand;
-import frc.robot.commands.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 
 /**
  * DriveTrainSubsystem
@@ -246,9 +246,9 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   }
 
   public Command createCommandForTrajectory(Trajectory trajectory) {
-    InstantCommand initializeDifferentialDrive = new InstantCommand(this, () -> {
+    InstantCommand initializeDifferentialDrive = new InstantCommand(() -> {
       setUseDifferentialDrive(false); 
-    });
+    }, this);
     RamseteCommand rc = new RamseteCommand(
             trajectory,
             this::getCurrentPose,
@@ -257,20 +257,15 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
             this::tankDriveVelocity,
             this);
 
-    InstantCommand endCommand = new InstantCommand(this, () -> {
+    InstantCommand endCommand = new InstantCommand(() -> {
             //setUseDifferentialDrive(true);
             //arcadeDrive(0, 0);
             tankDrive(0, 0);
             IntakeInOutCommand.isDone = true;
             FeederCommand.isDone = true;
-        });
+        }, this);
 
-    CommandGroup cg = new CommandGroup("TrajectoryDrive");
-    cg.addSequential(initializeDifferentialDrive);
-    cg.addSequential(rc);;
-    cg.addSequential(endCommand);
-
-
+    SequentialCommandGroup cg = new SequentialCommandGroup(initializeDifferentialDrive, rc, endCommand);
     return cg;
   }
 
