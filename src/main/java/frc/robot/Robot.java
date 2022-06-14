@@ -90,10 +90,12 @@ public class Robot extends TimedRobot {
 
     theClearIntake = new ClearIntake().withTimeout(RobotMap.IntakeDevices.clearIntakeTime);
     theClearIntakeCommandGroup = new SequentialCommandGroup(new WaitCommand(0.5), theClearIntake);
-    intakeCamera = CameraServer.startAutomaticCapture();
-    intakeCamera.setResolution(160, 120);
-    intakeCamera.setFPS(20);
-    
+    if(Robot.isReal())
+    {
+      intakeCamera = CameraServer.startAutomaticCapture();
+      intakeCamera.setResolution(160, 120);
+      intakeCamera.setFPS(20);
+    }
   }
   
   @Override
