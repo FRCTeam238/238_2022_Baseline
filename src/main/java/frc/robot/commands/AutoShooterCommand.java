@@ -9,7 +9,8 @@ package frc.robot.commands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
@@ -17,9 +18,8 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-
 @AutonomousModeAnnotation(parameterNames = {"Timeout"})
-public class AutoShooterCommand extends CommandGroup implements IAutonomousCommand {
+public class AutoShooterCommand extends SequentialCommandGroup implements IAutonomousCommand {
   /**
    * Add your docs here.
    */
@@ -28,37 +28,32 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
   boolean isAuto = false;
   double startTime = 0;
   double timeout;
-  FeedForShoot feedCommand = new FeedForShoot(0.5);
-  PrepareToShoot prepareToShootCommand = new PrepareToShoot();
+  Timer timer;
 
   public AutoShooterCommand() {
-    requires(theFeeder);
-    requires(theShooter);
+    addRequirements(theFeeder);
+    addRequirements(theShooter);
 
-    
-    addSequential(new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH));
-   
-    //This stays the same since it is telling the feeder to run after the shooter
-    //is at speed
-    addSequential(new FeedForShoot(0));
+    addCommands(
+      new ManualPrepareToShoot(RobotMap.ShooterDevices.SHOOTER_DEFAULT_HIGH_HUB, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH),
+      new FeedForShoot());
   }
 
   @Override
   public void initialize()
   {
-    setTimeout(timeout);
+    timer.reset();
+    timer.start();
   }
 
   @Override
   public boolean getIsAutonomousMode() {
-    // TODO Auto-generated method stub
     return false;
   }
 
   @Override
   public void setIsAutonomousMode(boolean isAutonomousMode) {
     this.isAuto = isAutonomousMode;
-
   }
 
   @Override
@@ -68,6 +63,6 @@ public class AutoShooterCommand extends CommandGroup implements IAutonomousComma
 
   @Override
   public boolean isFinished(){
-    return (isTimedOut()); //|| Robot.feeder.getCurrentBallsHeld() == 0);
+    return (timer.hasElapsed(timeout)); //|| Robot.feeder.getCurrentBallsHeld() == 0);
   }
 }
