@@ -8,7 +8,7 @@
 package frc.core238.wrappers;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
  * A {@link Button} that gets its state from a {@link GenericHID}.

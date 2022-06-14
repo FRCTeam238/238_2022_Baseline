@@ -9,7 +9,7 @@ package frc.core238.wrappers;
 
 import java.util.function.BooleanSupplier;
 
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * Add your docs here.
