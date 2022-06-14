@@ -65,8 +65,8 @@ public class Robot extends TimedRobot {
   public UsbCamera intakeCamera;
 
   // Dictionary of auto mode names and commands to run
-  HashMap<String, CommandGroup> m_autoModes;
-  CommandGroup m_autoCommandGroup;
+  HashMap<String, Command> m_autoModes;
+  Command m_autoCommand;
 
   // this is set to false once we've alreay hit auto once or gone in to teleop,
   // prevents us from running auto twice
@@ -189,8 +189,8 @@ public class Robot extends TimedRobot {
     // AND it's ok to run auto. m_allowAuto will be false if teleop ini as been run
     // or we've run this init at least once
     if (m_allowAuto && m_autoModes.containsKey(autoMode)) {
-      m_autoCommandGroup = m_autoModes.get(autoMode);
-      m_autoCommandGroup.start();
+      m_autoCommand = m_autoModes.get(autoMode);
+      m_autoCommand.schedule();
     }
 
     // prevent the robot from rerunning auto mode a second time without a restart
@@ -217,8 +217,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autoCommandGroup != null) {
-      m_autoCommandGroup.cancel();
+    if (m_autoCommand != null) {
+      m_autoCommand.cancel();
     }
 
     if(fmsConnected){

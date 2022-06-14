@@ -19,8 +19,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.core238.Logger;
 import frc.robot.commands.IAutonomousCommand;
 
@@ -34,19 +36,19 @@ public class AutonomousModesReader {
         this.dataSource = dataSource;
     }
 
-    public HashMap<String, CommandGroup> getAutonmousModes() {
+    public HashMap<String, Command> getAutonmousModes() {
         final String classPath = "frc.robot.commands.";
-        final HashMap<String, CommandGroup> autoModes = new HashMap<>();
+        final HashMap<String, Command> autoModes = new HashMap<>();
 
         final List<AutonomousModeDescriptor> modeDescriptors = getAutonomousModeDescriptors();
 
         modeDescriptors.forEach(modeDescriptor -> {
             final String name = modeDescriptor.getName();
-            final CommandGroup commands = new CommandGroup();
-            final List<CommandGroup> parallelCommandGroups = new ArrayList<>();
+            final SequentialCommandGroup commands = new SequentialCommandGroup();
+            final List<ParallelCommandGroup> parallelCommandGroups = new ArrayList<>();
             final List<Boolean> isParallelList = new ArrayList<>();
             isParallelList.add(false);
-            parallelCommandGroups.add(new CommandGroup());
+            parallelCommandGroups.add(new ParallelCommandGroup());
 
             modeDescriptor.getCommands().forEach(commandDescriptor -> {
 
@@ -73,30 +75,30 @@ public class AutonomousModesReader {
                 autoCommand.setIsAutonomousMode(true);
                 
                 if(isParallel){
-                    CommandGroup parallelGroup;
+                    ParallelCommandGroup parallelGroup;
                     if(isParallelList.get(0) == false){ // If there is no parallel command group currently being built
-                        parallelGroup = new CommandGroup(); // Create a new one
+                        parallelGroup = new ParallelCommandGroup(); // Create a new one
                         parallelCommandGroups.add(parallelGroup); // Add the command
                         isParallelList.set(0, true); // Communicate that there IS a parallel command group being built
                     }else{
                         // Set parallelGroup to the last command group in the list
                         parallelGroup = parallelCommandGroups.get(parallelCommandGroups.size() - 1);
                     }
-                    parallelGroup.addParallel((Command) autoCommand); // Add the command in parallel
+                    parallelGroup.addCommands((Command) autoCommand); // Add the command in parallel
                 }else{
                     if(isParallelList.get(0)){ // If there is a parallel command group being built
                         // Add that parallel command group to the sequential command list
-                        commands.addSequential((Command) parallelCommandGroups.get(parallelCommandGroups.size() - 1));
+                        commands.addCommands((Command) parallelCommandGroups.get(parallelCommandGroups.size() - 1));
                     }
                     isParallelList.set(0, false); // Communicate that there is not a parallel command group being built
-                    commands.addSequential((Command) autoCommand); // Add the command sequentially 
+                    commands.addCommands((Command) autoCommand); // Add the command sequentially 
                 }
             });
 
             if(isParallelList.get(0)){ // If there is a parallel command group being built
                 // Add that parallel command group to the sequential command list
                 // This is done again here to ensure that if the final command is parallel, it's still added properly
-                commands.addSequential((Command) parallelCommandGroups.get(parallelCommandGroups.size() - 1));
+                commands.addCommands((Command) parallelCommandGroups.get(parallelCommandGroups.size() - 1));
             }
             // add to dictionary
             autoModes.put(name, commands);
