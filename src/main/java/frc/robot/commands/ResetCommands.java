@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 
 /** Add your docs here. */
@@ -15,14 +15,14 @@ public class ResetCommands extends InstantCommand implements IAutonomousCommand 
   boolean isAutonomousMode;
   /** Add your docs here. */
   public ResetCommands() {
-    requires(Robot.intake);
+    addRequirements(Robot.intake);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called once when the command executes
   @Override
-  protected void initialize() {
+  public void initialize() {
     IntakeInOutCommand.isDone = false;
     FeederCommand.isDone = false;
   }

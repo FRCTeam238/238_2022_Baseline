@@ -4,12 +4,13 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class ClearIntakeCommandGroup extends CommandGroup {
+public class ClearIntakeCommandGroup extends SequentialCommandGroup {
 
   public ClearIntakeCommandGroup() {
-    addSequential(new Delay(0.5));
-    addSequential(new ClearIntake());
+    addCommands(new Delay(0.5));
+    addCommands(new ClearIntake());
+
   }
 }

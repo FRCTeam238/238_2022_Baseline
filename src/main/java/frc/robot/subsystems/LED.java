@@ -9,14 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.core238.Logger;
 
 /**
  * Add your docs here.
  */
-public class LED extends Subsystem {
+public class LED extends SubsystemBase {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   AddressableLED m_led;

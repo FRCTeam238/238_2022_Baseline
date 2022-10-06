@@ -10,13 +10,13 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 
 @AutonomousModeAnnotation(parameterNames = { "DriveSpeed", "DriveTime" })
-public class DriveStraightWithoutSensors extends Command implements IAutonomousCommand {
+public class DriveStraightWithoutSensors extends CommandBase implements IAutonomousCommand {
   private Drivetrain driveTrain = Robot.drivetrain;
   private double driveTime = 0;
   private double driveSpeed = 0;
@@ -25,18 +25,18 @@ public class DriveStraightWithoutSensors extends Command implements IAutonomousC
   private double startTime = 0;
 
   public DriveStraightWithoutSensors() {
-    requires(driveTrain);
+    addRequirements(driveTrain);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     startTime = Timer.getFPGATimestamp();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     driveTrain.drive(driveSpeed, driveSpeed);
     if((Timer.getFPGATimestamp() - startTime) >= driveTime){
       isDone = true;
@@ -46,20 +46,14 @@ public class DriveStraightWithoutSensors extends Command implements IAutonomousC
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return isDone;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     driveTrain.stop();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
   }
 
   @Override

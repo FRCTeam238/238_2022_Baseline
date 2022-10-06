@@ -7,32 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-public class LowerHubCommand extends CommandGroup {
+public class LowerHubCommand extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
   Shooter theShooter = Robot.shooter;
   Feeder theFeeder = Robot.feeder;
 
-
   public LowerHubCommand() {
-    requires(theFeeder);
-    requires(theShooter);
+    addRequirements(theFeeder);
+    addRequirements(theShooter);
 
     double shooterSpeed = theShooter.getLowSpeedFromDashboard();
-    addSequential(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_LOW));
-    
-    
+    addCommands(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_LOW));
 
-    //This stays the same since it is telling the feeder to run after the shooter
-    //is at speed
-    addSequential(new LowHubFeedForShoot(0));
+    // This stays the same since it is telling the feeder to run after the shooter
+    // is at speed
+    addCommands(new LowHubFeedForShoot(0));
   }
 }

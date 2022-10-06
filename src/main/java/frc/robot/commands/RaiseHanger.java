@@ -8,15 +8,14 @@
 package frc.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.Faults;
-
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hanger;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.HangerDevices;
 
-public class RaiseHanger extends Command {
+public class RaiseHanger extends CommandBase {
 
   // only accept value if x is within low range and if y is outside of small
   // window
@@ -24,27 +23,25 @@ public class RaiseHanger extends Command {
   Hanger theHanger = Robot.hanger;
 
   public RaiseHanger() {
-    requires(theHanger);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    addRequirements(theHanger);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     Logger.Debug("Initialized!");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
       theHanger.raiseLower(RobotMap.HangerDevices.hangerUpSpeed);
       Logger.Debug("executing!");
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     //done extending when top soft limit is reached. Using "faults" API to get soft limit status from Talon FX
     Faults faults = new Faults();
     HangerDevices.hangerTalon.getFaults(faults);
@@ -53,15 +50,8 @@ public class RaiseHanger extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     theHanger.brake();
     Logger.Debug("done raising");
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    theHanger.brake();
   }
 }

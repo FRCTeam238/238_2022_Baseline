@@ -1,28 +1,28 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.subsystems.Shooter;
 
 /**
  * MotorCommand: used to test rpm of the shooter motor
  */
-public class MotorCommand extends Command {
+public class MotorCommand extends CommandBase {
     private GenericHID controller;
     private int axis;
     private double necessaryAxis = 0.5;    
     private Shooter shooter;
 
     public MotorCommand(GenericHID controller, int axis) {
-        requires(Robot.shooter);
+        addRequirements(Robot.shooter);
         this.controller = controller;
         this.axis = axis;
         shooter = Robot.shooter;
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         double axisPower = controller.getRawAxis(axis);
         if (axisPower >= necessaryAxis) {
             // Logger.Debug("Speed: 4000");
@@ -37,7 +37,7 @@ public class MotorCommand extends Command {
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // TODO Auto-generated method stub
         return false;
     }

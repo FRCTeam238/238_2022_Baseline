@@ -8,9 +8,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.core238.Logger;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
@@ -18,7 +19,7 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-public class HighHubCommand extends CommandGroup {
+public class HighHubCommand extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
@@ -27,16 +28,16 @@ public class HighHubCommand extends CommandGroup {
   
 
   public HighHubCommand() {
-    requires(theFeeder);
-    requires(theShooter);
+    addRequirements(theFeeder);
+    addRequirements(theShooter);
 
     
     double shooterSpeed = theShooter.getHighSpeedFromDashboard();
-    addSequential(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH));
+    addCommands(new ManualPrepareToShoot(shooterSpeed, RobotMap.ShooterDevices.SHOOTER_DEFAULT_BACKSPIN_HIGH));
     
     //This stays the same since it is telling the feeder to run after the shooter
     //is at speed
-    addSequential(new FeedForShoot(0));
+    addCommands(new FeedForShoot(0));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

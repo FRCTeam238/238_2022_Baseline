@@ -10,9 +10,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.core238.Logger;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
@@ -22,7 +22,7 @@ import frc.robot.Trig238;
 /**
  * Add your docs here.
  */
-public class Vision extends Subsystem {
+public class Vision extends SubsystemBase {
 
   NetworkTable table;
   NetworkTableEntry tx;
@@ -55,12 +55,6 @@ public class Vision extends Subsystem {
     entryTrackingMode = Shuffleboard.getTab("DiagnosticTab").add("LL Tracking Mode", 0).getEntry();
     entryLEDsOn = Shuffleboard.getTab("DiagnosticTab").add("LL Leds On", 0).getEntry();
     entryDistance = Shuffleboard.getTab("DiagnosticTab").add("LL Distance", 0).getEntry();
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
   }
 
   public boolean hasTarget(){

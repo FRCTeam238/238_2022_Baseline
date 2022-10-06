@@ -7,11 +7,6 @@
 
 package frc.robot.subsystems;
 
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 
@@ -25,6 +20,8 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
@@ -245,7 +242,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
         stepsPerDecisecToMetersPerSec(rightControllerDrive.getSelectedSensorVelocity()));
   }
 
-  public Command createCommandForTrajectory(Trajectory trajectory) {
+  public CommandBase createCommandForTrajectory(Trajectory trajectory) {
     InstantCommand initializeDifferentialDrive = new InstantCommand(this, () -> {
       setUseDifferentialDrive(false); 
     });

@@ -22,9 +22,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
@@ -36,7 +36,7 @@ import frc.robot.commands.drivetrainparameters.DriverJoysticks;
 /**
  * Add your docs here.
  */
-public class Drivetrain extends Subsystem {
+public class Drivetrain extends SubsystemBase {
   //2'8 + 6.5 = 32+6.5 = 0.98meters (length)
   //2'3 + 6.5 = 27+6.5 = 0.85meters (width)
 

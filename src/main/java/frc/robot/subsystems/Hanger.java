@@ -10,16 +10,16 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.core238.Logger;
 import frc.robot.FieldConstants;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * Add your docs here.
  */
-public class Hanger extends Subsystem {
+public class Hanger extends SubsystemBase {
     double hangHeight = FieldConstants.hangHeight;
     double ticksPerInch;
     public Object resetEncoder;
@@ -27,11 +27,6 @@ public class Hanger extends Subsystem {
 
     public Hanger() {
         initTalon();
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
     }
 
     private void initTalon() {

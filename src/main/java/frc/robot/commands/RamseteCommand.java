@@ -19,8 +19,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -48,7 +48,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
  * returning only the raw wheel speeds from the RAMSETE controller.
  */
 @SuppressWarnings("PMD.TooManyFields")
-public class RamseteCommand extends Command {
+public class RamseteCommand extends CommandBase {
   private final Timer m_timer = new Timer();
   private final boolean m_usePID;
   private Trajectory m_trajectory;
@@ -96,7 +96,7 @@ public class RamseteCommand extends Command {
                         PIDController leftController,
                         PIDController rightController,
                         BiConsumer<Double, Double> outputVolts,
-                        Subsystem... requirements) {
+                        SubsystemBase... requirements) {
     m_trajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
     m_pose = requireNonNullParam(pose, "pose", "RamseteCommand");
     m_follower = requireNonNullParam(controller, "controller", "RamseteCommand");
@@ -112,9 +112,9 @@ public class RamseteCommand extends Command {
     addRequirements(requirements);
   }
 
-  private void addRequirements(Subsystem[] requirements) {
-    for (Subsystem subSystem : requirements){
-      requires(subSystem);
+  private void addRequirements(SubsystemBase[] requirements) {
+    for (SubsystemBase subSystem : requirements){
+      addRequirements(subSystem);
     }
   }
 
@@ -139,7 +139,7 @@ public class RamseteCommand extends Command {
                         RamseteController follower,
                         DifferentialDriveKinematics kinematics,
                         BiConsumer<Double, Double> outputMetersPerSecond,
-                        Subsystem... requirements) {
+                        SubsystemBase... requirements) {
     m_trajectory = requireNonNullParam(trajectory, "trajectory", "RamseteCommand");
     m_pose = requireNonNullParam(pose, "pose", "RamseteCommand");
     m_follower = requireNonNullParam(follower, "follower", "RamseteCommand");
@@ -217,13 +217,8 @@ public class RamseteCommand extends Command {
   }
 
   @Override
-  public void end() {
+  public void end(boolean interrupted) {
     m_timer.stop();
-  }
-
-  @Override
-  public void interrupted() {
-    end();
   }
 
   @Override

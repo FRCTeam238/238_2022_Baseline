@@ -7,36 +7,36 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-public class TraversalSequence extends CommandGroup {
+public class TraversalSequence extends SequentialCommandGroup {
   /**
    * Add your docs here.
    */
 
-
+  
   public TraversalSequence() {
-    requires(Robot.hanger);
+    addRequirements(Robot.hanger);
     
-    addSequential(new LowerHanger()); //pull onto mid bar
-    addSequential(new TraversalExtendCommand()); //extend traversal to put passive hooks above bar
-    addSequential(new WaitCommand(1.25)); //1.34 //1.25          //delay to let passive hooks move. Change from '1' to match needed time
-    addSequential(new RaiseHanger());         //raise hanger towards high bar
-    addSequential(new TraversalRetractCommand()); //retract traversal to pull extended hook into high bar
-    addSequential(new WaitCommand(1));            //delay to let passive hooks rotate robot. Change time if needed
-    addSequential(new LowerHanger());           //Pull onto high bar
-    addSequential(new TraversalExtendCommand()); //extend traversal to put passive hooks above high bar
-    addSequential(new WaitCommand(1));          //delay to let passive hooks move. Change from '1' to match needed time
-    addSequential(new RaiseHanger());         //raise hanger towards traversal bar
-    addSequential(new TraversalRetractCommand()); //retract traversal to pull extended hook into traversal bar
-    addSequential(new WaitCommand(1));            //delay to let passive hooks rotate robot. Change time if needed
-    addSequential(new LowerHanger());           //Pull onto traversal bar
-    addSequential(new TraversalExtendCommand()); //extend traversal to put passive hooks above traversal bar
+    addCommands(new LowerHanger()); //pull onto mid bar
+    addCommands(new TraversalExtendCommand()); //extend traversal to put passive hooks above bar
+    addCommands(new WaitCommand(1.25)); //1.34 //1.25          //delay to let passive hooks move. Change from '1' to match needed time
+    addCommands(new RaiseHanger());         //raise hanger towards high bar
+    addCommands(new TraversalRetractCommand()); //retract traversal to pull extended hook into high bar
+    addCommands(new WaitCommand(1));            //delay to let passive hooks rotate robot. Change time if needed
+    addCommands(new LowerHanger());           //Pull onto high bar
+    addCommands(new TraversalExtendCommand()); //extend traversal to put passive hooks above high bar
+    addCommands(new WaitCommand(1));          //delay to let passive hooks move. Change from '1' to match needed time
+    addCommands(new RaiseHanger());         //raise hanger towards traversal bar
+    addCommands(new TraversalRetractCommand()); //retract traversal to pull extended hook into traversal bar
+    addCommands(new WaitCommand(1));            //delay to let passive hooks rotate robot. Change time if needed
+    addCommands(new LowerHanger());           //Pull onto traversal bar
+    addCommands(new TraversalExtendCommand()); //extend traversal to put passive hooks above traversal bar
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

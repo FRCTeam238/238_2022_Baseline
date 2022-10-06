@@ -7,16 +7,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
-public class SetShooterSpeedCommand extends Command {
+public class SetShooterSpeedCommand extends CommandBase {
   private double speed = -1;
 
   public SetShooterSpeedCommand(double speed) {
-    requires(Robot.shooter);
+    addRequirements(Robot.shooter);
     this.speed = speed;
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -24,12 +24,12 @@ public class SetShooterSpeedCommand extends Command {
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
     if(Robot.shooter.getDesiredSpeed() == speed){
       Robot.shooter.neutral();
       SmartDashboard.putBoolean("SHOOTER SPINNING", false);
@@ -41,20 +41,15 @@ public class SetShooterSpeedCommand extends Command {
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     return true;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-    //Robot.shooter.neutral();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    Robot.shooter.neutral();
+  public void end(boolean interrupted) {
+    if (interrupted) {
+      Robot.shooter.neutral();
+    }
   }
 }

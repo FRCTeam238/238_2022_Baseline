@@ -7,14 +7,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Hanger;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.HangerDevices;
 
-public class LowerHanger extends Command {
+public class LowerHanger extends CommandBase {
 
   // only accept value if x is within low range and if y is outside of small
   // window
@@ -22,40 +22,36 @@ public class LowerHanger extends Command {
   Hanger theHanger = Robot.hanger;
 
   public LowerHanger() {
-    requires(theHanger);
+    addRequirements(theHanger);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
       theHanger.raiseLower(RobotMap.HangerDevices.hangerDownSpeed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
-  protected boolean isFinished() {
+  public boolean isFinished() {
     //done retracting when bottom limit switch is tripped
     return HangerDevices.downLimitSwitch.get() == false;
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
+  public void end(boolean interrupted) {
     theHanger.brake();
     Logger.Debug("done lowering");
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    theHanger.brake();
+    if (interrupted) {
+      theHanger.brake();
+    }
   }
 }

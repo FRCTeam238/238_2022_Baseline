@@ -2,23 +2,21 @@ package frc.robot.commands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 
-public class ManualCountReset extends Command implements IAutonomousCommand{
+public class ManualCountReset extends CommandBase implements IAutonomousCommand{
 
     public ManualCountReset() {
         
     }
     @Override
-    protected void execute() {
+    public void execute() {
         Robot.feeder.resetBallCount();
     }
         
-    
-    
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // TODO Auto-generated method stub
         return true;
     }

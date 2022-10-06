@@ -6,16 +6,16 @@ package frc.robot.commands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 
 @AutonomousModeAnnotation(parameterNames = { "Timeout" })
-public class DelayWithIntake extends CommandGroup implements IAutonomousCommand{
+public class DelayWithIntake extends SequentialCommandGroup implements IAutonomousCommand{
 
   public double timeout;
   Feeder theFeeder = Robot.feeder;
@@ -23,8 +23,8 @@ public class DelayWithIntake extends CommandGroup implements IAutonomousCommand{
   Delay delayCommand;
 
   public DelayWithIntake() {
-    requires(theFeeder);
-    requires(theIntake);
+    addRequirements(theFeeder);
+    addRequirements(theIntake);
 
     InstantCommand instantCommand = new InstantCommand("instantCommand", () -> {
       IntakeInOutCommand.isDone = true;
@@ -32,8 +32,8 @@ public class DelayWithIntake extends CommandGroup implements IAutonomousCommand{
     });
     
     delayCommand = new Delay();
-    addSequential(delayCommand);
-    addSequential(instantCommand);
+    addCommands(delayCommand);
+    addCommands(instantCommand);
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
@@ -54,7 +54,7 @@ public class DelayWithIntake extends CommandGroup implements IAutonomousCommand{
   }
 
   @Override
-  protected void initialize() {
+  public void initialize() {
     delayCommand.timeout(timeout);
   }
 

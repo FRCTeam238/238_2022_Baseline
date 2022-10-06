@@ -13,16 +13,16 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
 import frc.robot.Robot;
 
 
-public class NavigationBoard extends Subsystem {
+public class NavigationBoard extends SubsystemBase {
 
   public final static double NAVIGATION_TURNING_DEADZONE = 1.5;
 
@@ -221,13 +221,6 @@ public class NavigationBoard extends Subsystem {
 		return collisionDetected;
 
 	}
-
-
-  @Override
-  protected void initDefaultCommand() {
-    // TODO Auto-generated method stub
-
-  }
 
   private void initLiveWindow(){
 	SendableWrapper pitch = new SendableWrapper(builder -> {

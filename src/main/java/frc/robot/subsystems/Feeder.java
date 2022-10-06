@@ -25,10 +25,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.SimpleWidget;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.core238.Logger;
 import frc.core238.wrappers.SendableWrapper;
 import frc.robot.Dashboard238;
@@ -40,7 +40,7 @@ import frc.robot.commands.ClearIntake;
 /**
  * Add your docs here.
  */
-public class Feeder extends Subsystem {
+public class Feeder extends SubsystemBase {
 
     //Victor doesnt exist, Spark is the new controller
     // public final VictorSPX feederMasterDrive = RobotMap.TransportDevices.transportVictor;// FeederDevices.feederTalon;
@@ -77,12 +77,6 @@ public class Feeder extends Subsystem {
         RobotMap.FeederDevices.ballColor.configureColorSensor(ColorSensorResolution.kColorSensorRes13bit, ColorSensorMeasurementRate.kColorRate25ms, GainFactor.kGain3x);
 
         feederSpeedFromDashboard = Shuffleboard.getTab("Shooter Tuning").add("Feeder Speed", RobotMap.FeederDevices.highHubUpSpeed);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
-
     }
 
     public void checkColorReset() {

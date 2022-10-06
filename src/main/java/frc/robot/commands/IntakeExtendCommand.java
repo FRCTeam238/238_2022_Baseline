@@ -11,7 +11,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
@@ -20,23 +20,23 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 @AutonomousModeAnnotation(parameterNames = {})
-public class IntakeExtendCommand extends Command implements IAutonomousCommand {
+public class IntakeExtendCommand extends CommandBase implements IAutonomousCommand {
 
     boolean isAuto = false;
     // GenericHID controller;
     // int pov;
 
     public IntakeExtendCommand() {
-        requires(Robot.intake);
+        addRequirements(Robot.intake);
     }
 
     @Override
-    protected void execute() {
+    public void execute() {
         Robot.intake.extendIntake();
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // TODO Auto-generated method stub
         return true;
     }
