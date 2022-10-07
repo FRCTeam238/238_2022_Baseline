@@ -62,9 +62,7 @@ public class TrajectoryDriveCommand extends SequentialCommandGroup implements IA
       trajectory = TrajectoryUtil
           .fromPathweaverJson(Paths.get(Filesystem.getDeployDirectory()+"/pathplanner/generatedJSON/" + trajectoryName + ".wpilib.json"));
       SmartDashboard.putString("Running Trajectory", trajectoryName);
-      Transform2d transform = new Pose2d(0, 0, Rotation2d.fromDegrees(0)).minus(trajectory.getInitialPose());
-      Trajectory newTrajectory = trajectory.transformBy(transform);
-      addCommands(drivetrain.createCommandForTrajectory(newTrajectory));
+      addCommands(drivetrain.createCommandForTrajectory(trajectory));
     } catch (IOException e) {
       e.printStackTrace();
     }

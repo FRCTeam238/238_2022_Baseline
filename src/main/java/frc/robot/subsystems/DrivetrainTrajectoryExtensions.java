@@ -14,16 +14,26 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXSimCollection;
 
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
@@ -47,16 +57,35 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   //private final WPI_VictorSPX rightDriveFollower2 = new WPI_VictorSPX(DEVICE_ID_RIGHT_SLAVE_TWO);
 
   private final DifferentialDrive differentialDrive = new DifferentialDrive(leftControllerDrive, rightControllerDrive);
+  private final Field2d m_field = new Field2d();
 
   private final NavigationBoard gyro = Robot.navigationBoard;
   private final DifferentialDriveOdometry differentialDriveOdometry;
   private Pose2d savedPose;
+  private DifferentialDrivetrainSim m_driveSim;
+  TalonFXSimCollection m_leftDriveSim = leftControllerDrive.getSimCollection();
+  TalonFXSimCollection m_rightDriveSim = rightControllerDrive.getSimCollection();
 
   public DrivetrainTrajectoryExtensions() {
       super();
     zeroDriveTrainEncoders();
     gyro.zeroYaw();
     differentialDriveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));    
+    m_driveSim = new DifferentialDrivetrainSim(
+      // Create a linear system from our identification gains.
+      LinearSystemId.identifyDrivetrainSystem(DriveTrain.VOLT_SECONDS_PER_METER, DriveTrain.VOLT_SECONDS_SQUARED_PER_METER, DriveTrain.VOLT_SECONDS_PER_METER, DriveTrain.VOLT_SECONDS_PER_METER),
+      DCMotor.getFalcon500(2),       // 2 NEO motors on each side of the drivetrain.
+      14.17,                    // 14.17:1 gearing reduction.
+      DriveTrain.TRACK_WIDTH_METERS,                  // The track width is 0.7112 meters.
+      Units.inchesToMeters(6.18/2), // The robot uses 3" radius wheels.
+    
+      // The standard deviations for measurement noise:
+      // x and y:          0.001 m
+      // heading:          0.001 rad
+      // l and r velocity: 0.1   m/s
+      // l and r position: 0.005 m
+      null);
+     // VecBuilder.fill(0.001, 0.001, 0.001, 0.1, 0.1, 0.005, 0.005));
 /*
     TalonSRXConfiguration talonConfig = new TalonSRXConfiguration();
     talonConfig.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
@@ -95,6 +124,8 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
 
     resetOdometry();
     setUseDifferentialDrive(false);
+
+    SmartDashboard.putData("Field", m_field);
   }
 
   public void resetOdometry() {
@@ -111,6 +142,7 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
         stepsToMeters((int)getLeftEncoderPosition()),
         stepsToMeters((int)getRightEncoderPosition()));
     // SmartDashboard.putString("Pose", differentialDriveOdometry.getPoseMeters().toString());
+    m_field.setRobotPose(differentialDriveOdometry.getPoseMeters());
   }
 
   /**
@@ -248,6 +280,8 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   public Command createCommandForTrajectory(Trajectory trajectory) {
     InstantCommand initializeDifferentialDrive = new InstantCommand(() -> {
       setUseDifferentialDrive(false); 
+      differentialDriveOdometry.resetPosition(trajectory.getInitialPose(), Rotation2d.fromDegrees(getHeading()));
+      m_field.getObject("traj").setTrajectory(trajectory);
     }, this);
     RamseteCommand rc = new RamseteCommand(
             trajectory,
@@ -319,6 +353,30 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
 
   public static double metersPerSecToStepsPerDecisec(double metersPerSec) {
     return metersToSteps(metersPerSec)/10;
+  }
+
+  @Override 
+  public void simulationPeriodic() {
+    m_leftDriveSim.setBusVoltage(12);
+    m_rightDriveSim.setBusVoltage(12);
+    m_driveSim.setInputs(m_leftDriveSim.getMotorOutputLeadVoltage(),
+                         -m_rightDriveSim.getMotorOutputLeadVoltage());
+
+    // Advance the model by 20 ms. Note that if you are running this
+    // subsystem in a separate thread or have changed the nominal timestep
+    // of TimedRobot, this value needs to match it.
+    m_driveSim.update(0.02);
+
+    // Update all of our sensors.
+    leftControllerDrive.getSimCollection().setIntegratedSensorRawPosition((int) metersToSteps(m_driveSim.getLeftPositionMeters()));
+    leftControllerDrive.getSimCollection().setIntegratedSensorVelocity((int) metersPerSecToStepsPerDecisec(m_driveSim.getLeftVelocityMetersPerSecond()));
+    rightControllerDrive.getSimCollection().setIntegratedSensorRawPosition(-(int) metersToSteps(m_driveSim.getRightPositionMeters()));
+    rightControllerDrive.getSimCollection().setIntegratedSensorVelocity(-(int) metersPerSecToStepsPerDecisec(m_driveSim.getRightVelocityMetersPerSecond()));    
+    int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
+    angle.set(-m_driveSim.getHeading().getDegrees());
+    RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(m_driveSim.getCurrentDrawAmps()));
+    SmartDashboard.putNumber("CalculatedBusVoltage", BatterySim.calculateDefaultBatteryLoadedVoltage(m_driveSim.getCurrentDrawAmps()));
   }
 
   public static final class DriveTrain {
