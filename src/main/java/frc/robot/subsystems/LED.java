@@ -28,18 +28,13 @@ public class LED extends SubsystemBase {
   public LED(final int portId, final int numLeds) {
     this.m_dioPort = portId;
     this.m_numLeds = numLeds;
-
-  }
-
-  @Override
-  public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
     m_led = new AddressableLED(m_dioPort);
     m_ledBuffer = new AddressableLEDBuffer(m_numLeds);
-
+  
     m_led.setLength(m_ledBuffer.getLength());
-
+  
     // Set the data
     m_led.setData(m_ledBuffer);
     m_led.start();

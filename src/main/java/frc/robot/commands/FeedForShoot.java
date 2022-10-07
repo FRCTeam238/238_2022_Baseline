@@ -30,12 +30,10 @@ public class FeedForShoot extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    if(this.timeSinceInitialized() >= delay){
       //makes the feeder go full power into the shooter
       // Robot.feeder.up(RobotMap.FeederDevices.upSpeed);
-      double feederSpeedFromDashboard = Robot.feeder.getFeederSpeedFromDashboard();
-      Robot.feeder.up(feederSpeedFromDashboard);
-    }
+    double feederSpeedFromDashboard = Robot.feeder.getFeederSpeedFromDashboard();
+    Robot.feeder.up(feederSpeedFromDashboard);
   }
 
   // Make this return true when this Command no longer needs to run execute()

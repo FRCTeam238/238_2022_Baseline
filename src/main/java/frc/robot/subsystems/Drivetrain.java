@@ -91,15 +91,6 @@ public class Drivetrain extends SubsystemBase {
     // rightControllerDrive.setInverted(InvertType.None);
   }
 
-  @Override
-  public void initDefaultCommand() {
-    DriverJoysticks myDriverJoysticks = new DriverJoysticks();
-    myDriverJoysticks.invertJoysticks();
-    TankDrive tankDriveCommand = new TankDrive(myDriverJoysticks, this);
-    setDefaultCommand(tankDriveCommand);
-    // SmartDashboard.putData("Drivetrain command", this);
-  }
-
   public void setCurrentLimits() {
       rightControllerDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));
       leftControllerDrive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 40, 55, 0.5));

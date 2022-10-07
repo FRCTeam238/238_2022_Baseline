@@ -11,11 +11,12 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import frc.core238.autonomous.AutonomousModeAnnotation;
@@ -24,7 +25,7 @@ import frc.robot.subsystems.DrivetrainTrajectoryExtensions;
 import frc.robot.subsystems.NavigationBoard;
 
 @AutonomousModeAnnotation(parameterNames = { "TrajectoryName" })
-public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousCommand {
+public class TrajectoryDriveCommand extends SequentialCommandGroup implements IAutonomousCommand {
 
   private DrivetrainTrajectoryExtensions drivetrain = Robot.drivetrain;
   NavigationBoard navBoard = Robot.navigationBoard;
@@ -40,7 +41,7 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
   } */
 
   public TrajectoryDriveCommand() {
-    requires(Robot.drivetrain);
+    addRequirements(Robot.drivetrain);
   }
 
   @Override
@@ -63,7 +64,7 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
       SmartDashboard.putString("Running Trajectory", trajectoryName);
       Transform2d transform = new Pose2d(0, 0, Rotation2d.fromDegrees(0)).minus(trajectory.getInitialPose());
       Trajectory newTrajectory = trajectory.transformBy(transform);
-      addSequential(drivetrain.createCommandForTrajectory(newTrajectory));
+      addCommands(drivetrain.createCommandForTrajectory(newTrajectory));
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -71,7 +72,7 @@ public class TrajectoryDriveCommand extends CommandGroup implements IAutonomousC
 
   // Called just before this Command runs the first time
   @Override
-  protected void initialize() {
+  public void initialize() {
     drivetrain.resetOdometry();
   }
 

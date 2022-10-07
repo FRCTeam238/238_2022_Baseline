@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.core238.autonomous.AutonomousModeAnnotation;
@@ -26,7 +25,7 @@ public class DelayWithIntake extends SequentialCommandGroup implements IAutonomo
     addRequirements(theFeeder);
     addRequirements(theIntake);
 
-    InstantCommand instantCommand = new InstantCommand("instantCommand", () -> {
+    InstantCommand instantCommand = new InstantCommand(() -> {
       IntakeInOutCommand.isDone = true;
       FeederCommand.isDone = true;
     });

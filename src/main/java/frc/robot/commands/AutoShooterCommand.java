@@ -47,6 +47,7 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   public void initialize()
   {
     withTimeout(timeout);
+    
   }
 
   @Override

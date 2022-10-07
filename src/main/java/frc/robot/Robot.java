@@ -16,12 +16,13 @@ import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.core238.Logger;
 import frc.core238.autonomous.AutonomousModesReader;
 import frc.core238.autonomous.DataFileAutonomousModeDataSource;
@@ -64,8 +65,8 @@ public class Robot extends TimedRobot {
   public UsbCamera intakeCamera;
 
   // Dictionary of auto mode names and commands to run
-  HashMap<String, CommandGroup> m_autoModes;
-  CommandGroup m_autoCommandGroup;
+  HashMap<String, Command> m_autoModes;
+  Command m_autoCommandGroup;
 
   // this is set to false once we've alreay hit auto once or gone in to teleop,
   // prevents us from running auto twice
@@ -91,9 +92,9 @@ public class Robot extends TimedRobot {
     intakeCamera = CameraServer.startAutomaticCapture();
     intakeCamera.setResolution(160, 120);
     intakeCamera.setFPS(20);
-    
+
   }
-  
+
   @Override
   public void robotInit() {
     oi = new OI();
@@ -108,9 +109,10 @@ public class Robot extends TimedRobot {
 
   private void populateAutomodes() {
 
-    if (isReal()){
-    // initialize the automodes list
-      IAutonomousModeDataSource autoModesDataSource = new DataFileAutonomousModeDataSource("/home/lvuser/deploy/amode238.txt");
+    if (isReal()) {
+      // initialize the automodes list
+      IAutonomousModeDataSource autoModesDataSource = new DataFileAutonomousModeDataSource(
+          "/home/lvuser/deploy/amode238.txt");
       AutonomousModesReader reader = new AutonomousModesReader(autoModesDataSource);
       m_autoModes = reader.getAutonmousModes();
     } else {
@@ -144,8 +146,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SmartDashboard.putBoolean("Can Run Auto", m_allowAuto);
-    SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld()); 
-    feeder.checkColorReset(); //check if there is a better spot for this
+    SmartDashboard.putNumber("balls in robot", feeder.getCurrentBallsHeld());
+    feeder.checkColorReset(); // check if there is a better spot for this
 
     SmartDashboard.putNumber("Get Blue", RobotMap.FeederDevices.ballColor.getBlue());
     SmartDashboard.putNumber("Get Red", RobotMap.FeederDevices.ballColor.getRed());
@@ -158,14 +160,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    if(enteredTeleop){
+    if (enteredTeleop) {
       Shuffleboard.stopRecording();
     }
   }
 
   @Override
   public void disabledPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -189,12 +191,12 @@ public class Robot extends TimedRobot {
     // or we've run this init at least once
     if (m_allowAuto && m_autoModes.containsKey(autoMode)) {
       m_autoCommandGroup = m_autoModes.get(autoMode);
-      m_autoCommandGroup.start();
+      m_autoCommandGroup.schedule();
     }
 
     // prevent the robot from rerunning auto mode a second time without a restart
     m_allowAuto = false;
-    if(DriverStation.isFMSAttached()){
+    if (DriverStation.isFMSAttached()) {
       Shuffleboard.startRecording();
       fmsConnected = true;
     }
@@ -205,7 +207,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -220,7 +222,7 @@ public class Robot extends TimedRobot {
       m_autoCommandGroup.cancel();
     }
 
-    if(fmsConnected){
+    if (fmsConnected) {
       enteredTeleop = true;
     }
 
@@ -232,16 +234,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
     
     if (feeder.getCurrentBallsHeld() >= 2 && feeder.prevBallCount == 1) {     
       // theClearIntake.start();
-      theClearIntakeCommandGroup.start();
+      theClearIntakeCommandGroup.schedule();
     }
     feeder.updatePrevBallsHeld();
     
   }
-    
+
   /**
    * This function is called periodically during test mode.
    */
@@ -257,9 +259,9 @@ public class Robot extends TimedRobot {
     // vision.postValues();
 
     // shooter.runShooterDiagnostics();
-    //feeder.runFeederDiagnostics();
-    //intake.runIntakeDiagnostics();
-    //navigationBoard.runNavBoardDiagnostics();
-    //drivetrain.runDrivetrainDiagnostics();
+    // feeder.runFeederDiagnostics();
+    // intake.runIntakeDiagnostics();
+    // navigationBoard.runNavBoardDiagnostics();
+    // drivetrain.runDrivetrainDiagnostics();
   }
 }
