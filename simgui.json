@@ -1,0 +1,108 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "Compressor[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "SPARK MAX [13]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[0]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[0]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[0]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[14]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[14]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[14]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[15]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[1]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo"
+    }
+  },
+  "NetworkTables": {
+    "CameraPublisher": {
+      "USB Camera 0": {
+        "open": true
+      },
+      "open": true
+    },
+    "FMSInfo": {
+      "open": true
+    },
+    "Shuffleboard": {
+      "DiagnosticTab": {
+        "open": true
+      },
+      "open": true
+    }
+  }
+}

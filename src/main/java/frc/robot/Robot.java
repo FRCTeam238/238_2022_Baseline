@@ -15,6 +15,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -109,14 +110,12 @@ public class Robot extends TimedRobot {
 
   private void populateAutomodes() {
 
-    if (isReal()) {
-      // initialize the automodes list
-      IAutonomousModeDataSource autoModesDataSource = new DataFileAutonomousModeDataSource(
-          "/home/lvuser/deploy/amode238.txt");
-      AutonomousModesReader reader = new AutonomousModesReader(autoModesDataSource);
-      m_autoModes = reader.getAutonmousModes();
-    } else {
-    }
+    
+    IAutonomousModeDataSource autoModesDataSource = new DataFileAutonomousModeDataSource(
+        Filesystem.getDeployDirectory() + "\\amode238.txt");
+    AutonomousModesReader reader = new AutonomousModesReader(autoModesDataSource);
+    m_autoModes = reader.getAutonmousModes();
+    
 
     if (m_autoModes.size() > 0) {
       Boolean first = true;

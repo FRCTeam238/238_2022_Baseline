@@ -14,6 +14,7 @@ import java.util.List;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -60,7 +61,7 @@ public class TrajectoryDriveCommand extends SequentialCommandGroup implements IA
     Trajectory trajectory;
     try {
       trajectory = TrajectoryUtil
-          .fromPathweaverJson(Paths.get("/home/lvuser/deploy/pathplanner/generatedJSON/" + trajectoryName + ".wpilib.json"));
+          .fromPathweaverJson(Paths.get(Filesystem.getDeployDirectory() + "/pathplanner/generatedJSON/" + trajectoryName + ".wpilib.json"));
       SmartDashboard.putString("Running Trajectory", trajectoryName);
       Transform2d transform = new Pose2d(0, 0, Rotation2d.fromDegrees(0)).minus(trajectory.getInitialPose());
       Trajectory newTrajectory = trajectory.transformBy(transform);
