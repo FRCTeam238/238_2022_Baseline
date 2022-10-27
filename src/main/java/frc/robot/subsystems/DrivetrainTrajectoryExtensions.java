@@ -22,6 +22,8 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
@@ -36,6 +38,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.math.util.Units;
 import frc.core238.Logger;
@@ -65,12 +68,20 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   private DifferentialDrivetrainSim m_driveSim;
   TalonFXSimCollection m_leftDriveSim = leftControllerDrive.getSimCollection();
   TalonFXSimCollection m_rightDriveSim = rightControllerDrive.getSimCollection();
+  PIDController leftController, rightController;
+  Timer dtTimer;
+  double lastLeftV, lastRightV;
 
   public DrivetrainTrajectoryExtensions() {
       super();
+    dtTimer = new Timer();
+    dtTimer.start();
     zeroDriveTrainEncoders();
     gyro.zeroYaw();
-    differentialDriveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));    
+    differentialDriveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    leftController = new PIDController(2, 0, 0);
+    rightController = new PIDController(2, 0, 0);  
+    
     m_driveSim = new DifferentialDrivetrainSim(
       // Create a linear system from our identification gains.
       LinearSystemId.identifyDrivetrainSystem(DriveTrain.VOLT_SECONDS_PER_METER, DriveTrain.VOLT_SECONDS_SQUARED_PER_METER, DriveTrain.VOLT_SECONDS_PER_METER, DriveTrain.VOLT_SECONDS_PER_METER),
@@ -253,17 +264,32 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftControllerDrive.setVoltage(leftVolts);
     rightControllerDrive.setVoltage(rightVolts);
+    SmartDashboard.putNumber("L_MotorOutput", leftVolts);
+    SmartDashboard.putNumber("Desired L_Velocity", leftController.getSetpoint());
+    SmartDashboard.putNumber("Actual L_Velocity", stepsPerDecisecToMetersPerSec(leftControllerDrive.getSelectedSensorVelocity()));
   }
 
   public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
-    // SmartDashboard.putNumber("Desired L_Velocity", metersPerSecToStepsPerDecisec(leftVelocity));
-    // SmartDashboard.putNumber("Desired R_Velocity", metersPerSecToStepsPerDecisec(rightVelocity));
-    // SmartDashboard.putNumber("Actual L_Velocity", leftControllerDrive.getSelectedSensorVelocity());
-    // SmartDashboard.putNumber("Actual R_Velocity", leftControllerDrive.getSelectedSensorVelocity());
-    // SmartDashboard.putNumber("L_FeedForward", DriveTrain.FEED_FORWARD.calculate(leftVelocity));
-    // SmartDashboard.putNumber("MotorOutput", leftControllerDrive.getMotorOutputVoltage());
-    leftControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(leftVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(leftVelocity))/12);
-    rightControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(rightVelocity), DemandType.ArbitraryFeedForward, (DriveTrain.FEED_FORWARD.calculate(rightVelocity))/12);
+    double dt = .02;
+    if(dtTimer.get() > 0 && dtTimer.get() < .1)
+    {
+      dt = dtTimer.get();
+    }
+    dtTimer.reset();
+
+    SmartDashboard.putNumber("Desired L_Velocity", leftVelocity);
+    SmartDashboard.putNumber("Desired R_Velocity", metersPerSecToStepsPerDecisec(rightVelocity));
+    SmartDashboard.putNumber("Actual L_Velocity", m_driveSim.getLeftVelocityMetersPerSecond());
+    SmartDashboard.putNumber("Actual R_Velocity", rightControllerDrive.getSelectedSensorVelocity());
+    double l_ff = DriveTrain.FEED_FORWARD.calculate(lastLeftV, leftVelocity, dt);
+    double r_ff = DriveTrain.FEED_FORWARD.calculate(lastRightV, rightVelocity, dt);
+    leftControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(leftVelocity), DemandType.ArbitraryFeedForward, l_ff/12);
+    rightControllerDrive.set(TalonFXControlMode.Velocity, metersPerSecToStepsPerDecisec(rightVelocity), DemandType.ArbitraryFeedForward, r_ff/12);
+    SmartDashboard.putNumber("L_FeedForward", l_ff);
+    
+    SmartDashboard.putNumber("BusVoltage", leftControllerDrive.getBusVoltage());
+    lastLeftV = leftVelocity;
+    lastRightV = rightVelocity;
   }
 
   /**
@@ -278,18 +304,36 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   }
 
   public Command createCommandForTrajectory(Trajectory trajectory) {
+
     InstantCommand initializeDifferentialDrive = new InstantCommand(() -> {
       setUseDifferentialDrive(false); 
       differentialDriveOdometry.resetPosition(trajectory.getInitialPose(), Rotation2d.fromDegrees(getHeading()));
       m_field.getObject("traj").setTrajectory(trajectory);
     }, this);
+    RamseteController controller = new RamseteController(Auto.RAMSETE_B, Auto.RAMSETE_ZETA);
+    controller.setEnabled(false);
     RamseteCommand rc = new RamseteCommand(
             trajectory,
             this::getCurrentPose,
-            new RamseteController(Auto.RAMSETE_B, Auto.RAMSETE_ZETA),
+            controller,
             DriveTrain.DRIVE_KINEMATICS,
             this::tankDriveVelocity,
             this);
+           /* RamseteCommand rc =  new RamseteCommand(
+                trajectory,
+                this::getCurrentPose,
+                controller,
+                new SimpleMotorFeedforward(
+                    DriveTrain.STATIC_VOLTS,
+                    DriveTrain.VOLT_SECONDS_PER_METER,
+                    DriveTrain.VOLT_SECONDS_SQUARED_PER_METER),
+                DriveTrain.DRIVE_KINEMATICS,
+                this::getWheelSpeeds,
+                leftController,
+                rightController,
+                // RamseteCommand passes volts to the callback
+                this::tankDriveVolts,
+                this);  */      
 
     InstantCommand endCommand = new InstantCommand(() -> {
             //setUseDifferentialDrive(true);
@@ -304,43 +348,13 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   }
 
   /**
-   * Converts inches to wheel revolutions
-   * 
-   * @param inches inches
-   * @return wheel revolutions
-   */
-  public static double insToRevs(double inches) {
-    return inches / DriveTrain.WHEEL_CIRCUMFERENCE_INCHES;
-  }
-
-  /**
-   * Converts inches to encoder steps
-   * 
-   * @param inches inches
-   * @return encoder steps
-   */
-  public static double insToSteps(double inches) {
-    return (insToRevs(inches) * DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION);
-  }
-
-  /**
-   * Converts inches per second to encoder steps per decisecond
-   * 
-   * @param inchesPerSec inches per second
-   * @return encoder steps per decisecond (100 ms)
-   */
-  public static double insPerSecToStepsPerDecisec(double inchesPerSec) {
-    return insToSteps(inchesPerSec) * .1;
-  }
-
-  /**
    * Converts from encoder steps to meters.
    * 
    * @param steps encoder steps to convert
    * @return meters
    */
   public static double stepsToMeters(int steps) {
-    return (DriveTrain.WHEEL_CIRCUMFERENCE_METERS / DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION) * steps;
+    return (steps*DriveTrain.WHEEL_CIRCUMFERENCE_METERS / DriveTrain.SENSOR_UNITS_PER_WHEEL_ROTATION);
   }
 
   public static double metersToSteps(double meters) {
@@ -382,7 +396,6 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
   public static final class DriveTrain {
     public static final double SENSOR_UNITS_PER_WHEEL_ROTATION = 2048*14.17;
     public static final double WHEEL_DIAMETER_INCHES = 6.18;//6d;
-    public static final double WHEEL_CIRCUMFERENCE_INCHES = WHEEL_DIAMETER_INCHES * Math.PI;
     public static final double WHEEL_CIRCUMFERENCE_METERS = Units.inchesToMeters(WHEEL_DIAMETER_INCHES) * Math.PI;
 
     public static final double TRACK_WIDTH_METERS = 0.626;
@@ -407,6 +420,8 @@ public class DrivetrainTrajectoryExtensions extends Drivetrain {
 
     public static final DifferentialDriveVoltageConstraint VOLTAGE_CONSTRAINT = 
         new DifferentialDriveVoltageConstraint(DriveTrain.FEED_FORWARD, DriveTrain.DRIVE_KINEMATICS, MAX_VOLTAGE);
+
+    public static TrajectoryConfig TRAJ_CONFIG = new TrajectoryConfig(2.5, 2.5).addConstraint(VOLTAGE_CONSTRAINT);
 
     // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
     public static final double RAMSETE_B = 2;

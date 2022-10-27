@@ -30,11 +30,11 @@ public class CommandDescriptor {
         this.parameters = val;
     }
 
-    private boolean isParallel;
-    public boolean getIsParallel(){
-        return isParallel;
+    private String ParallelType;
+    public String getParallelType(){
+        return ParallelType;
     }
-    public void setIsParallel(Boolean val){
-        this.isParallel = val;
+    public void setParallelType(String val){
+        this.ParallelType = val;
     }
 }

@@ -68,7 +68,7 @@ public class AutonomousModesReader {
 
                 //List<String> strippedParams = commandDescriptor.getParameters().stream().skip(1).collect(Collectors.toList());
                 // Value of first boolean parameter
-                boolean isParallel = commandDescriptor.getIsParallel();//Boolean.parseBoolean(commandDescriptor.getParameters().get(0));
+                boolean isParallel = !commandDescriptor.getParallelType().equalsIgnoreCase("None");//Boolean.parseBoolean(commandDescriptor.getParameters().get(0));
 
                 // Pass in parameters (minus isParallel)
                 autoCommand.setParameters(commandDescriptor.getParameters());

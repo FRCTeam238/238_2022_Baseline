@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.util.sendable.Sendable;
@@ -65,14 +66,13 @@ public class Drivetrain extends SubsystemBase {
 
   
 
-  public static double kP = 0.00026915;
+  public static double kP = 0.0002;
   public static double kI = 0;
   public static double kD = 0;
   public static double kF = 0;
   public static int kIzone = 400;
   public static int kPIDLoopIdx = 0;
   public static int kTimeoutMs = 30;
-  public static double rampRate = 0.25;
 
   private double diagnosticStartTime = 0;
 
@@ -220,6 +220,9 @@ public class Drivetrain extends SubsystemBase {
       // Ensure motor output and encoder velocity are proportional to each other
       // If they become inverted, set these to true
       talon.setSensorPhase(true);
+
+      talon.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_5Ms);
+      talon.configVelocityMeasurementWindow(2);
   
       resetEncoder(talon, kPIDLoopIdx, kTimeoutMs);
     }
