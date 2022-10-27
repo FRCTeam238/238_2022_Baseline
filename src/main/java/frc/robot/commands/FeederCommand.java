@@ -15,11 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.core238.Logger;
+import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.LED;
 import frc.robot.subsystems.Shooter;
 
+@AutonomousModeAnnotation(parameterNames = {})
 public class FeederCommand extends CommandBase implements IAutonomousCommand {
 
   public static boolean isDone = false;

@@ -4,18 +4,18 @@
       "Commands": [
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "3"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "DriveStraightWithoutSensors",
-          "IsParallel": false,
           "Parameters": [
             "0.3",
             "2.5"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "ShootThenDrive"
@@ -28,39 +28,39 @@
       "Commands": [
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallShootFirst"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "4"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "2BallShootFirst"
@@ -69,39 +69,39 @@
       "Commands": [
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "3BallHub"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "4"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "3BallHub"
@@ -110,42 +110,42 @@
       "Commands": [
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallDriveFirst"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         }
       ],
       "Name": "2Ball"
@@ -154,66 +154,66 @@
       "Commands": [
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallDriveFirst"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "4BallSecondPath"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "4Ball"
@@ -222,66 +222,66 @@
       "Commands": [
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallDriveFirst"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "4BallSecondPath_Red"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "4Ball_Red"
@@ -290,71 +290,71 @@
       "Commands": [
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallTerminal"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "1.5"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "4BallSecondPathCreepAlong"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "2.25"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "4BallTerminalRoll"
@@ -363,10 +363,10 @@
       "Commands": [
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": false,
           "Parameters": [
-            "4BallSecondPathCreepAlong"
-          ]
+            "4Ball3"
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "PathTesting"
@@ -375,10 +375,10 @@
       "Commands": [
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "1.5"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "ShooterTestCommand"
@@ -387,59 +387,59 @@
       "Commands": [
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallDriveFirst"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "Delay",
-          "IsParallel": false,
           "Parameters": [
             "2"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "4BallSecondPath"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         }
       ],
       "Name": "4BallNoShooter"
@@ -448,11 +448,11 @@
       "Commands": [
         {
           "Name": "DriveStraightWithoutSensors",
-          "IsParallel": false,
           "Parameters": [
             "0.3",
             "2.5"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "DriveForwardOnly"
@@ -461,39 +461,39 @@
       "Commands": [
         {
           "Name": "Delay",
-          "IsParallel": false,
           "Parameters": [
             "4"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallHangar"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "3"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "2BallHanger"
@@ -502,56 +502,56 @@
       "Commands": [
         {
           "Name": "Delay",
-          "IsParallel": false,
           "Parameters": [
             "4"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeInOutCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "FeederCommand",
-          "IsParallel": true,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": true,
           "Parameters": [
             "2BallHangar"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "AutoShooterCommand",
-          "IsParallel": false,
           "Parameters": [
             "3"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "ManualCountReset",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "ResetCommands",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         },
         {
           "Name": "TrajectoryDriveCommand",
-          "IsParallel": false,
           "Parameters": [
             "2BallHangerSecondPath"
-          ]
+          ],
+          "ParallelType": "None"
         }
       ],
       "Name": "2BallHanger_Alt"
@@ -560,15 +560,15 @@
       "Commands": [
         {
           "Name": "Delay",
-          "IsParallel": false,
           "Parameters": [
             "5"
-          ]
+          ],
+          "ParallelType": "None"
         },
         {
           "Name": "IntakeExtendCommand",
-          "IsParallel": false,
-          "Parameters": []
+          "Parameters": [],
+          "ParallelType": "None"
         }
       ],
       "Name": "Delaytest"

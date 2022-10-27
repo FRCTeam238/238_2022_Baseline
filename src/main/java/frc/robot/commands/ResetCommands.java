@@ -7,9 +7,11 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 
 /** Add your docs here. */
+@AutonomousModeAnnotation(parameterNames = {})
 public class ResetCommands extends InstantCommand implements IAutonomousCommand {
 
   boolean isAutonomousMode;

@@ -3,8 +3,10 @@ package frc.robot.commands;
 import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.core238.autonomous.AutonomousModeAnnotation;
 import frc.robot.Robot;
 
+@AutonomousModeAnnotation(parameterNames = {})
 public class ManualCountReset extends CommandBase implements IAutonomousCommand{
 
     public ManualCountReset() {
