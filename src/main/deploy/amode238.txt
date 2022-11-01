@@ -21,6 +21,30 @@
       "Name": "ShootThenDrive"
     },
     {
+      "Commands": [
+        {
+          "Name": "AutoDebugMessage",
+          "Parameters": [
+            "the auto ran! -------------"
+          ],
+          "ParallelType": "None"
+        },
+        {
+          "Name": "TrajectoryDriveCommand",
+          "Parameters": [
+            "2BallHangar"
+          ],
+          "ParallelType": "Deadline_Leader"
+        },
+        {
+          "Name": "IntakeInOutCommand",
+          "Parameters": [],
+          "ParallelType": "Deadline_Follower"
+        }
+      ],
+      "Name": "deadlineTest"
+    },
+    {
       "Commands": [],
       "Name": "3BallAuto"
     },
@@ -370,6 +394,37 @@
         }
       ],
       "Name": "PathTesting"
+    },
+    {
+      "Commands": [
+        {
+          "Name": "AutoDebugMessage",
+          "Parameters": [
+            "------------------yaya!------------"
+          ],
+          "ParallelType": "None"
+        },
+        {
+          "Name": "Delay",
+          "Parameters": [
+            "6"
+          ],
+          "ParallelType": "Deadline_Leader"
+        },
+        {
+          "Name": "IntakeExtendCommand",
+          "Parameters": [],
+          "ParallelType": "Deadline_Follower"
+        },
+        {
+          "Name": "AutoShooterCommand",
+          "Parameters": [
+            "2"
+          ],
+          "ParallelType": "None"
+        }
+      ],
+      "Name": "RaceTest"
     },
     {
       "Commands": [

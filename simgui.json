@@ -85,23 +85,70 @@
   },
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/DrivetrainTrajectoryExtensions": "Subsystem",
+      "/LiveWindow/Feeder": "Subsystem",
+      "/LiveWindow/Hanger": "Subsystem",
+      "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/LED": "Subsystem",
+      "/LiveWindow/NavigationBoard": "Subsystem",
+      "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
+      "/LiveWindow/Ungrouped/DigitalInput[0]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[1]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[2]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[3]": "Digital Input",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon FX [15]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [1]": "Motor Controller",
+      "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/Auto Modes": "String Chooser"
+    },
+    "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "CameraPublisher": {
-      "USB Camera 0": {
-        "open": true
-      },
       "open": true
     },
     "FMSInfo": {
       "open": true
     },
+    "LiveWindow": {
+      ".status": {
+        "open": true
+      },
+      "open": true
+    },
     "Shuffleboard": {
+      ".metadata": {
+        "DiagnosticTab": {
+          "open": true
+        },
+        "open": true
+      },
       "DiagnosticTab": {
         "open": true
       },
+      "Shooter Tuning": {
+        "open": true
+      },
+      "open": true
+    },
+    "SmartDashboard": {
+      "Auto Modes": {
+        "open": true
+      },
+      "open": true
+    },
+    "createNonCanonical": true,
+    "limelight": {
       "open": true
     }
   }
