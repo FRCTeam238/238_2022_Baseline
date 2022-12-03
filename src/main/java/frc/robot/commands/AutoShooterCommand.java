@@ -43,11 +43,6 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
     addCommands(new FeedForShoot(0));
   }
 
-  @Override
-  public void initialize()
-  {
-    
-  }
 
   @Override
   public boolean getIsAutonomousMode() {
