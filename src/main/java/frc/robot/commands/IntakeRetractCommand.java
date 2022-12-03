@@ -60,7 +60,7 @@ public class IntakeRetractCommand extends CommandBase implements IAutonomousComm
 
     }
     @Override
-    public double getDelay() {
+    public double getTimeout() {
         // TODO Auto-generated method stub
         return 0;
     }

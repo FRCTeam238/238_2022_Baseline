@@ -84,7 +84,7 @@ public class Delay extends CommandBase implements IAutonomousCommand {
     timeToWait = Double.parseDouble(parameters.get(0));
   }
   @Override
-  public double getDelay() {
+  public double getTimeout() {
       // TODO Auto-generated method stub
       return 0;
   }

@@ -60,7 +60,7 @@ public class IntakeExtendCommand extends CommandBase implements IAutonomousComma
     }
 
     @Override
-    public double getDelay() {
+    public double getTimeout() {
         // TODO Auto-generated method stub
         return 0;
     }

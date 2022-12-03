@@ -46,7 +46,7 @@ public class AutoDebugMessage extends InstantCommand implements IAutonomousComma
   }
 
   @Override
-  public double getDelay() {
+  public double getTimeout() {
       // TODO Auto-generated method stub
       return 0;
   }

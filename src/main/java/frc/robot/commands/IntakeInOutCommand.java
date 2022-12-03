@@ -119,7 +119,7 @@ public class IntakeInOutCommand extends CommandBase implements IAutonomousComman
 
 
     @Override
-    public double getDelay() {
+    public double getTimeout() {
         // TODO Auto-generated method stub
         return 0;
     }

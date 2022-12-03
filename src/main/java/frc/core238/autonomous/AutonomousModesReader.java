@@ -101,8 +101,8 @@ public class AutonomousModesReader {
                                 // Set parallelGroup to the last command group in the list
                                 parallelGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
                             }
-                            if (autoCommand.getDelay() != 0) {
-                                parallelGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            if (autoCommand.getTimeout() != 0) {
+                                parallelGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getTimeout()));
                             } else {
                                 parallelGroup.addCommands((Command) autoCommand); // Add the command in parallel
                             }
@@ -120,8 +120,8 @@ public class AutonomousModesReader {
                                 raceGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
 
                             }
-                            if (autoCommand.getDelay() != 0) {
-                                raceGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            if (autoCommand.getTimeout() != 0) {
+                                raceGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getTimeout()));
                             } else {
                                 raceGroup.addCommands((Command) autoCommand); // Add the command in parallel
                             }
@@ -139,8 +139,8 @@ public class AutonomousModesReader {
                                 deadlineGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
                             }
 
-                            if (autoCommand.getDelay() != 0) {
-                                ((ParallelDeadlineGroup)deadlineGroup).setDeadline(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            if (autoCommand.getTimeout() != 0) {
+                                ((ParallelDeadlineGroup)deadlineGroup).setDeadline(((Command)autoCommand).withTimeout(autoCommand.getTimeout()));
                             } else {
                                 ((ParallelDeadlineGroup) deadlineGroup).setDeadline((Command) autoCommand);
                             }
@@ -156,8 +156,8 @@ public class AutonomousModesReader {
                                 parallelCommandGroups.set(0, deadlineFollowerGroup); // Add the command
                                 isParallelList.set(0, true); // Communicate that there IS a parallel command group being
                             }
-                            if (autoCommand.getDelay() != 0) {
-                                deadlineFollowerGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            if (autoCommand.getTimeout() != 0) {
+                                deadlineFollowerGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getTimeout()));
                             } else {
                                 deadlineFollowerGroup.addCommands((Command) autoCommand);
                             }
@@ -170,7 +170,7 @@ public class AutonomousModesReader {
                         commands.addCommands((Command) parallelCommandGroups.get(0));
                     }
                     isParallelList.set(0, false); // Communicate that there is not a parallel command group being built
-                    if (autoCommand.getDelay() != 0) {
+                    if (autoCommand.getTimeout() != 0) {
                         
                         commands.addCommands(((Command) autoCommand).withTimeout(Double.parseDouble(commandDescriptor.getParameters().get(0)))); // Add the command sequentially
                     } else {

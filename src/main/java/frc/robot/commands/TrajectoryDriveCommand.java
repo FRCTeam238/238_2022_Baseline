@@ -111,7 +111,7 @@ public class TrajectoryDriveCommand extends SequentialCommandGroup implements IA
   }
 
   @Override
-  public double getDelay() {
+  public double getTimeout() {
       // TODO Auto-generated method stub
       return 0;
   }

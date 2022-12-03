@@ -67,7 +67,7 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   }
 
 @Override
-public double getDelay() {
+public double getTimeout() {
     // TODO Auto-generated method stub
     return this.timeout;
 }

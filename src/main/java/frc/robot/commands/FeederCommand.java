@@ -109,7 +109,7 @@ public class FeederCommand extends CommandBase implements IAutonomousCommand {
 
   }
   @Override
-  public double getDelay() {
+  public double getTimeout() {
       // TODO Auto-generated method stub
       return 0;
   }

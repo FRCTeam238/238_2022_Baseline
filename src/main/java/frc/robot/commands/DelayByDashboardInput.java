@@ -73,7 +73,7 @@ public class DelayByDashboardInput extends CommandBase implements IAutonomousCom
   }
   
   @Override
-  public double getDelay() {
+  public double getTimeout() {
       // TODO Auto-generated method stub
       return 0;
   }
