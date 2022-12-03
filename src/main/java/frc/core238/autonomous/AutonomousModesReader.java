@@ -55,7 +55,6 @@ public class AutonomousModesReader {
 
                 final String commandName = commandDescriptor.getName();
                 final String className = classPath + commandName;
-
                 // create a command object
                 IAutonomousCommand autoCommand = null;
                 try {
@@ -66,38 +65,54 @@ public class AutonomousModesReader {
                     frc.core238.Logger
                             .Debug("AutonomousModesReader.getAutonmousModes unable to instantiate " + className);
                 }
-
+                String[] paramNames = {};
+                try {
+                     paramNames = Class.forName(className).getAnnotation(AutonomousModeAnnotation.class).parameterNames();
+                } catch (ClassNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    
+                }
+                   
+                
+                Logger.Debug(commandDescriptor.getParameters().toString());
+                
                 // List<String> strippedParams =
                 // commandDescriptor.getParameters().stream().skip(1).collect(Collectors.toList());
                 // Value of first boolean parameter
                 String parallelType = commandDescriptor.getParallelType();// Boolean.parseBoolean(commandDescriptor.getParameters().get(0));
 
-                // Pass in parameters (minus isParallel)
+                // Pass in parameters (minus isParallel
                 autoCommand.setParameters(commandDescriptor.getParameters());
                 autoCommand.setIsAutonomousMode(true);
 
-                if (parallelType != null) {
+
+                if (!parallelType.equals("None")) {
                     switch (parallelType) {
                         case "Parallel":
                             CommandGroupBase parallelGroup;
                             if (isParallelList.get(0) == false) { // If there is no parallel command group currently
                                                                   // being built
                                 parallelGroup = new ParallelCommandGroup(); // Create a new one
-                                parallelCommandGroups.add(parallelGroup); // Add the command
+                                parallelCommandGroups.set(0, parallelGroup); // Add the command
                                 isParallelList.set(0, true); // Communicate that there IS a parallel command group being
                                                              // built
                             } else {
                                 // Set parallelGroup to the last command group in the list
                                 parallelGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
                             }
-                            parallelGroup.addCommands((Command) autoCommand); // Add the command in parallel
+                            if (autoCommand.getDelay() != 0) {
+                                parallelGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            } else {
+                                parallelGroup.addCommands((Command) autoCommand); // Add the command in parallel
+                            }
                             break;
                         case "Race":
                             CommandGroupBase raceGroup;
                             if (isParallelList.get(0) == false) { // If there is no parallel command group currently
                                                                   // being built
                                 raceGroup = new ParallelRaceGroup(); // Create a new one
-                                parallelCommandGroups.add(raceGroup); // Add the command
+                                parallelCommandGroups.set(0, raceGroup); // Add the command
                                 isParallelList.set(0, true); // Communicate that there IS a parallel command group being
                                                              // built
                             } else {
@@ -105,7 +120,11 @@ public class AutonomousModesReader {
                                 raceGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
 
                             }
-                            raceGroup.addCommands((Command) autoCommand); // Add the command in parallel
+                            if (autoCommand.getDelay() != 0) {
+                                raceGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            } else {
+                                raceGroup.addCommands((Command) autoCommand); // Add the command in parallel
+                            }
                             Logger.Debug("built race");
                             break;
                         case "Deadline_Leader":
@@ -113,14 +132,19 @@ public class AutonomousModesReader {
                             if (isParallelList.get(0) == false) { // If there is no parallel command group currently
                                                                   // being built
                                 deadlineGroup = new ParallelDeadlineGroup((Command) autoCommand); // Create a new one
-                                parallelCommandGroups.add(deadlineGroup); // Add the command
-                                isParallelList.set(0, true); // Communicate that there IS a parallel command group being
-                                                             // built
+                                parallelCommandGroups.set(0, deadlineGroup); // Add the command
+                                isParallelList.set(0, true); // Communicate that there IS a parallel command group being built
                             } else {
                                 // Set deadlineGroup to the last command group in the list
                                 deadlineGroup = parallelCommandGroups.get(parallelCommandGroups.size()-1);
-                                deadlineGroup.deadlineWith((Command) autoCommand);
                             }
+
+                            if (autoCommand.getDelay() != 0) {
+                                ((ParallelDeadlineGroup)deadlineGroup).setDeadline(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            } else {
+                                ((ParallelDeadlineGroup) deadlineGroup).setDeadline((Command) autoCommand);
+                            }
+                            
                             break;
                         case "Deadline_Follower":
                             CommandGroupBase deadlineFollowerGroup;
@@ -129,10 +153,15 @@ public class AutonomousModesReader {
                             } else {
                                 
                                 deadlineFollowerGroup = new ParallelDeadlineGroup((Command) autoCommand); // Create a new one
-                                parallelCommandGroups.add(deadlineFollowerGroup); // Add the command
+                                parallelCommandGroups.set(0, deadlineFollowerGroup); // Add the command
                                 isParallelList.set(0, true); // Communicate that there IS a parallel command group being
                             }
-                            deadlineFollowerGroup.addCommands((Command) autoCommand);
+                            if (autoCommand.getDelay() != 0) {
+                                deadlineFollowerGroup.addCommands(((Command)autoCommand).withTimeout(autoCommand.getDelay()));
+                            } else {
+                                deadlineFollowerGroup.addCommands((Command) autoCommand);
+                            }
+                            break;
                     }
 
                 } else {
@@ -141,7 +170,12 @@ public class AutonomousModesReader {
                         commands.addCommands((Command) parallelCommandGroups.get(0));
                     }
                     isParallelList.set(0, false); // Communicate that there is not a parallel command group being built
-                    commands.addCommands((Command) autoCommand); // Add the command sequentially
+                    if (autoCommand.getDelay() != 0) {
+                        
+                        commands.addCommands(((Command) autoCommand).withTimeout(Double.parseDouble(commandDescriptor.getParameters().get(0)))); // Add the command sequentially
+                    } else {
+                        commands.addCommands((Command) autoCommand); // Add the command sequentially
+                    }
                 }
             });
 

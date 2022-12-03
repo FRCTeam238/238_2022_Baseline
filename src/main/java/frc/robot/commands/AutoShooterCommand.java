@@ -46,7 +46,6 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   @Override
   public void initialize()
   {
-    withTimeout(timeout);
     
   }
 
@@ -71,4 +70,10 @@ public class AutoShooterCommand extends SequentialCommandGroup implements IAuton
   public boolean isFinished(){
     return false;
   }
+
+@Override
+public double getDelay() {
+    // TODO Auto-generated method stub
+    return this.timeout;
+}
 }

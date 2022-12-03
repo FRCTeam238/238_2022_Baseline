@@ -30,9 +30,9 @@
           "ParallelType": "None"
         },
         {
-          "Name": "TrajectoryDriveCommand",
+          "Name": "Delay",
           "Parameters": [
-            "2BallHangar"
+            "5"
           ],
           "ParallelType": "Deadline_Leader"
         },
@@ -409,12 +409,12 @@
           "Parameters": [
             "6"
           ],
-          "ParallelType": "Deadline_Leader"
+          "ParallelType": "Race"
         },
         {
           "Name": "IntakeExtendCommand",
           "Parameters": [],
-          "ParallelType": "Deadline_Follower"
+          "ParallelType": "Race"
         },
         {
           "Name": "AutoShooterCommand",

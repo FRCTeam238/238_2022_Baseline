@@ -58,4 +58,10 @@ public class IntakeExtendCommand extends CommandBase implements IAutonomousComma
         // TODO Auto-generated method stub
 
     }
+
+    @Override
+    public double getDelay() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

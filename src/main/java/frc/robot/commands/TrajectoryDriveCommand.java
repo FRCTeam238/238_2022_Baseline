@@ -109,4 +109,10 @@ public class TrajectoryDriveCommand extends SequentialCommandGroup implements IA
     public static double kMaxSpeedMetersPerSecond = 1;
     public static double kMaxAccelerationMetersPerSecondSquared = 0.1;
   }
+
+  @Override
+  public double getDelay() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
 }

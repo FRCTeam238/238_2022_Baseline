@@ -71,4 +71,11 @@ public class DelayByDashboardInput extends CommandBase implements IAutonomousCom
     dashboardID = parameters.get(0);
     SmartDashboard.putNumber(dashboardID, timeToDelay);
   }
+  
+  @Override
+  public double getDelay() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
 }
+

@@ -16,4 +16,5 @@ public interface IAutonomousCommand {
     public boolean getIsAutonomousMode();
     public void setIsAutonomousMode(boolean isAutonomousMode);
     public void setParameters(List<String> parameters); 
+    public double getDelay();
 }

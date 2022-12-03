@@ -42,4 +42,10 @@ public class ResetCommands extends InstantCommand implements IAutonomousCommand 
   @Override
   public void setParameters(List<String> parameters) {
   }
+
+  @Override
+  public double getDelay() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
 }

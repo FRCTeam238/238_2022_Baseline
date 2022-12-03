@@ -74,4 +74,9 @@ public class DriveStraightWithoutSensors extends CommandBase implements IAutonom
     driveSpeed = Double.parseDouble(parameters.get(0));
     driveTime = Double.parseDouble(parameters.get(1));
   }
+  @Override
+  public double getDelay() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
 }

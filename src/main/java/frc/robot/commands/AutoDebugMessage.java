@@ -44,4 +44,10 @@ public class AutoDebugMessage extends InstantCommand implements IAutonomousComma
   public void setParameters(List<String> parameters){
     debugMessage = parameters.get(0);
   }
+
+  @Override
+  public double getDelay() {
+      // TODO Auto-generated method stub
+      return 0;
+  }
 }

@@ -109,10 +109,9 @@ public class Robot extends TimedRobot {
   }
 
   private void populateAutomodes() {
-
     
     IAutonomousModeDataSource autoModesDataSource = new DataFileAutonomousModeDataSource(
-        Filesystem.getDeployDirectory() + "\\amode238.txt");
+        Filesystem.getDeployDirectory() + "/amode238.txt");
     AutonomousModesReader reader = new AutonomousModesReader(autoModesDataSource);
     m_autoModes = reader.getAutonmousModes();
     

@@ -55,4 +55,10 @@ public class TraversalExtendCommand extends CommandBase implements IAutonomousCo
         // TODO Auto-generated method stub
 
     }
+    
+    @Override
+    public double getDelay() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
